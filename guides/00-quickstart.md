@@ -1,0 +1,99 @@
+# 00 — Quickstart (5 minutes)
+
+**English** · [Tiếng Việt](../huong-dan/00-bat-dau-nhanh.md)
+
+> Goal: finish installing and draw your first diagram in ~5 minutes. If you only want to try **one** diagram type, installing the tool for that engine alone is enough (no need to install everything).
+
+> **Bilingual EN/VI:** output (diagram labels + interview questions + reports) automatically follows the language you type in — type English → English output, type Vietnamese → VI output; force it with `--lang en|vi` (per `rules/language.md`). Engine syntax keywords + real technical identifiers (table/service/endpoint) always stay in English.
+
+---
+
+## Step 1 — Choose the engine you want to try
+
+| Want to draw | Skill | Needs |
+|---|---|---|
+| Sequence / flowchart / state / ERD (embedded inline in .md) | `/sequence` `/activity` `/state` `/erd` | Node + `mmdc` + Chrome |
+| Real swimlane / use case diagram | `/activity-swimlane` `/usecase-diagram` | **Internet only** (renders via plantuml.com) |
+| Beautiful D2 diagrams (activity / erd / architecture) | `/d2-activity` `/d2-erd` `/d2-architect` | `d2` binary |
+| C4 system design (Context→Container→Component) + HTML presentation | `/system-design` | `d2` binary |
+| Standard OMG BPMN | `/bpmn` | Node + `npm install` inside the engine |
+| DBML schema + SQL | `/dbdiagram` | `@dbml/cli` |
+
+> **Easiest to try right now:** `/activity-swimlane` or `/usecase-diagram` — only needs internet, nothing else to install.
+
+> **2 extended skills** (don't draw from a description — for **devs doing BA work**):
+> - `/scan-project` — scans an **existing (brownfield) codebase** → auto-generates a full set of architecture diagrams (C4 + modules + relationships + ERD + sequence). Needs the `d2` binary (+ `mmdc` for sequence).
+> - `/sync-confluence` — syncs **code/conversation changes → a Confluence page** (edits in place, previews before writing). Needs an authenticated **Atlassian MCP** (`/mcp`), not a render tool.
+>
+> See `02-which-skill.md` and `03-per-skill-guide.md`.
+
+Installation details: `01-install-tools.md`.
+
+---
+
+## Step 2 — Install the skill into your BA workspace
+
+There are **2 ways**. Way A is the leanest for Claude Code; way B works for any case / other tool.
+
+### Way A — Plugin (recommended for Claude Code)
+
+In Claude Code, just 2 commands:
+```
+/plugin marketplace add <path-or-repo-here>
+/plugin install dev-diagram-kit
+```
+
+Done — **14 `/...` commands are available right away** (12 diagram-drawing + `/scan-project` + `/sync-confluence`). The BPMN engine auto-`npm install`s via the SessionStart hook (no manual step needed).
+
+### Way B — Manual copy (any case / other tool)
+
+From this package's root folder, run the install script:
+```bash
+# Replace <workspace> with your BA workspace (where CLAUDE.md + docs/ live)
+./install.sh <workspace>
+```
+
+The script copies `skills/ agents/ rules/ scripts/ templates/` into `<workspace>/.claude/{skills,agents,rules,scripts,templates}`, auto-`npm install`s the BPMN engine, then runs `scripts/doctor.sh` to health-check the render tools (prints ✅/❌ + how to install).
+
+> **Note:** templates now live at `<workspace>/.claude/templates/` (there is NO LONGER a `_templates/` at the workspace root as before).
+> If a rule has the same name as one already in your DIAGRAM-KIT set → keep the workspace's version, don't overwrite it.
+
+---
+
+## Step 3 — Open Claude Code in the workspace and run it
+
+```bash
+cd <workspace>
+claude
+```
+
+In the chat, type (no preparation needed — the skill will ask about anything missing):
+
+```
+/activity-swimlane "Customer orders food; the system calculates the total and calls the payment gateway;
+the restaurant confirms and prepares; the system assigns a shipper; the shipper delivers;
+the customer receives it. Error branches: payment fails, restaurant declines, delivery fails" --feature food-delivery
+```
+
+The skill will:
+1. Ask about a few remaining ambiguous points (who does which step, where branches occur).
+2. Preview the file-writing plan (**L1 plan** — you type `Y` to approve).
+3. Draw + render `.svg`/`.png` + self-check.
+
+---
+
+## Step 4 — Look at a sample output before doing it yourself
+
+Open the `example/food-delivery/` folder in this package — it's a **multi-flow feature** already drawn through **11/12 skills** (not including `/system-design`), with rendered images in `example/food-delivery/_rendered/`. Compare your output against the sample to know "what correct looks like."
+
+Read `example/README.md` for a file → skill map.
+
+---
+
+## Not sure which skill to pick?
+
+→ `02-which-skill.md` (decision tree) or `explain-skills/diagram-selection.md` (full hub).
+
+## Running into errors?
+
+→ `05-faq.md` (FAQ + render troubleshooting).
