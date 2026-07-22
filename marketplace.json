@@ -1,0 +1,19 @@
+{
+  "name": "dev-diagram-kit-marketplace",
+  "owner": {
+    "name": "Edward Ngo"
+  },
+  "metadata": {
+    "description": "Marketplace for dev-diagram-kit — diagrams + brownfield scan + Confluence doc-sync, for developers doing BA work. 1 repo = marketplace + plugin.",
+    "version": "1.0.0"
+  },
+  "plugins": [
+    {
+      "name": "dev-diagram-kit",
+      "source": "./",
+      "description": "14 skills for developers doing BA work: 12 diagram skills (sequence/activity/BPMN/state/ERD/use case/architecture/C4) + scan-project (reverse-engineer from code) + sync-confluence (doc sync). Bilingual EN/VI.",
+      "category": "productivity",
+      "keywords": ["diagram", "business-analysis", "mermaid", "d2", "plantuml", "bpmn", "c4", "reverse-engineering", "confluence", "doc-sync", "bilingual"]
+    }
+  ]
+}
