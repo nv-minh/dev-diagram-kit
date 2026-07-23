@@ -1,0 +1,61 @@
+@startuml
+!theme plain
+title Online Movie Ticket Booking
+
+|Customer|
+start
+:Visit website, choose a movie;
+
+|System|
+:Display the movie's showtimes;
+
+|Customer|
+:Select a showtime;
+
+|System|
+if (Customer logged in?) then (No)
+  |Customer|
+  repeat
+    :Enter email and password;
+    |System|
+    :Verify login;
+  repeat while (Login failed?) is (Failed, retry) not (Success)
+else (Yes)
+endif
+
+|System|
+:Display seat map and available seats;
+
+|Customer|
+repeat
+  :Choose seat count and positions;
+  |System|
+  backward:Show error Seat unavailable, re-select;
+repeat while (Seat already booked?) is (Booked) not (Available)
+
+|System|
+:Hold seats for 10 minutes;
+
+|Customer|
+:Confirm order, choose payment method (card or e-wallet);
+
+|System|
+repeat
+  :Process payment;
+repeat while (Payment failed and fewer than 3 tries?) is (Failed, retry) not (Done)
+
+if (Payment successful?) then (Success)
+  |System|
+  :Generate e-ticket, send email, show QR code;
+  |Customer|
+  :Receive e-ticket;
+  stop
+else (Failed more than 3 times)
+  |System|
+  :Cancel transaction, release held seats;
+  |Customer|
+  :Receive transaction cancelled notification;
+  stop
+endif
+
+@enduml
