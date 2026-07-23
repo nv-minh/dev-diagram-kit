@@ -1,0 +1,39 @@
+# REFERENCE for /d2-activity — order payment process (payment). Not a real doc.
+# Points to mimic:
+#   - Leading comment; the .d2 source stands alone (no frontmatter, not embedded in flows.md).
+#   - direction + shape/color by node TYPE (circle=start/end, diamond=decision, default ▭=step).
+#   - Edges have a branch label AFTER the ":"; loop A -> B -> A is valid.
+#   - QUOTE labels containing structural characters ( ) / | : (D2 reads them as syntax) — e.g. "Send request to gateway (Momo / VNPay)".
+
+direction: down
+
+start: Customer clicks Pay { shape: circle; style.fill: "#E8F0FE" }
+
+checkCart: Cart still valid? { shape: diamond; style.fill: "#FFF4E5" }
+chooseMethod: Customer chooses payment method
+createTxn: Create pending transaction
+callGateway: "Send request to gateway (Momo / VNPay)"
+paid: Gateway reports payment success? { shape: diamond; style.fill: "#FFF4E5" }
+retry: Tried fewer than 3 times? { shape: diamond; style.fill: "#FFF4E5" }
+confirm: "Update order: paid"
+notify: Send invoice email to customer
+cancel: Cancel transaction and release held stock
+expire: Notify cart expired, return to cart
+
+endOk: Payment complete { shape: circle; style.fill: "#E6F4EA" }
+endFail: Payment failed { shape: circle; style.fill: "#E6F4EA" }
+
+start -> checkCart
+checkCart -> expire: No
+checkCart -> chooseMethod: Yes
+chooseMethod -> createTxn
+createTxn -> callGateway
+callGateway -> paid
+paid -> confirm: Success
+confirm -> notify
+notify -> endOk
+paid -> retry: Failure
+retry -> chooseMethod: Attempts left
+retry -> cancel: No attempts left
+cancel -> endFail
+expire -> endFail

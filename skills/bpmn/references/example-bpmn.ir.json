@@ -1,0 +1,36 @@
+{
+  "process": { "id": "Process_refund_approval", "title": "Refund Approval — End to End" },
+  "lanes": [
+    { "id": "Lane_customer", "name": "Customer" },
+    { "id": "Lane_system",   "name": "System" },
+    { "id": "Lane_support",  "name": "Customer Support" },
+    { "id": "Lane_finance",  "name": "Accounting" }
+  ],
+  "nodes": [
+    { "id": "Start_1",           "kind": "start",   "lane": "Lane_customer", "name": "Customer submits refund request" },
+    { "id": "Task_check",        "kind": "task",    "lane": "Lane_system",   "name": "Check order eligible for refund" },
+    { "id": "GW_eligible",       "kind": "gateway", "lane": "Lane_system",   "name": "Order eligible for refund?" },
+    { "id": "End_reject_auto",   "kind": "end",     "lane": "Lane_customer", "name": "Auto-rejected (stop)" },
+    { "id": "Task_review",       "kind": "task",    "lane": "Lane_support",  "name": "Support reviews the request" },
+    { "id": "GW_approve",        "kind": "gateway", "lane": "Lane_support",  "name": "Support approves refund?" },
+    { "id": "Task_notify_reject","kind": "task",    "lane": "Lane_system",   "name": "Notify customer request rejected" },
+    { "id": "End_rejected",      "kind": "end",     "lane": "Lane_customer", "name": "Request rejected (stop)" },
+    { "id": "Task_transfer",     "kind": "task",    "lane": "Lane_finance",  "name": "Accounting transfers the refund" },
+    { "id": "Task_update",       "kind": "task",    "lane": "Lane_system",   "name": "Update transaction: refunded" },
+    { "id": "Task_notify_ok",    "kind": "task",    "lane": "Lane_system",   "name": "Send refund confirmation email" },
+    { "id": "End_done",          "kind": "end",     "lane": "Lane_customer", "name": "Refund complete" }
+  ],
+  "flows": [
+    { "id": "Flow_start",        "src": "Start_1",            "tgt": "Task_check" },
+    { "id": "Flow_tocheck",      "src": "Task_check",         "tgt": "GW_eligible" },
+    { "id": "Flow_elig_no",      "src": "GW_eligible",        "tgt": "End_reject_auto",    "name": "No" },
+    { "id": "Flow_elig_yes",     "src": "GW_eligible",        "tgt": "Task_review",        "name": "Yes" },
+    { "id": "Flow_toreview",     "src": "Task_review",        "tgt": "GW_approve" },
+    { "id": "Flow_appr_no",      "src": "GW_approve",         "tgt": "Task_notify_reject", "name": "No" },
+    { "id": "Flow_torejected",   "src": "Task_notify_reject", "tgt": "End_rejected" },
+    { "id": "Flow_appr_yes",     "src": "GW_approve",         "tgt": "Task_transfer",      "name": "Yes" },
+    { "id": "Flow_totransfer",   "src": "Task_transfer",      "tgt": "Task_update" },
+    { "id": "Flow_toupdate",     "src": "Task_update",        "tgt": "Task_notify_ok" },
+    { "id": "Flow_todone",       "src": "Task_notify_ok",     "tgt": "End_done" }
+  ]
+}

@@ -1,0 +1,47 @@
+# REFERENCE for /d2-architect — payment system architecture (payment). Not a real doc.
+# Points to mimic (the "Step 2" formula in SKILL.md):
+#   - direction: right; user actor shape: person.
+#   - Logical block = a container nesting sub-components; DB = shape: cylinder; highlight the main service with style.fill.
+#   - External services wrapped in a dashed-border container (style.stroke-dash: 3) — "outside our control".
+#   - Call flows = edges, Vietnamese business labels, reference children via a dot (Backend.API).
+#   - QUOTE labels/names containing ( ) / | : — e.g. "Client (Web / Mobile)", "HTTPS / REST".
+#   - Business level: blocks + external services + main flows. NO port/replica/VPC.
+
+direction: right
+
+Khach: Customer { shape: person; style.fill: "#E8F0FE" }
+
+Client: "Client (Web / Mobile)" {
+  UI: Payment interface
+  SW: Service Worker
+}
+
+Backend: Payment System {
+  API: API Gateway
+  Checkout: Checkout Service { style.fill: "#FFF4E5" }
+  PaySvc: Payment Service { style.fill: "#FFF4E5" }
+  Refund: Refund Service
+  Notif: Notification Service
+  DB: Database { shape: cylinder; style.fill: "#E6F4EA"; icon: https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg }
+}
+
+External: External services {
+  style.stroke-dash: 3
+  Momo: Momo Gateway
+  VNPay: VNPay Gateway
+  Stripe: "Stripe (international cards)" { icon: https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/stripe.svg }
+  Email: SendGrid { icon: https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/sendgrid.svg }
+}
+
+Khach -> Client.UI: performs payment
+Client.UI -> Backend.API: "HTTPS / REST"
+Backend.API -> Backend.Checkout: create payment order
+Backend.Checkout -> Backend.PaySvc: request charge
+Backend.PaySvc -> Backend.DB: write transaction
+Backend.PaySvc -> External.Momo: redirect to charge
+Backend.PaySvc -> External.VNPay: redirect to charge
+Backend.PaySvc -> External.Stripe: charge card
+Backend.Checkout -> Backend.Notif: request send email
+Backend.Notif -> External.Email: send invoice
+Backend.Refund -> External.Stripe: refund
+Backend.Refund -> Backend.DB: update refund order
