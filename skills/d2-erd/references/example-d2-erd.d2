@@ -1,0 +1,64 @@
+# REFERENCE for /d2-erd — payment data model (payment). Not a real doc.
+# Points to mimic (mirrors entities in srs/references/example-erd.md: USER, ORDER, TRANSACTION, PAYMENT_METHOD, REFUND):
+#   - 1 entity = 1 block "shape: sql_table"; column: name: type { constraint: primary_key | foreign_key }.
+#   - QUOTE column values containing ( ) | / : — e.g. "decimal (VND)", "pending | confirmed | paid | cancelled".
+#   - Relationship = edge A.pk -> B.fk: Vietnamese business label (places, owns, generates, uses, refunds).
+#   - Business types that suffice (string/decimal/datetime/listed enum) — NO varchar(255)/index/DB detail.
+
+direction: right
+
+USER: {
+  shape: sql_table
+  id: string { constraint: primary_key }
+  email: "string (unique)"
+  phone: "string (nullable)"
+  createdAt: datetime
+}
+
+ORDER: {
+  shape: sql_table
+  id: string { constraint: primary_key }
+  userId: string { constraint: foreign_key }
+  amount: "decimal (VND)"
+  status: "pending | confirmed | paid | cancelled"
+  createdAt: datetime
+}
+
+TRANSACTION: {
+  shape: sql_table
+  id: string { constraint: primary_key }
+  orderId: string { constraint: foreign_key }
+  paymentMethodId: string { constraint: foreign_key }
+  gateway: "Momo | VNPay | Stripe"
+  status: "pending | succeeded | failed | refunded"
+  amount: "decimal (VND)"
+  createdAt: datetime
+}
+
+PAYMENT_METHOD: {
+  shape: sql_table
+  id: string { constraint: primary_key }
+  userId: string { constraint: foreign_key }
+  type: "card | Momo | VNPay"
+  displayName: string
+  isDefault: boolean
+}
+
+REFUND: {
+  shape: sql_table
+  id: string { constraint: primary_key }
+  transactionId: string { constraint: foreign_key }
+  approvedBy: string { constraint: foreign_key }
+  amount: "decimal (VND)"
+  reason: string
+  status: "pending | succeeded | failed"
+  createdAt: datetime
+}
+
+# Relationships — Vietnamese business labels:
+USER.id -> ORDER.userId: places
+USER.id -> PAYMENT_METHOD.userId: owns
+ORDER.id -> TRANSACTION.orderId: generates
+PAYMENT_METHOD.id -> TRANSACTION.paymentMethodId: uses
+TRANSACTION.id -> REFUND.transactionId: can be refunded
+USER.id -> REFUND.approvedBy: admin approves

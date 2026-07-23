@@ -1,0 +1,52 @@
+// Schema spaced-repetition — canonical example (validated via: dbml2sql example-dbdiagram.dbml --postgres)
+// Source: srs/spaced-repetition-erd.md (mapped 1-1, upgraded concise types → real DB types)
+
+Table learners {
+  id uuid [pk]
+  email varchar [unique, not null, note: 'contact address']
+  display_name varchar [note: 'display name']
+  created_at timestamp [default: `now()`]
+}
+
+Table decks {
+  id uuid [pk]
+  learner_id uuid [ref: > learners.id, note: 'which learner the deck belongs to']
+  name varchar [not null, note: 'deck name']
+  description text [note: 'short description, may be empty']
+  created_at timestamp [default: `now()`]
+}
+
+Table cards {
+  id uuid [pk]
+  deck_id uuid [ref: > decks.id, note: 'which deck it belongs to']
+  front varchar [not null, note: 'front side — vocabulary']
+  back text [not null, note: 'back side — meaning / example']
+  next_review_at timestamp [note: 'time of the next review']
+  interval_days int [default: 1, note: 'number of days until the next review']
+  ease decimal [default: 2.5, note: 'current ease of the card (SM-2)']
+  streak int [default: 0, note: 'number of consecutive correct reviews']
+
+  Indexes {
+    (deck_id, next_review_at) [name: 'idx_card_due']
+  }
+}
+
+Enum card_recall {
+  forgot [note: 'forgot']
+  fuzzy [note: 'fuzzy']
+  remembered [note: 'remembered']
+  mastered [note: 'mastered']
+}
+
+Table review_logs {
+  id uuid [pk]
+  card_id uuid [ref: > cards.id, note: 'which card was reviewed']
+  learner_id uuid [ref: > learners.id, note: 'who reviewed']
+  reviewed_at timestamp [not null, note: 'time of the review']
+  recall card_recall [not null, note: 'recall level this time']
+  next_interval_days int [note: 'next interval computed after this review']
+
+  Indexes {
+    (learner_id, reviewed_at) [name: 'idx_review_learner_time']
+  }
+}
