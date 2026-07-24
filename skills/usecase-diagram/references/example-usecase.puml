@@ -1,0 +1,37 @@
+' REFERENCE for /usecase-diagram — payment & refund (payment). Not a real doc.
+' Points to mimic (native PlantUML formula in SKILL.md):
+'   - left to right direction; system boundary REQUIRED: rectangle "System: {feature}" { ... }, actors outside.
+'   - actor "Name with space" as Alias; usecase "Name" as UCn (always give an alias).
+'   - package by REAL domain (Customer / Admin), NOT by a UC-count threshold.
+'   - actor--UC association uses "--" (undirected, participation).
+'   - include: Base ..> Included (always-needed behavior). extend: Extending ..> Base (conditional behavior).
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+title Use case — Payment & refund (payment)
+
+actor "Customer" as Customer
+actor Admin
+actor "Payment Gateway" as Gateway
+
+rectangle "System: payment" {
+  package "Customer" {
+    usecase "Pay for order" as UC1
+    usecase "Choose payment method" as UC2
+    usecase "Save payment method" as UC3
+    usecase "Request refund" as UC4
+  }
+
+  package "Admin" {
+    usecase "Approve refund" as UC5
+  }
+}
+
+Customer -- UC1
+Customer -- UC4
+Admin -- UC5
+UC1 -- Gateway
+
+UC1 ..> UC2 : <<include>>
+UC3 ..> UC1 : <<extend>>
+@enduml

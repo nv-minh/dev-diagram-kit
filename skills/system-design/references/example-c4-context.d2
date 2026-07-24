@@ -1,0 +1,20 @@
+# REFERENCE for /system-design — C4 Level 1 (System Context). Not a real diagram.
+# Render: "${CLAUDE_PLUGIN_ROOT:-.claude}/skills/d2-activity/render.sh" example-c4-context.d2
+# Idea: the system you build = 1 central block; users + external systems around it.
+
+direction: right
+
+Khach: Customer { shape: person; style.fill: "#E8F0FE" }
+
+Payment: Payment System {
+  style.fill: "#DCEEFB"
+  style.bold: true
+}
+
+Gateway: "Payment Gateway (Momo / VNPay)" { style.fill: "#EEF1F4"; style.stroke-dash: 3 }
+Email: "Email Service" { style.fill: "#EEF1F4"; style.stroke-dash: 3 }
+
+Khach -> Payment: "Place order, pay"
+Payment -> Gateway: "Send payment request"
+Gateway -> Payment: "Transaction result"
+Payment -> Email: "Send invoice"

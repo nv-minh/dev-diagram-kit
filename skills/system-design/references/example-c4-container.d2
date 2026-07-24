@@ -1,0 +1,30 @@
+# REFERENCE for /system-design — C4 Level 2 (Container). Not a real diagram.
+# Render: "${CLAUDE_PLUGIN_ROOT:-.claude}/skills/d2-activity/render.sh" example-c4-container.d2
+# Idea: "open the lid" of the L1 system → the apps/services/data stores inside + call flows.
+# Do NOT draw infra (port/replica/VPC) — the BA↔architect level, not a deployment diagram.
+# Icon: in practice the skill takes the value from scripts/icon-path.sh (bundle abs / CDN); in this reference
+# a CDN URL (Devicon MIT) is used for portability. Only attach to infra/tech nodes.
+
+direction: right
+
+Khach: Customer { shape: person; style.fill: "#E8F0FE" }
+
+Payment: Payment System {
+  Web: "Web / Mobile App" { style.fill: "#E6F6FA"; icon: https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg }
+  API: "Payment API" { style.fill: "#E6F4EA"; icon: https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg }
+  Worker: "Webhook Processor" { style.fill: "#E6F4EA"; icon: https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg }
+  DB: "Transaction DB" { shape: cylinder; style.fill: "#F1EAFB"; icon: https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg }
+  Bus: "Event Queue" { shape: queue; style.fill: "#FFF1E6"; icon: https://cdn.jsdelivr.net/gh/devicons/devicon/icons/apachekafka/apachekafka-original.svg }
+}
+
+Gateway: "Payment Gateway (Momo / VNPay)" { style.fill: "#EEF1F4"; style.stroke-dash: 3 }
+Email: "Email Service" { style.fill: "#EEF1F4"; style.stroke-dash: 3 }
+
+Khach -> Payment.Web: "Use"
+Payment.Web -> Payment.API: "HTTPS / REST"
+Payment.API -> Payment.DB: "Write pending transaction"
+Payment.API -> Gateway: "Create payment request"
+Gateway -> Payment.Worker: "Result webhook"
+Payment.Worker -> Payment.DB: "Update status"
+Payment.Worker -> Payment.Bus: "Emit paid event"
+Payment.Bus -> Email: "Send invoice"

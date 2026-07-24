@@ -1,0 +1,18 @@
+# REFERENCE for /sync-confluence — sample .claude/state/atlassian/sync-state.yaml after a few syncs.
+# Not a real state. See rules/atlassian-sync.md §4. The real file lives in .claude/state/atlassian/.
+mappings:
+  confluence:
+    "2133459088":
+      url: "https://your-site.atlassian.net/wiki/spaces/DEV/pages/2133459088/Payment+Service+Spec"
+      title: "Payment Service Spec"
+      last_synced: "2026-07-25T10:12:00Z"
+      last_version: 14
+      content_hash: "sha256:9f2a...c1"      # page html at sync time — compared to detect changes outside the kit
+      source_watermark: "git:8c1d4e2"        # commit synced up to; next time consider 8c1d4e2..HEAD
+    "2133460000":
+      url: "https://your-site.atlassian.net/wiki/spaces/DEV/pages/2133460000/Order+Flow"
+      title: "Order Flow"
+      last_synced: "2026-07-24T16:40:00Z"
+      last_version: 7
+      content_hash: "sha256:1b77...ee"
+      source_watermark: "conversation:2026-07-24"   # synced from a decision in the conversation
