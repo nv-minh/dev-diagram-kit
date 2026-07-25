@@ -158,7 +158,7 @@ The kit targets Claude Code. There are two ways to install it.
 ### As a plugin (recommended)
 
 ```
-/plugin marketplace add [<path to this repo | owner/repo>](https://github.com/nv-minh/dev-diagram-kit)
+/plugin marketplace add https://github.com/nv-minh/dev-diagram-kit
 /plugin install dev-diagram-kit
 ```
 
