@@ -224,19 +224,12 @@ dev-diagram-kit/
 ├── assets/icons/                  Icon công nghệ bundle sẵn (Devicon MIT, Simple Icons CC0)
 ├── example/                       Ví dụ đầy đủ: feature food-delivery
 ├── explain-skills/                Giải thích từng skill (song ngữ: `*.md` tiếng Anh, `*.vi.md` tiếng Việt)
-├── guides/ · huong-dan/           Hướng dẫn bắt đầu (tiếng Anh / tiếng Việt)
-└── INSTALL-CODEX.md · PROMPT-CODEX.md   Port sang Codex CLI
+└── guides/ · huong-dan/           Hướng dẫn bắt đầu (tiếng Anh / tiếng Việt)
 ```
 
 ## Triết lý: dev vẫn là người điều khiển
 
 Kit không thay tư duy bằng tự động hoá. Sơ đồ do AI vẽ là **bản nháp chất lượng cao để thẩm định**, không phải chân lý: compile-check và coverage bắt lỗi cú pháp và độ phủ, nhưng *đúng-sai nghiệp vụ* là quyết định của bạn. Bạn cung cấp ngữ cảnh, bạn duyệt mọi lần ghi, bạn chịu trách nhiệm với kết quả. Kit lo phần máy móc — nhớ cú pháp, dàn layout, bắt lỗi — để bạn tập trung vào phần chỉ con người làm được.
-
-## Port sang công cụ khác
-
-Kit viết cho Claude Code, kèm hướng dẫn port sang tool agent khác:
-
-- **Codex CLI** — `INSTALL-CODEX.md` (chi tiết) + `PROMPT-CODEX.md` (prompt copy-paste).
 
 ## License
 

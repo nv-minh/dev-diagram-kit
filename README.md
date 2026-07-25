@@ -224,19 +224,12 @@ dev-diagram-kit/
 ├── assets/icons/                  Bundled technology icons (Devicon MIT, Simple Icons CC0)
 ├── example/                       Worked example: the food-delivery feature
 ├── explain-skills/                Per-skill deep dives (bilingual: `*.md` English, `*.vi.md` Vietnamese)
-├── guides/ · huong-dan/           Getting-started guide (English / Vietnamese)
-└── INSTALL-CODEX.md · PROMPT-CODEX.md   Porting to Codex CLI
+└── guides/ · huong-dan/           Getting-started guide (English / Vietnamese)
 ```
 
 ## Design principle: keep the developer in control
 
 The kit does not replace judgment with automation. A generated diagram is a high-quality draft to be reviewed, not ground truth: compile and coverage checks catch syntax and completeness, but whether the diagram is *correct for the domain* is your call. You supply context, you approve every write, and you own the result. The kit removes the mechanical work — remembering syntax, laying things out, catching errors — so you can spend attention on the parts only a person can do.
-
-## Porting to other tools
-
-The kit is written for Claude Code, with a guide to port it to other agent tools:
-
-- **Codex CLI** — `INSTALL-CODEX.md` (detailed) and `PROMPT-CODEX.md` (a copy-paste prompt).
 
 ## License
 
