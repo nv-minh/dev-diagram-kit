@@ -2,7 +2,7 @@
 
 Bộ skill vẽ sơ đồ và làm tài liệu cho **dev làm công việc BA**, đóng gói thành plugin [Claude Code](https://docs.claude.com/en/docs/claude-code). Mô tả hệ thống hoặc quy trình bằng lời — hoặc trỏ vào một codebase — kit sẽ vẽ đúng loại sơ đồ (Mermaid, PlantUML, D2 hoặc BPMN), tự kiểm cú pháp rồi render. Output song ngữ, tự bám theo ngôn ngữ bạn gõ.
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE) &nbsp; 14 skill &nbsp;·&nbsp; Mermaid / PlantUML / D2 / BPMN &nbsp;·&nbsp; EN / VI
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE) &nbsp; 22 skill &nbsp;·&nbsp; Mermaid / PlantUML / D2 / BPMN &nbsp;·&nbsp; EN / VI
 
 [English](README.md) · **Tiếng Việt**
 
@@ -10,7 +10,7 @@ Bộ skill vẽ sơ đồ và làm tài liệu cho **dev làm công việc BA**,
 
 ## Danh sách skill
 
-Mười bốn skill: mười hai skill vẽ sơ đồ từ mô tả hoặc phỏng vấn; hai skill làm việc từ codebase và tài liệu của bạn.
+Hai mươi hai skill. Mười bảy skill vẽ sơ đồ; `/scan-project` và `/code-flow` đọc code; `/diagram` chọn đúng loại; `/gallery` gom thành một file bàn giao; `/sync-confluence` sync sang Confluence.
 
 | Skill | Vẽ gì | Engine | Khi nào dùng |
 |---|---|---|---|
@@ -19,17 +19,25 @@ Mười bốn skill: mười hai skill vẽ sơ đồ từ mô tả hoặc phỏ
 | `/activity-swimlane` | Activity **swimlane thật** — mỗi vai một lane | PlantUML | Mặc định cho quy trình đa vai trò nhiều tương tác chéo |
 | `/bpmn` | BPMN 2.0 chuẩn OMG, sửa được ngay trên trình duyệt | Engine Node | Import Camunda/Bizagi, hoặc cần ký hiệu OMG |
 | `/state` | State diagram — vòng đời entity | Mermaid | Order/Account/Subscription nhiều trạng thái |
+| `/code-flow` | Trace 1 function/module trong code → flow (seq/activity/state) + provenance `file:line` | Mermaid | Giải thích cách hoạt động của 1 hàm cụ thể, từ source |
+| `/dfd` | Data Flow Diagram — dữ liệu đi đâu (L0 bối cảnh + L1) | D2 | Góc nhìn DỮ LIỆU (entity ↔ process ↔ store) |
+| `/mindmap` | Cây phân rã scope/ý tưởng | Mermaid | Discovery — bẻ scope thành cây trước khi viết SRS |
+| `/journey` | User journey kèm mức hài lòng 1–5 | Mermaid | Trải nghiệm qua các touchpoint + pain point |
+| `/timeline` | Mốc roadmap theo thời gian (PM-light, không phải Gantt) | Mermaid | Mốc dự án/feature theo giai đoạn |
 | `/erd` | ERD nhúng inline trong Markdown | Mermaid | Data model đọc ngay trong tài liệu |
 | `/d2-erd` | ERD standalone, PK/FK rõ | D2 | Data model cho slide / export |
 | `/dbdiagram` | Schema DBML + export SQL | DBML CLI | Bàn giao dev, dbdiagram.io / dbdocs.io, enum/index |
 | `/d2-activity` | Activity diagram standalone | D2 | Flow nhiều nhánh cần hình đẹp |
 | `/d2-architect` | Kiến trúc hệ thống — một hình bối cảnh | D2 | Component / service / DB / dịch vụ ngoài lồng nhau |
-| `/system-design` | **C4 đa tầng** (Context → Container → Component) + bản HTML | D2 + HTML | Hệ thống lớn cần zoom nhiều mức + export PNG/PDF |
+| `/system-design` | **C4 đa tầng** (Context → Container → Component) + runtime view + bản HTML | D2 + HTML | Hệ thống lớn cần zoom nhiều mức + export PNG/PDF |
 | `/usecase-diagram` | Use case diagram (actor + use case) | PlantUML | Kickoff, phạm vi hệ thống, include/extend |
+| `/orgchart` | Sơ đồ tổ chức / reporting (+ tuỳ chọn bản power/interest) | D2 (+ Mermaid) | Kickoff — ai báo cáo ai, phân tích stakeholder |
 | `/scan-project` | **Scan codebase** → bộ sơ đồ kiến trúc (C4 + module + ERD + sequence) | D2 + Mermaid | Reverse-engineer project có sẵn (brownfield) |
+| `/diagram` | **Router** — mô tả nhu cầu, tự chọn + chạy đúng skill | — | "Nên dùng cái nào trong đám này?" |
+| `/gallery` | **Bộ bàn giao 1 file** — mọi sơ đồ của 1 feature, tab, có toolbar export | HTML | Bàn giao stakeholder (Copy/PNG/PDF) |
 | `/sync-confluence` | **Sync code/hội thoại** vào trang Confluence (sửa in-place, preview trước) | Atlassian MCP | Giữ tài liệu khớp logic code mới nhất |
 
-Không biết chọn skill nào? `rules/diagram-selection.md` là kim chỉ nam ánh xạ tình huống sang đúng loại sơ đồ — đây là lý do 14 skill vẫn dễ dùng.
+Không biết chọn skill nào? Chạy **`/diagram`** — mô tả muốn thể hiện gì, nó tự chọn (và chạy) đúng skill. `rules/diagram-selection.md` là ma trận quyết định phía sau.
 
 ## Ví dụ output
 
@@ -162,7 +170,7 @@ Kit viết cho Claude Code. Có hai cách cài.
 /plugin install dev-diagram-kit
 ```
 
-Cả 14 lệnh có sẵn ngay. BPMN engine tự cài dependency Node ở phiên đầu qua hook — không phải làm tay.
+Cả 22 lệnh có sẵn ngay. BPMN engine tự cài dependency Node ở phiên đầu qua hook — không phải làm tay.
 
 ### Cài kiểu copy (mọi trường hợp / tool khác)
 
@@ -178,7 +186,7 @@ Chỉ cài thứ skill bạn dùng cần (`scripts/doctor.sh` báo cái nào thi
 
 - **Mermaid** (`/sequence`, `/activity`, `/state`, `/erd`) — Node, `@mermaid-js/mermaid-cli`, Chrome.
 - **D2** (`/d2-*`, `/system-design`, `/scan-project`) — binary `d2`.
-- **PlantUML** (`/activity-swimlane`, `/usecase-diagram`) — internet (render qua plantuml.com).
+- **PlantUML** (`/activity-swimlane`, `/usecase-diagram`) — render **offline** qua `plantuml.jar` (chạy `scripts/plantuml-ensure.sh` một lần; cần Java), hoặc qua plantuml.com (gửi nội dung ra mạng).
 - **DBML** (`/dbdiagram`) — `@dbml/cli`. **BPMN** (`/bpmn`) — Node (tự cài).
 - **`/sync-confluence`** — kết nối Atlassian MCP đã xác thực.
 
@@ -197,6 +205,7 @@ Chỉ cài thứ skill bạn dùng cần (`scripts/doctor.sh` báo cái nào thi
 - **Icon công nghệ tự động.** Sơ đồ kiến trúc và `/scan-project` tự chèn logo (Redis, Postgres, Kafka, AWS, nginx, React, …) khi node khớp một công nghệ — Devicon bundle offline + fallback CDN (`rules/icon-map.md`). Tắt bằng `--no-icons`.
 - **Đúng mức chi tiết (altitude).** Audience là dev nên chi tiết kỹ thuật (column, endpoint, schema) được dùng khi hợp; kit chọn mức theo loại sơ đồ và người đọc, không cấm đoán.
 - **Tự bắt lỗi.** Mermaid compile-check (`mermaid-verify.mjs`); D2/DBML validate qua CLI; BPMN semcheck kiểm phủ; sơ đồ D2/C4 tự soi lại từ ảnh render trước khi báo xong.
+- **Router + bộ bàn giao.** `/diagram` chọn đúng skill cho một nhu cầu (hỏi tối đa 2 câu rồi chạy); `/gallery` gom mọi sơ đồ của 1 feature thành một HTML tabbed self-contained (Copy/PNG/PDF) để bàn giao stakeholder.
 - **Human-in-the-loop.** Skill không tự ghi im lặng — mọi thay đổi đều preview và xác nhận trước (`rules/approval-gate.md`). `/sync-confluence` luôn hiện diff và hỏi trước khi đụng trang.
 
 ## Cấu trúc repo
@@ -206,17 +215,17 @@ dev-diagram-kit/
 ├── .claude-plugin/plugin.json     Manifest plugin (/plugin install)
 ├── marketplace.json               Catalog marketplace (/plugin marketplace add)
 ├── install.sh                     Installer kiểu copy (không cần plugin)
-├── skills/                        14 skill
+├── skills/                        22 skill
 ├── agents/                        diagram-reviewer
-├── rules/                         Rule dùng chung (approval-gate, diagram-selection, language, icon-map, …)
-├── scripts/                       mermaid-verify.mjs · doctor.sh · icon-path.sh · render helper
+├── rules/                         Rule dùng chung (approval-gate, diagram-selection, diagram-style, language, icon-map, …)
+├── scripts/                       mermaid-verify.mjs · doctor.sh · plantuml-ensure.sh · icon-path.sh · render helper
 ├── templates/                     Khung file diagram
 ├── hooks/                         SessionStart hook (tự cài BPMN engine)
 ├── assets/icons/                  Icon công nghệ bundle sẵn (Devicon MIT, Simple Icons CC0)
 ├── example/                       Ví dụ đầy đủ: feature food-delivery
 ├── explain-skills/                Giải thích từng skill (song ngữ: `*.md` tiếng Anh, `*.vi.md` tiếng Việt)
 ├── guides/ · huong-dan/           Hướng dẫn bắt đầu (tiếng Anh / tiếng Việt)
-└── INSTALL-*.md · PROMPT-*.md      Port sang Codex CLI và Antigravity IDE
+└── INSTALL-CODEX.md · PROMPT-CODEX.md   Port sang Codex CLI
 ```
 
 ## Triết lý: dev vẫn là người điều khiển
@@ -228,7 +237,6 @@ Kit không thay tư duy bằng tự động hoá. Sơ đồ do AI vẽ là **b�
 Kit viết cho Claude Code, kèm hướng dẫn port sang tool agent khác:
 
 - **Codex CLI** — `INSTALL-CODEX.md` (chi tiết) + `PROMPT-CODEX.md` (prompt copy-paste).
-- **Google Antigravity IDE** — `INSTALL-ANTIGRAVITY.md` + `PROMPT-ANTIGRAVITY.md`.
 
 ## License
 

@@ -2,7 +2,7 @@
 
 Diagram and documentation skills for developers doing BA work, packaged as a [Claude Code](https://docs.claude.com/en/docs/claude-code) plugin. Describe a system or process in plain language — or point the kit at a codebase — and it produces the right diagram (Mermaid, PlantUML, D2, or BPMN), compile-checks it, and renders it. Output is bilingual and follows the language you write in.
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE) &nbsp; 14 skills &nbsp;·&nbsp; Mermaid / PlantUML / D2 / BPMN &nbsp;·&nbsp; EN / VI
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE) &nbsp; 22 skills &nbsp;·&nbsp; Mermaid / PlantUML / D2 / BPMN &nbsp;·&nbsp; EN / VI
 
 **English** · [Tiếng Việt](README.vi.md)
 
@@ -10,7 +10,7 @@ Diagram and documentation skills for developers doing BA work, packaged as a [Cl
 
 ## Skills
 
-Fourteen skills: twelve draw diagrams from a description or interview; two work from your codebase and docs.
+Twenty-two skills. Seventeen draw diagrams; `/scan-project` and `/code-flow` read your code; `/diagram` routes you to the right type; `/gallery` builds a one-file handoff deck; `/sync-confluence` syncs to Confluence.
 
 | Skill | Output | Engine | Use for |
 |---|---|---|---|
@@ -19,17 +19,25 @@ Fourteen skills: twelve draw diagrams from a description or interview; two work 
 | `/activity-swimlane` | Activity diagram with real swimlanes (one lane per role) | PlantUML | Default for multi-role processes with cross-lane steps |
 | `/bpmn` | BPMN 2.0 (OMG standard), editable in the browser | Node engine | Import into Camunda/Bizagi, or OMG notation |
 | `/state` | State diagram — entity lifecycle | Mermaid | Order/Account/Subscription with several states |
+| `/code-flow` | Trace ONE function/module in code → a flow (seq/activity/state) + `file:line` provenance | Mermaid | Explain how a specific function works, from its source |
+| `/dfd` | Data Flow Diagram — where data moves (L0 context + L1 exploded) | D2 | The DATA view (entities ↔ processes ↔ stores) |
+| `/mindmap` | Scope / idea decomposition tree | Mermaid | Discovery — break scope into a tree before the SRS |
+| `/journey` | User journey map with satisfaction 1–5 | Mermaid | Experience across touchpoints + pain points |
+| `/timeline` | Roadmap milestones over time (PM-light, not Gantt) | Mermaid | Project/feature milestones by period |
 | `/erd` | Entity-relationship diagram, inline in Markdown | Mermaid | Data model read inside docs |
 | `/d2-erd` | Standalone ERD with clear PK/FK | D2 | Data model for slides / export |
 | `/dbdiagram` | DBML schema + SQL export | DBML CLI | Dev handoff, dbdiagram.io / dbdocs.io, enums/indexes |
 | `/d2-activity` | Standalone activity diagram | D2 | Multi-branch flow needing a clean image |
 | `/d2-architect` | System architecture — a single context picture | D2 | Nested components / services / DB / external services |
-| `/system-design` | Multi-level **C4** (Context → Container → Component) + HTML deck | D2 + HTML | Larger systems needing zoom + PNG/PDF export |
+| `/system-design` | Multi-level **C4** (Context → Container → Component) + runtime view + HTML deck | D2 + HTML | Larger systems needing zoom + PNG/PDF export |
 | `/usecase-diagram` | Use case diagram (actors + use cases) | PlantUML | Kickoff, system scope, include/extend |
+| `/orgchart` | Org / reporting hierarchy (+ optional power/interest map) | D2 (+ Mermaid) | Kickoff — who reports to whom, stakeholder analysis |
 | `/scan-project` | **Scan a codebase** → a full architecture set (C4 + module map + ERD + sequences) | D2 + Mermaid | Reverse-engineering an existing (brownfield) project |
+| `/diagram` | **Router** — describe a need, it picks + runs the right diagram skill | — | "Which of these should I use?" |
+| `/gallery` | **One-file deck** — every diagram of a feature, tabbed, with export toolbar | HTML | Stakeholder handoff (Copy/PNG/PDF) |
 | `/sync-confluence` | **Sync code changes or a conversation** into a Confluence page (in-place, preview first) | Atlassian MCP | Keeping docs in step with the latest code |
 
-Not sure which to use? `rules/diagram-selection.md` is a decision guide that maps a situation to the right diagram type — the reason fourteen skills stay manageable.
+Not sure which to use? Run **`/diagram`** — describe what you want to show and it picks (and runs) the right skill. `rules/diagram-selection.md` is the decision matrix behind it.
 
 ## Examples
 
@@ -162,7 +170,7 @@ The kit targets Claude Code. There are two ways to install it.
 /plugin install dev-diagram-kit
 ```
 
-All 14 commands become available immediately. The BPMN engine installs its Node dependencies on first session via a hook — nothing to run by hand.
+All 22 commands become available immediately. The BPMN engine installs its Node dependencies on first session via a hook — nothing to run by hand.
 
 ### By copy (any setup, or other tools)
 
@@ -178,7 +186,7 @@ Install only what the skills you use need (`scripts/doctor.sh` reports what's mi
 
 - **Mermaid** (`/sequence`, `/activity`, `/state`, `/erd`) — Node, `@mermaid-js/mermaid-cli`, and Chrome.
 - **D2** (`/d2-*`, `/system-design`, `/scan-project`) — the `d2` binary.
-- **PlantUML** (`/activity-swimlane`, `/usecase-diagram`) — internet access (renders via plantuml.com).
+- **PlantUML** (`/activity-swimlane`, `/usecase-diagram`) — renders **offline** via `plantuml.jar` (run `scripts/plantuml-ensure.sh` once; needs Java), else via plantuml.com (content sent online).
 - **DBML** (`/dbdiagram`) — `@dbml/cli`. **BPMN** (`/bpmn`) — Node (installed automatically).
 - **`/sync-confluence`** — an authenticated Atlassian MCP connection.
 
@@ -197,6 +205,7 @@ Install only what the skills you use need (`scripts/doctor.sh` reports what's mi
 - **Automatic technology icons.** Architecture diagrams and `/scan-project` add logos (Redis, Postgres, Kafka, AWS, nginx, React, …) when a node maps to a known technology — Devicon bundled offline with a CDN fallback (`rules/icon-map.md`). Disable with `--no-icons`.
 - **The right level of detail.** The audience is developers, so technical detail (columns, endpoints, schema) is welcome where it fits; the kit chooses the altitude from the diagram type and reader, not by forbidding it.
 - **Self-checking.** Mermaid is compile-checked (`mermaid-verify.mjs`), D2/DBML validate through their CLIs, BPMN runs a semantic coverage check, and D2/C4 diagrams are reviewed from the rendered image before being reported as done.
+- **Router + one-file deck.** `/diagram` picks the right skill for a need (asks at most two questions, then runs it); `/gallery` gathers every diagram of a feature into one self-contained tabbed HTML (Copy/PNG/PDF) for stakeholder handoff.
 - **Human in the loop.** Skills never write silently — every change is previewed and confirmed first (`rules/approval-gate.md`). `/sync-confluence` always shows a diff and asks before touching a page.
 
 ## Repository layout
@@ -206,17 +215,17 @@ dev-diagram-kit/
 ├── .claude-plugin/plugin.json     Plugin manifest (/plugin install)
 ├── marketplace.json               Marketplace catalog (/plugin marketplace add)
 ├── install.sh                     Copy-mode installer (no plugin needed)
-├── skills/                        14 skills
+├── skills/                        22 skills
 ├── agents/                        diagram-reviewer
-├── rules/                         Shared rules (approval-gate, diagram-selection, language, icon-map, …)
-├── scripts/                       mermaid-verify.mjs · doctor.sh · icon-path.sh · render helpers
+├── rules/                         Shared rules (approval-gate, diagram-selection, diagram-style, language, icon-map, …)
+├── scripts/                       mermaid-verify.mjs · doctor.sh · plantuml-ensure.sh · icon-path.sh · render helpers
 ├── templates/                     Diagram file templates
 ├── hooks/                         SessionStart hook (auto-installs the BPMN engine)
 ├── assets/icons/                  Bundled technology icons (Devicon MIT, Simple Icons CC0)
 ├── example/                       Worked example: the food-delivery feature
 ├── explain-skills/                Per-skill deep dives (bilingual: `*.md` English, `*.vi.md` Vietnamese)
 ├── guides/ · huong-dan/           Getting-started guide (English / Vietnamese)
-└── INSTALL-*.md · PROMPT-*.md      Porting to Codex CLI and Antigravity IDE
+└── INSTALL-CODEX.md · PROMPT-CODEX.md   Porting to Codex CLI
 ```
 
 ## Design principle: keep the developer in control
@@ -225,10 +234,9 @@ The kit does not replace judgment with automation. A generated diagram is a high
 
 ## Porting to other tools
 
-The kit is written for Claude Code, with guides to port it to other agent tools:
+The kit is written for Claude Code, with a guide to port it to other agent tools:
 
 - **Codex CLI** — `INSTALL-CODEX.md` (detailed) and `PROMPT-CODEX.md` (a copy-paste prompt).
-- **Google Antigravity IDE** — `INSTALL-ANTIGRAVITY.md` and `PROMPT-ANTIGRAVITY.md`.
 
 ## License
 
