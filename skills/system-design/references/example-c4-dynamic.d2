@@ -1,0 +1,19 @@
+# REFERENCE for /system-design --dynamic — runtime view (payment). Not a real doc.
+# Dynamic view = ONE request flowing across the L2 containers, edges numbered in call order.
+# Reuse the L2 container shapes + colors; NUMBER every edge (1., 2., ...) so runtime order is clear.
+# One flow per file — a second flow → a second --dynamic. Overlaps /sequence (use this when you want
+# the flow INSIDE the container picture, not a separate sequence).
+
+direction: right
+
+Web: "Web / Mobile App" { style.fill: "#E6F6FA" }
+API: "Payment API" { style.fill: "#E6F4EA" }
+DB: "Transaction DB" { shape: cylinder; style.fill: "#F1EAFB" }
+Gateway: "Payment Gateway" { style.fill: "#EEF1F4"; style.stroke-dash: 3 }
+
+Web -> API: "1. submit order"
+API -> DB: "2. write intent"
+API -> Gateway: "3. charge"
+Gateway -> API: "4. result"
+API -> DB: "5. update status"
+API -> Web: "6. confirm"

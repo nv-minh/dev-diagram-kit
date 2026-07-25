@@ -1,9 +1,9 @@
 ---
 name: system-design
-description: Use when you need to draw a SYSTEM DESIGN following the multi-level C4 model (System Context → Container → Component) with D2, plus a dark-theme HTML presentation + PNG/PDF export for stakeholders. Trigger with `/system-design --feature <slug>` or `/system-design "<system description>"`. Differs from `/d2-architect` (just a single 1-level context picture) — this skill layers C4 (zoom Context→Container→Component) + publishes a polished HTML.
+description: Use when you need to draw a SYSTEM DESIGN following the multi-level C4 model (System Context → Container → Component) with D2, plus a dark-theme HTML presentation + PNG/PDF export for stakeholders. Trigger with `/system-design --feature <slug>` or `/system-design "<system description>"`. Differs from `/d2-architect` (just a single 1-level context picture) — this skill layers C4 (zoom Context→Container→Component) + publishes a polished HTML. Optional `--dynamic "<flow>"` adds a runtime view of one request flowing through the containers.
 allowed-tools: Read, Write, Edit, Bash, Glob, Grep
 user-invocable: true
-argument-hint: "[--feature <slug> | \"<system description>\"] [--component <container>] [--no-icons]"
+argument-hint: "[--feature <slug> | \"<system description>\"] [--component <container>] [--dynamic \"<flow>\"] [--no-icons]"
 ---
 
 # /system-design — System Design following C4 (D2 + HTML presentation)
@@ -24,6 +24,7 @@ Output in `docs/{feature}/system-design/` (or `docs/_shared/system-design/` for 
 1. `{slug}-context.d2` + `.svg` — C4 L1.
 2. `{slug}-container.d2` + `.svg` — C4 L2.
 3. `{slug}-component-{container}.d2` + `.svg` — C4 L3 (only when the user needs it).
+   * `{slug}-dynamic.d2` + `.svg` — **runtime view** (only with `--dynamic "<flow>"`): one request's path through the containers, numbered (C4-scoped; overlaps `/sequence`).
 4. `{feature-or-shared}-system-design.html` — the **presentation** combining the levels: dark-theme + a Copy-PNG/PNG/PDF export toolbar (inherits the Cocoon AI design system, MIT — see NOTICE).
 5. `{feature-or-shared}-system-design-index.md` — metadata + level table.
 
@@ -58,6 +59,7 @@ A skill for the **dev-as-BA** — draw at the **logical architecture level** to 
 - **Bilingual (mirror input — @../../rules/language.md)** flow labels + block names; service/external-system names kept per the real system.
 - **Per `diagram-selection.md`** — `/system-design` for multi-level C4 system design; a quick context picture → `/d2-architect`; business flows → `/d2-activity`; data model → `/d2-erd`.
 - **Idempotent** — 1 slug = 1 file set; re-run → update mode (L2 diff per changed level).
+- **Dynamic view overlaps `/sequence`** — `--dynamic` shows one runtime flow *inside* the C4 container picture. If you only need the call sequence (not the container structure), use `/sequence` instead.
 
 ## Inputs
 
@@ -65,6 +67,7 @@ A skill for the **dev-as-BA** — draw at the **logical architecture level** to 
 /system-design --feature <slug>                    # design in the context of one feature
 /system-design "<system description>"              # whole architecture → docs/_shared/system-design/
 /system-design --feature <slug> --component <name> # add/update the L3 level for one container
+/system-design --feature <slug> --dynamic "<flow>" # add a runtime view: one request path through the containers (numbered)
 /system-design "<description>" --feature <new-slug> # feature does not exist → derive/use slug + interview + create (entry point)
 ```
 
@@ -145,6 +148,23 @@ Payment.API -> Gateway: "Create payment request"
 
 **L3 Component** (`{slug}-component-{container}.d2`, only with `--component`): "open the lid" of one container → the functional components inside + dependencies.
 
+**Dynamic (runtime) view** (`{slug}-dynamic.d2`, only with `--dynamic "<flow>"`) — see `references/example-c4-dynamic.d2`: a **runtime scenario** = one request flowing across the L2 containers, edges numbered in call order. Reuse the L2 container shapes (same colors) + number every edge so the runtime order is unambiguous:
+```
+direction: right
+Web: "Web / Mobile App" { style.fill: "#E6F6FA" }
+API: "Payment API" { style.fill: "#E6F4EA" }
+DB: "Transaction DB" { shape: cylinder; style.fill: "#F1EAFB" }
+Gateway: "Payment Gateway" { style.fill: "#EEF1F4"; style.stroke-dash: 3 }
+
+Web -> API: "1. submit order"
+API -> DB: "2. write intent"
+API -> Gateway: "3. charge"
+Gateway -> API: "4. result"
+API -> DB: "5. update status"
+API -> Web: "6. confirm"
+```
+One flow per dynamic view — a second flow → a second `--dynamic`.
+
 **General rules:** nest containers via `{}`, reference children via a dot `Payment.API`. QUOTE labels with special characters `() / | :`. External systems ALWAYS `style.stroke-dash: 3` + real name + a one-phrase purpose. NO coordinates, NO infra. Nesting >3 levels → split some out. **Tech icons:** infra/tech/external nodes → `icon:` from `"${CLAUDE_PLUGIN_ROOT:-.claude}/scripts/icon-path.sh"` (per @../../rules/icon-map.md; auto when matched, `--no-icons` disables).
 
 ### Step 3 — Render + verify each level
@@ -216,4 +236,4 @@ Need changes? /system-design --feature {feature} (the skill enters update mode)
 - @../../rules/icon-map.md (insert tech icons; resolver `scripts/icon-path.sh`)
 - @./resources/c4-palette.md (C4 color map → D2)
 - @./resources/c4-export-template.html (HTML presentation skeleton — PNG/PDF export)
-- @./references/example-c4-context.d2 · @./references/example-c4-container.d2 · @./references/example-system-design.html
+- @./references/example-c4-context.d2 · @./references/example-c4-container.d2 · @./references/example-c4-dynamic.d2 (runtime view — only with `--dynamic`) · @./references/example-system-design.html

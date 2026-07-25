@@ -83,3 +83,18 @@ classDef highlight fill:#FFF4E5,stroke:#F59E0B,color:#78350F
 ## 4. Quick mapping (1 line)
 
 > **Person = blue · Own system = light navy · External = gray dashed · Frontend = cyan · Backend/Process = green · Database = purple (cylinder) · Bus = orange (queue) · Highlight = cream yellow — same colors in D2 and Mermaid.**
+
+## 5. Multi-board — D2 `layers` / `scenarios` (optional, advanced)
+
+Several related boards in ONE `.d2` file (navigate by zoom instead of separate files) via `layers` (independent boards) or `scenarios` (variations of the same board):
+
+```ini
+layers: {
+  Context: { Customer -> System: order }
+  Container: { System.Web -> System.API: call }
+}
+```
+
+**Rendering:** `d2 file.d2` emits **one `.svg` per board into a `<file>/` subfolder** (e.g. `mb/Context.svg`, `mb/Container.svg`) — there is **no root `<file>.svg`**. The shared `render.sh` is single-board; for a multi-board file invoke d2 directly (`d2 --layout elk --theme 1 file.d2`) and collect the SVGs from `<file>/`.
+
+**The kit default stays one-file-per-board** (each board = one `.svg`, which the `/system-design` HTML deck and `/gallery` tabs expect). Use `layers`/`scenarios` only when you specifically want a single navigable source — do not switch existing skills to it.

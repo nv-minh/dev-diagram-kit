@@ -50,6 +50,16 @@ Unknown names fall back to the Devicon CDN; not found → skip icon (the diagram
 - **Simple Icons** (mono, for infra/SaaS brands not in Devicon: stripe, sendgrid, cloudflare, vercel, datadog, …) — **CC0** — `cdn.jsdelivr.net/npm/simple-icons`.
 - Files are licensed (MIT/CC0); logos are trademarks of their owners — using them to *identify technologies* in diagrams is legitimate. Attribute sources in `NOTICE`.
 
+## Icon support by engine (phase 2)
+
+The D2 path above (Devicon bundle via `icon-path.sh`) is the kit's **primary** icon mechanism — base64-embedded, self-contained, ~600 icons. The other engines, in honest terms:
+
+- **Mermaid — `architecture-beta` built-in icons (reliable, no config).** Use for Mermaid architecture diagrams: `service api(server)[API]`, `service db(database)[Database]`, plus `disk`, `internet`, `cdn`, `queue`. Verified to render in `mmdc` with zero setup. These are the only Mermaid icons that work out of the box.
+- **Mermaid — flowchart `@{icon}` (iconify) is advanced.** `A["Label"]@{icon: "fa:icon-server"}` needs an icon-pack config passed to mmdc (registering `iconPacks` via `-c config.json`) and is fragile across versions — NOT the default. Prefer `architecture-beta` built-ins, or use the D2 family if you need real tech logos.
+- **PlantUML — tupadr3 is NOT usable with the bundled jar.** `!include <tupadr3/devicons2>` (and `font-awesome-5`, `material`) error out — the jar's tupadr3 stdlib (SPM format) exposes only `tupadr3/common`, not the icon sprite sets. **For tech icons, use the D2 family** (Devicon bundle), not PlantUML. If you genuinely need icons inside a PlantUML diagram, add the tupadr3 icon-set `.iuml` files yourself and `!include` them by path.
+
+> Net: tech icons "just work" on **D2** (Devicon bundle) and as **Mermaid `architecture-beta` built-ins**. PlantUML + Mermaid-flowchart iconify need extra setup and are not wired as defaults.
+
 ## One-line summary
 
 > **`icon-path.sh <tech>` → `icon:` value (bundle abs / CDN). Only infra/tech nodes, auto on match, `--no-icons` to disable. D2 embeds base64 → self-contained.**

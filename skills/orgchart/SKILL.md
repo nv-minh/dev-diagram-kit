@@ -1,9 +1,9 @@
 ---
 name: orgchart
-description: Use when you need an organization / reporting-hierarchy chart (who reports to whom, grouped by team/department) — for kickoff or stakeholder analysis. Trigger with `/orgchart --feature <slug>` (or `--shared` for a project-wide org). D2 skill family, like `/d2-architect`.
+description: Use when you need an organization / reporting-hierarchy chart (who reports to whom, grouped by team/department) — for kickoff or stakeholder analysis. Trigger with `/orgchart --feature <slug>` (or `--shared` for a project-wide org). Optional `--stakeholder` adds a power/interest map (Mermaid quadrantChart). D2 skill family, like `/d2-architect`.
 allowed-tools: Read, Write, Edit, Bash, Glob, Grep
 user-invocable: true
-argument-hint: "[--feature <slug>] [--shared]"
+argument-hint: "[--feature <slug>] [--shared] [--stakeholder]"
 ---
 
 # /orgchart — Organization / Reporting-Hierarchy Chart (D2)
@@ -16,6 +16,8 @@ Draw an **org chart** — people/roles + their reporting lines, optionally group
 
 1. `{slug}-orgchart.d2` — D2 source (git-tracked).
 2. `{slug}-orgchart.svg` — pre-rendered.
+
+Optional (only with `--stakeholder`): `{slug}-stakeholder.md` — a **power/interest map** (Mermaid `quadrantChart`) plotting each stakeholder by influence × interest + an engagement strategy per quadrant.
 
 ## Why D2 (and what this is NOT)
 
@@ -42,6 +44,7 @@ Draw an **org chart** — people/roles + their reporting lines, optionally group
 /orgchart --feature <slug>            # read brainstorm/spec stakeholder section, or interview
 /orgchart "<org description>"         # feature doesn't exist → derive slug + interview + create
 /orgchart --shared                    # project-wide org → docs/_shared/orgchart/
+/orgchart --feature <slug> --stakeholder  # ALSO produce a power/interest map (Mermaid quadrantChart)
 ```
 
 ## Context (dynamic)
@@ -94,6 +97,27 @@ Engineering.CTO -> Engineering.Frontend: reports to
 - Reporting edge label = `reports to` (one convention, don't vary it). `direction: down` so the head is on top.
 - QUOTE labels containing `( ) / | :`.
 
+### Step 2b — Stakeholder power/interest map (only with `--stakeholder`, Mermaid)
+
+A **power/interest matrix** plots each stakeholder by **influence** (y) × **interest** (x), each coordinate `[x, y]` in 0..1, to pick an engagement strategy per quadrant. Written as Mermaid `quadrantChart` (inline in `{slug}-stakeholder.md`, NOT a `.d2` — different engine from the tree):
+
+```
+quadrantChart
+  title Stakeholder power / interest
+  x-axis Low interest --> High interest
+  y-axis Low power --> High power
+  quadrant-1 Manage closely
+  quadrant-2 Keep satisfied
+  quadrant-3 Monitor
+  quadrant-4 Keep informed
+  "CEO / sponsor": [0.9, 0.95]
+  "CTO": [0.75, 0.7]
+  "Marketing team": [0.6, 0.3]
+  "End users": [0.35, 0.15]
+```
+
+**Quadrant layout:** **1 = top-right** (high power + high interest → Manage closely) · **2 = top-left** (high power, low interest → Keep satisfied) · **3 = bottom-left** (Monitor) · **4 = bottom-right** (low power, high interest → Keep informed). Render-verify with `scripts/mermaid-verify.mjs`. Append a small engagement-strategy note under the chart if useful.
+
 ### Step 3 — Render + verify
 
 ```bash
@@ -144,4 +168,6 @@ Need changes? /orgchart --feature {feature} (enters update mode automatically).
 - @../../rules/language.md
 - @../../rules/diagram-style.md
 - @./references/example-orgchart.d2
-- @../../skills/d2-activity/render.sh (shared D2 renderer)
+- @./references/example-orgchart-stakeholder.md (power/interest map — only with `--stakeholder`)
+- @../../skills/d2-activity/render.sh (shared D2 renderer — the reporting tree)
+- @../../scripts/mermaid-verify.mjs (render-verify for the `--stakeholder` quadrantChart)
