@@ -3,3 +3,5 @@
 .idea/
 .vscode/
 node_modules/
+# PlantUML jar (downloaded on demand by scripts/plantuml-ensure.sh for offline rendering)
+assets/plantuml/

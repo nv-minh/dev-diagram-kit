@@ -58,12 +58,22 @@ if command -v dbml2sql >/dev/null 2>&1; then green "@dbml/cli (dbml2sql)"; else 
 
 echo ""
 echo "== PlantUML (/activity-swimlane /usecase-diagram) =="
+if command -v java >/dev/null 2>&1; then
+  green "java $(java -version 2>&1 | head -1 | awk -F\" '{print $2}')"
+  PLANTUML_JAR_PATH="${PLANTUML_JAR:-$ROOT/assets/plantuml/plantuml.jar}"
+  # PlantUML -version exits non-zero (16) → validate by rendering a tiny diagram instead.
+  if [ -f "$PLANTUML_JAR_PATH" ] && printf '@startuml\nBob -> Alice: hi\n@enduml' | java -jar "$PLANTUML_JAR_PATH" -pipe -tsvg >/dev/null 2>&1; then
+    green "plantuml.jar (OFFLINE render) — diagram content stays on this machine"
+  else
+    yellow "No local plantuml.jar — render goes via plantuml.com (content sent online). Enable offline: bash \"$ROOT/scripts/plantuml-ensure.sh\""
+  fi
+else
+  yellow "java not found — PlantUML renders via plantuml.com (content sent online). Install a JDK/JRE for offline."
+fi
 if command -v curl >/dev/null 2>&1; then
   code="$(curl -s -o /dev/null -w '%{http_code}' --max-time 8 https://www.plantuml.com/plantuml/ 2>/dev/null || echo 000)"
-  if [ "$code" = "200" ] || [ "$code" = "302" ] || [ "$code" = "301" ]; then green "plantuml.com reachable (render via the public server)";
-  else yellow "Cannot reach plantuml.com (HTTP $code) — needs internet; diagram content is sent out (see the privacy gotcha)"; fi
-else
-  yellow "curl missing → cannot check plantuml.com"
+  if [ "$code" = "200" ] || [ "$code" = "302" ] || [ "$code" = "301" ]; then green "plantuml.com reachable (fallback server)";
+  else yellow "Cannot reach plantuml.com (HTTP $code) — offline jar needed for sensitive content"; fi
 fi
 
 echo ""

@@ -40,14 +40,21 @@ if (!fs.existsSync(FILE)) {
 }
 
 function findChrome() {
-  const glob = path.join(os.homedir(), '.puppeteer-cache', 'chrome');
-  if (!fs.existsSync(glob)) return null;
-  for (const versionDir of fs.readdirSync(glob)) {
-    const candidate = path.join(glob, versionDir, 'chrome-mac-arm64', 'Google Chrome for Testing.app', 'Contents', 'MacOS', 'Google Chrome for Testing');
-    if (fs.existsSync(candidate)) return candidate;
-    // linux/x64 layout fallback (best-effort — a machine with a different architecture may need a different path)
-    const linuxCandidate = path.join(glob, versionDir, 'chrome-linux64', 'chrome');
-    if (fs.existsSync(linuxCandidate)) return linuxCandidate;
+  // Search both the old (puppeteer < 22) and new (puppeteer >= 22) cache layouts, since
+  // @mermaid-js/mermaid-cli pulls whatever puppeteer is current and its cache root moves over time.
+  const roots = [
+    path.join(os.homedir(), '.puppeteer-cache', 'chrome'),
+    path.join(os.homedir(), '.cache', 'puppeteer', 'chrome'),
+  ];
+  for (const glob of roots) {
+    if (!fs.existsSync(glob)) continue;
+    for (const versionDir of fs.readdirSync(glob)) {
+      const candidate = path.join(glob, versionDir, 'chrome-mac-arm64', 'Google Chrome for Testing.app', 'Contents', 'MacOS', 'Google Chrome for Testing');
+      if (fs.existsSync(candidate)) return candidate;
+      // linux/x64 layout fallback (best-effort — a machine with a different architecture may need a different path)
+      const linuxCandidate = path.join(glob, versionDir, 'chrome-linux64', 'chrome');
+      if (fs.existsSync(linuxCandidate)) return linuxCandidate;
+    }
   }
   return null;
 }
