@@ -29,8 +29,8 @@ if command -v curl >/dev/null 2>&1; then green "curl"; else red "curl — NOT fo
 echo ""
 echo "== Mermaid (/sequence /activity /state /erd) =="
 if command -v mmdc >/dev/null 2>&1; then green "mmdc $(mmdc --version 2>/dev/null || echo '?')"; else red "mmdc (@mermaid-js/mermaid-cli) — NOT found" "npm i -g @mermaid-js/mermaid-cli"; fi
-if find "$HOME/.puppeteer-cache/chrome" -name 'Google Chrome for Testing' 2>/dev/null | grep -q . ; then
-  green "Chrome (puppeteer-cache) — for PNG rendering"
+if find "$HOME/.puppeteer-cache/chrome" "$HOME/.cache/puppeteer/chrome" -name 'Google Chrome for Testing' 2>/dev/null | grep -q . ; then
+  green "Chrome (puppeteer cache) — for PNG rendering"
 elif command -v google-chrome-stable >/dev/null 2>&1 || command -v chromium >/dev/null 2>&1; then
   green "System Chrome/Chromium — for PNG rendering"
 else
