@@ -11,7 +11,7 @@
     {
       "name": "dev-diagram-kit",
       "source": "./",
-      "description": "14 skills for developers doing BA work: 12 diagram skills (sequence/activity/BPMN/state/ERD/use case/architecture/C4) + scan-project (reverse-engineer from code) + sync-confluence (doc sync). Bilingual EN/VI.",
+      "description": "21 skills for developers doing BA work: diagrams (sequence/activity/BPMN/state/ERD/use case/architecture/C4 + DFD/mindmap/journey/timeline) + code-flow (one function into a flow with provenance) + scan-project (reverse-engineer from code) + diagram (router) + gallery (one-file deck) + sync-confluence (doc sync). Bilingual EN/VI.",
       "category": "productivity",
       "keywords": ["diagram", "business-analysis", "mermaid", "d2", "plantuml", "bpmn", "c4", "reverse-engineering", "confluence", "doc-sync", "bilingual"]
     }

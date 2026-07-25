@@ -13,6 +13,13 @@ paths:
   - ".claude/skills/dbdiagram/**"
   - ".claude/skills/bpmn/**"
   - ".claude/skills/usecase-diagram/**"
+  - ".claude/skills/dfd/**"
+  - ".claude/skills/mindmap/**"
+  - ".claude/skills/journey/**"
+  - ".claude/skills/timeline/**"
+  - ".claude/skills/code-flow/**"
+  - ".claude/skills/diagram/**"
+  - ".claude/skills/gallery/**"
   - "docs/**/srs/*.md"
 ---
 
@@ -36,6 +43,11 @@ paths:
 | Data model — needs **dev handoff / SQL export / dbdocs** (real DB types, enum, index) | **Schema (DBML)** | `/dbdiagram` | `docs/{feature}/dbdiagram/{feature}.dbml` (+ `.sql`) | Closest layer to dev: DBML imports into dbdiagram.io/dbdocs.io, `dbml2sql` exports real SQL. Enum/index/default are first-class (Mermaid/D2 lack them) |
 | **System architecture — 1 quick context picture** (nested component/service/DB/external service, single level, dropped into a doc) | **Architecture (D2)** | `/d2-architect` | `docs/{feature}/d2-architect/{slug}.svg` or `_shared/` | Nested container + cylinder/person shapes; fast, single image |
 | **Multi-level C4 system design** (Context → Container → Component, telling the system story by zoom, needs a stakeholder/slide presentation) | **System Design (C4, D2 + HTML)** | `/system-design` | `docs/{feature}/system-design/` (multiple `.d2/.svg` per level + `{feature}-system-design.html`) or `_shared/` | Standard layered C4 + dark-theme HTML exporting PNG/PDF; far better than a single image when the system is large / needs presenting |
+| **Where does the DATA move** (external entities ↔ processes ↔ data stores — "what data flows where, which store holds it") | **Data Flow Diagram (DFD, D2)** | `/dfd` | `docs/{feature}/dfd/{slug}-dfd-l0.svg` + `-l1.svg` | L0 context + L1 exploded; the DATA view, orthogonal to C4 (structure) and sequence (time) |
+| **Decompose scope/ideas into a tree** (discovery, before the SRS — areas + sub-items, no actors) | **Mindmap (Mermaid)** | `/mindmap` | `docs/{feature}/srs/{feature}-scope.md` (append section) | Pure scope/idea tree; no actors (unlike a use-case diagram) |
+| **User experience over time + emotion** (steps per touchpoint + satisfaction 1-5 + actor) | **Journey map (Mermaid)** | `/journey` | `docs/{feature}/srs/{feature}-journey.md` (append section) | Experience + pain points (low ratings); complements use case (UC = function) |
+| **Roadmap / milestones over time** (PM-light, NOT Gantt task-dependency) | **Timeline (Mermaid)** | `/timeline` | `docs/{feature}/{feature}-timeline.md` (or `_shared/`) | Milestones grouped by period; deliberately not a Gantt |
+| **Trace ONE function/module in code → a flow** (sequence/activity/state) with `file:line` provenance | **Code-flow** | `/code-flow` | `docs/{feature}/code-flow/{slug}-flow.md` | Reads code for a SINGLE target's behavior; the targeted sibling of `/scan-project` (whole codebase) |
 
 ## Abstraction level — DON'T mix diagrams with UC
 
@@ -190,6 +202,22 @@ paths:
 
 **Don't use when:** you only need one context image to drop into the SRS/docs → `/d2-architect` (light, fast). Still do NOT draw infra (port/replica/VPC) — both stop at the business/logic level.
 
+### Data Flow Diagram — `/dfd`
+**Use when:** you need to show WHERE the data moves — external entities ↔ processes ↔ data stores ("which process transforms it, which store holds it"). Two levels: L0 context (1 process = the system) + L1 exploded.
+**Don't use when:** you want structure/nesting of components → `/system-design`; call order over time → `/sequence`; the data model (entity + attributes) → `/erd`. DFD is the DATA view — it complements C4 (structure), it does not replace it.
+
+### Mindmap — `/mindmap`
+**Use when:** decomposing scope/ideas into a tree at discovery, before the SRS (areas + sub-items, no actors).
+**Don't use when:** scoping actors + functions → `/usecase-diagram`; a multi-role process → `/activity-swimlane`.
+
+### Journey map — `/journey`
+**Use when:** mapping the user's experience across touchpoints with a satisfaction rating 1-5 (surface the pain points — don't rate everything 5).
+**Don't use when:** you need the business process control-flow → `/activity` / `/activity-swimlane`; actor + function scope → `/usecase-diagram`.
+
+### Timeline — `/timeline`
+**Use when:** milestones over periods (roadmap). PM-light — NOT a Gantt (no task bars / dependencies).
+**Don't use when:** you need Gantt-style dependency planning — out of scope by design.
+
 ### Reverse-engineer from existing code — `/scan-project`
 
 **Use when:** you already have a **codebase (brownfield)** and want to AUTO-GENERATE the architecture diagram set (C4 overview + module map + relationships + ERD + sequence) by **reading the code**, instead of hand-drawing from a description. Scan → plan (HARD STOP to confirm) → generate the whole set into `docs/_shared/architecture/`, with provenance + confidence.
@@ -197,6 +225,10 @@ paths:
 **Different from the other skills:** every other diagram skill draws from **description/interview/spec**; `/scan-project` draws from **actual source code**. It *reuses* the recipes of `/system-design`, `/d2-architect`, `/d2-erd`, `/sequence` to render.
 
 **Don't use when:** you only need a single diagram for a feature being designed (no code yet) → use the corresponding diagram skill.
+
+### Trace one function/module in code — `/code-flow`
+**Use when:** you have code and want a FLOW diagram (sequence/activity/state) for ONE specific function/method/module — read the code, trace its behavior, render with `file:line` provenance.
+**Different from `/scan-project`:** scan-project draws the WHOLE-codebase architecture set (C4/modules/ERD); code-flow draws ONE target's behavior. Use code-flow to explain "how does this function work"; use scan-project for "what's the architecture of this project".
 
 ## Combining multiple diagrams for one feature
 
@@ -254,4 +286,4 @@ The Mermaid parser is strict about certain characters in a node label. A violati
 
 ## One-line summary
 
-> **Time-based → Sequence. State-based → State. Multi-role process → Activity-swimlane (PlantUML). Compact process needing inline embed → Activity (Mermaid). Scope-based → Use Case. Data-based → ERD. OMG-standard/BPM-import → BPMN.**
+> **Time-based → Sequence. State-based → State. Multi-role process → Activity-swimlane (PlantUML). Compact process needing inline embed → Activity (Mermaid). Scope-based → Use Case. Data-based → ERD. OMG-standard/BPM-import → BPMN. Data-flow (where data moves) → DFD. Decompose scope → Mindmap. Experience + emotion → Journey. Milestones (PM-light) → Timeline. One function in code → Code-flow. Whole codebase → Scan-project. Not sure which → `/diagram`.**
