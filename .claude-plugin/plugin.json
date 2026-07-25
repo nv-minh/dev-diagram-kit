@@ -1,7 +1,7 @@
 {
   "name": "dev-diagram-kit",
   "version": "1.0.0",
-  "description": "21 skills for developers doing BA work: diagrams (sequence, activity Mermaid/PlantUML/D2, BPMN 2.0, state, ERD Mermaid/D2/DBML, use case, architecture, system-design C4, data-flow DFD, mindmap, journey, timeline) + code-flow (trace one function/module into a flow diagram with code provenance) + scan-project (reverse-engineer a diagram set from the codebase) + diagram (router that picks the right diagram) + gallery (one-file tabbed HTML deck) + sync-confluence (sync code/conversation to Confluence). Bilingual EN/VI, with automatic compile-check + render + offline PlantUML.",
+  "description": "22 skills for developers doing BA work: diagrams (sequence, activity Mermaid/PlantUML/D2, BPMN 2.0, state, ERD Mermaid/D2/DBML, use case, architecture, system-design C4, data-flow DFD, mindmap, journey, timeline, org chart) + code-flow (trace one function/module into a flow diagram with code provenance) + scan-project (reverse-engineer a diagram set from the codebase) + diagram (router that picks the right diagram) + gallery (one-file tabbed HTML deck) + sync-confluence (sync code/conversation to Confluence). Bilingual EN/VI, with automatic compile-check + render + offline PlantUML.",
   "author": {
     "name": "Edward Ngo"
   },

@@ -1,0 +1,30 @@
+# REFERENCE for /orgchart — reporting hierarchy (online-shop project). Not a real doc.
+# Org chart = reporting tree (who reports to whom), grouped by team. NOT a RACI/process/power-interest map.
+# Points to mimic (the "Step 2" formula in SKILL.md):
+#   - direction: down (head on top); 1 person = 1 shape: person; split title + name with \n.
+#   - Highlight only the HEAD with cream (#FFF4E5); everyone else = person pastel (#E8F0FE).
+#   - Group people into team containers (Team: "Team" { ... }) when >=3 on a side; reference as Team.Member.
+#   - Reporting edge label is always "reports to"; dotted-line (style.stroke-dash: 3) for cross-team.
+#   - QUOTE labels containing ( ) / | :.
+# Pastels come from rules/diagram-style.md.
+
+direction: down
+
+CEO: "CEO\nEdward" { shape: person; style.fill: "#FFF4E5" }
+
+Engineering: "Engineering" {
+  CTO: "CTO\nAlice" { shape: person; style.fill: "#E8F0FE" }
+  Backend: "Backend Lead\nBob" { shape: person; style.fill: "#E8F0FE" }
+  Frontend: "Frontend Lead\nCarol" { shape: person; style.fill: "#E8F0FE" }
+}
+
+Business: "Business" {
+  CMO: "CMO\nDan" { shape: person; style.fill: "#E8F0FE" }
+  CFO: "CFO\nEve" { shape: person; style.fill: "#E8F0FE" }
+}
+
+CEO -> Engineering.CTO: reports to
+CEO -> Business.CMO: reports to
+CEO -> Business.CFO: reports to
+Engineering.CTO -> Engineering.Backend: reports to
+Engineering.CTO -> Engineering.Frontend: reports to

@@ -20,6 +20,7 @@ paths:
   - ".claude/skills/code-flow/**"
   - ".claude/skills/diagram/**"
   - ".claude/skills/gallery/**"
+  - ".claude/skills/orgchart/**"
   - "docs/**/srs/*.md"
 ---
 
@@ -47,6 +48,7 @@ paths:
 | **Decompose scope/ideas into a tree** (discovery, before the SRS — areas + sub-items, no actors) | **Mindmap (Mermaid)** | `/mindmap` | `docs/{feature}/srs/{feature}-scope.md` (append section) | Pure scope/idea tree; no actors (unlike a use-case diagram) |
 | **User experience over time + emotion** (steps per touchpoint + satisfaction 1-5 + actor) | **Journey map (Mermaid)** | `/journey` | `docs/{feature}/srs/{feature}-journey.md` (append section) | Experience + pain points (low ratings); complements use case (UC = function) |
 | **Roadmap / milestones over time** (PM-light, NOT Gantt task-dependency) | **Timeline (Mermaid)** | `/timeline` | `docs/{feature}/{feature}-timeline.md` (or `_shared/`) | Milestones grouped by period; deliberately not a Gantt |
+| **Who reports to whom** (org / reporting hierarchy, grouped by team — kickoff, stakeholder analysis) | **Org chart (D2)** | `/orgchart` | `docs/{feature}/orgchart/{slug}-orgchart.svg` (or `_shared/`) | Reporting tree with `shape: person`; NOT a RACI or power/interest map |
 | **Trace ONE function/module in code → a flow** (sequence/activity/state) with `file:line` provenance | **Code-flow** | `/code-flow` | `docs/{feature}/code-flow/{slug}-flow.md` | Reads code for a SINGLE target's behavior; the targeted sibling of `/scan-project` (whole codebase) |
 
 ## Abstraction level — DON'T mix diagrams with UC
@@ -218,6 +220,10 @@ paths:
 **Use when:** milestones over periods (roadmap). PM-light — NOT a Gantt (no task bars / dependencies).
 **Don't use when:** you need Gantt-style dependency planning — out of scope by design.
 
+### Org chart — `/orgchart`
+**Use when:** you need the reporting hierarchy — who reports to whom, grouped by team (kickoff, stakeholder analysis).
+**Don't use when:** you need a power/interest 2×2 (a separate Mermaid `quadrantChart`), a RACI matrix, or "who does which step" (`/activity-swimlane`).
+
 ### Reverse-engineer from existing code — `/scan-project`
 
 **Use when:** you already have a **codebase (brownfield)** and want to AUTO-GENERATE the architecture diagram set (C4 overview + module map + relationships + ERD + sequence) by **reading the code**, instead of hand-drawing from a description. Scan → plan (HARD STOP to confirm) → generate the whole set into `docs/_shared/architecture/`, with provenance + confidence.
@@ -286,4 +292,4 @@ The Mermaid parser is strict about certain characters in a node label. A violati
 
 ## One-line summary
 
-> **Time-based → Sequence. State-based → State. Multi-role process → Activity-swimlane (PlantUML). Compact process needing inline embed → Activity (Mermaid). Scope-based → Use Case. Data-based → ERD. OMG-standard/BPM-import → BPMN. Data-flow (where data moves) → DFD. Decompose scope → Mindmap. Experience + emotion → Journey. Milestones (PM-light) → Timeline. One function in code → Code-flow. Whole codebase → Scan-project. Not sure which → `/diagram`.**
+> **Time-based → Sequence. State-based → State. Multi-role process → Activity-swimlane (PlantUML). Compact process needing inline embed → Activity (Mermaid). Scope-based → Use Case. Data-based → ERD. OMG-standard/BPM-import → BPMN. Data-flow (where data moves) → DFD. Decompose scope → Mindmap. Experience + emotion → Journey. Milestones (PM-light) → Timeline. Reporting hierarchy → Org chart. One function in code → Code-flow. Whole codebase → Scan-project. Not sure which → `/diagram`.**
