@@ -69,6 +69,14 @@ Features with ERD: !`for d in docs/*/srs/*-erd.md; do [ -f "$d" ] && grep -l "er
      - [ ] Relationship labels readable, not wrapping so long they obscure the diagram.
      - Any error → fix the .md, re-render + re-view. At most 2 rounds.
    - **Still failing after 2 attempts** → report the specific error + the mermaid snippet to the user, suggest pasting into mermaid.live to debug by hand. Do NOT silently leave a broken/ugly file and report "done" as usual.
+9.6. **Coverage-verify (MANDATORY, run immediately after 9.5 passes)** — reconcile the ERD against the entities + relationships gathered in step 4. This is DIFFERENT from 9.5 — 9.5 catches syntax + visual errors, 9.6 catches **missing entities/relationships vs the source**: does each entity from the source have a block? does each relationship (1:1 / 1:N / N:N) have an edge with the **right cardinality direction** (`USER ||--o{ ORDER` = 1 user has many orders)? A many-to-many / self-reference / inheritance the source mentioned → must be drawn (with its documented workaround) or noted as missing.
+   - **Complete** → continue to step 9.7/10.
+   - **Missing** → add it, re-verify 9.5 then 9.6. At most 2 self-fix attempts.
+   - **Still missing after 2 attempts** → tell the user which entity/relationship could not be shown. Do NOT silently report "done" when coverage is incomplete.
+9.7. **Diagram_Reviewer gate (ONLY when over the complexity threshold)** — if the ERD has **≥6 entities**, OR **≥8 relationships**, OR a **many-to-many**, OR **self-reference**, OR an **inheritance limitation flagged**, spawn an agent via the Task tool, `subagent_type: diagram-reviewer`, passing: the erDiagram block just written + the entity/relationship facts from step 4. Below every threshold → SKIP 9.7, go straight to step 10.
+   - **Task tool unavailable** → the report states `reviewer skipped (Task unavailable)`.
+   - Any BLOCKING (missing entity/relationship, no PK, backwards cardinality) → fix the block just written, re-verify 9.5+9.6, then continue.
+   - Loop at most 2 rounds. Verdict `approve`/only WARNING/SUGGESTION → continue straight to step 10.
 10. **Output report:**
    ```
    ✅ ERD written: docs/{feature}/srs/{feature}-erd.md
@@ -150,3 +158,4 @@ erDiagram
 - @../../templates/diagram-erd.md
 - @./references/example-erd.md
 - @../../scripts/mermaid-verify.mjs (render-verify after Write — step 9.5)
+- @../../agents/diagram-reviewer.md (Diagram_Reviewer — coverage review when over the complexity threshold, step 9.7)

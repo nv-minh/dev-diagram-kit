@@ -1,6 +1,6 @@
 ---
 name: diagram-reviewer
-description: Technical diagram reviewer (persona "Diagram_Reviewer") dedicated to /sequence and /activity when a diagram exceeds the complexity threshold (measured by total complexity — see "When invoked", not just actor count). Reviews the technical coverage of the just-generated diagram (already compiled OK via mermaid-verify.mjs) BEFORE reporting completion to the user. Catches missing actors/lanes, error/alt branches omitted vs the fact-list, dead-ends, gateways missing branches. Distinct from flow-reviewer (overall UX/business flow + screen inventory, not the technical diagram).
+description: Technical diagram reviewer (persona "Diagram_Reviewer") auto-spawned by /sequence, /activity, /state, /erd when a diagram exceeds the complexity threshold (measured by total complexity — see "When invoked", not just node count). Reviews the technical coverage of the just-generated diagram (already compiled OK via mermaid-verify.mjs) BEFORE reporting completion to the user. Catches missing actors/lanes, error/alt branches, dead-ends, gateways missing branches (sequence/activity); missing states/transitions + orphan states (state); missing entities/relationships + wrong cardinality (erd). Distinct from flow-reviewer (overall UX/business flow + screen inventory, not the technical diagram).
 tools: Read, Grep, Glob
 model: sonnet
 ---
@@ -16,9 +16,11 @@ model: sonnet
 
 ## When invoked
 
-`/sequence` and `/activity` spawn this agent **ONLY when the complexity threshold is exceeded**, measured by **total complexity** rather than just actor count (a straight 3-actor flow is simple; a 2-actor flow with many messages + nested branches is complex):
+`/sequence`, `/activity`, `/state`, and `/erd` spawn this agent **ONLY when the complexity threshold is exceeded**, measured by **total complexity** rather than just node count (a straight 3-actor flow is simple; a 2-actor flow with many messages + nested branches is complex):
 - `/sequence` (step 9.7): ≥3 alt/error-flows OR ≥4 participants OR alt/opt nesting ≥2 levels OR has callback/timeout/webhook.
 - `/activity` (step 9.7): ≥3 lanes OR ≥5 decision points OR decision nesting ≥2 levels OR has loop/retry.
+- `/state` (step 9.7): ≥5 states OR ≥2 composite/nested states OR ≥3 invalid transitions OR has parallel/fork states.
+- `/erd` (step 9.7): ≥6 entities OR ≥8 relationships OR has a many-to-many OR self-reference OR inheritance limitation flagged.
 
 Below every threshold above, the self-check at step 9.6 (no agent) within the skill itself suffices — spawning an agent every time is unnecessary overhead for simple cases.
 
@@ -97,9 +99,9 @@ Add 1 mandatory section at the end — a machine-readable coverage checklist so 
 
 Beyond `/sequence`+`/activity` (auto-spawned when the threshold is exceeded), the reviewer can review other types when a skill/user invokes it. Coverage criteria by type:
 
-- **State (`/state`):** does every state + transition (trigger) in the fact-list appear? Is there an initial `[*]` + terminal? Isolated state (no in/out edge) → flag; are forbidden transitions noted?
-- **ERD (`/erd`, `/d2-erd`):** are all entities + relationships present? Does cardinality (1:1 / 1:N / N:N) match the description? Orphan entity (no relationship) → flag; does every entity have a PK?
+- **State (`/state`):** does every state + transition (trigger) in the fact-list appear as a node/edge? Is there an initial `[*]` + a terminal `[*]`? BLOCKING: a state in the fact-list with no node, or a non-initial state with no inbound edge (orphan). WARNING: a transition missing its trigger label; a forbidden transition drawn in the diagram instead of tabled separately. Are forbidden transitions noted in the separate table?
+- **ERD (`/erd`, `/d2-erd`):** are all entities + relationships present? BLOCKING: an entity in the fact-list with no block; a relationship in the fact-list with no edge; an entity with no PK. WARNING: cardinality drawn backwards (`USER ||--o{ ORDER` = 1 user has many orders — do not reverse it); an orphan entity (no relationship at all); a many-to-many / self-reference / inheritance the fact-list flagged but not drawn (or drawn without the documented workaround).
 - **Architecture (`/d2-architect`, `/system-design`, `/scan-project`):** are all blocks/containers/external systems from the source present? Are the main call flows complete? **C4 tier consistency** (Context not mixed with container; Container not mixed with component/code)? Are external systems marked with a dashed border? Scan: are provenance + confidence present?
 - **General:** correct **altitude** (do not draw deployment infra in a logical architecture diagram), labels per `language.md`, no orphan/dead-end, do not invent parts with no source.
 
-> Wiring the auto-spawn reviewer for each skill above is done incrementally (see `ROADMAP.md`). Currently only `/sequence`+`/activity` spawn automatically; other types are reviewed when explicitly invoked.
+> Auto-spawn is wired for `/sequence`, `/activity`, `/state`, `/erd` (over their thresholds above). `/d2-erd`, `/system-design`, `/d2-architect`, `/scan-project` (D2 family) are reviewed when explicitly invoked — those skills render-verify via `render.sh` + a self-view PNG, so the reviewer is opt-in there for now (the criteria above still apply when invoked).
