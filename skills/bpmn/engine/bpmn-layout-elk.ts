@@ -1,4 +1,4 @@
-// bpmn-layout-elk.mjs — BPMN layout engine using ELK (replaces the custom-built bpmn-layout.mjs).
+// bpmn-layout-elk.ts — BPMN layout engine using ELK (replaces the custom-built bpmn-layout.ts).
 // IR { process, lanes[], nodes[], flows[] } → BPMN 2.0 XML (semantic + BPMNDiagram).
 //
 // Why ELK: the old custom-built engine routed back-edges by shooting up to the top of the canvas → messy.

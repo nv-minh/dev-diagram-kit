@@ -32,7 +32,7 @@ Tie-breaker / default → **sequence** (the most common "how does this work"). T
 - **2 phases, HARD STOP between** — Phase 1 trace (subagent, READ-ONLY) → L1 preview → user confirms → Phase 2 render. Do NOT draw before confirmation.
 - **Read code via a subagent (Task)** to keep the main context lean — the subagent RETURNS findings + `file:line` evidence; the main thread synthesizes and Writes (per `approval-gate.md`).
 - **Provenance + confidence on every element** — ✅ read for certain / 🔵 inferred. **Do NOT fabricate**: if a call/branch cannot be read, mark 🔵 + "needs confirmation", never invent it.
-- **Render via the existing engines** — Mermaid (`scripts/mermaid-verify.mjs`) for sequence/activity/state (inline, default). Do NOT write a new renderer.
+- **Render via the existing engines** — Mermaid (`scripts/mermaid-verify.ts`) for sequence/activity/state (inline, default). Do NOT write a new renderer.
 - **Compile must PASS** before reporting done (Mermaid label-safety per `diagram-selection.md`).
 - **NO L3 iterate** — review from the rendered file.
 - **Right altitude** — the diagram explains behavior of THIS target. Do NOT turn it into a whole-system architecture diagram (that's `/scan-project`); do NOT draw infra. Trace 1 level of calls by default (note deeper/inner calls as "→ …" rather than exploding everything).
@@ -76,7 +76,7 @@ User calls /code-flow <target> [--as ...] [--feature ...]
    ▼  (user Y / edits)
 ═══ PHASE 2 — GENERATE ═══
 5. Write the Mermaid source using the formula of the chosen type (sequence / activity / state) — obey Mermaid syntax-safety (`diagram-selection.md`).
-6. Render + verify: `node "${CLAUDE_PLUGIN_ROOT:-.claude}/scripts/mermaid-verify.mjs" --file <output>`. Fail → fix, ≤2 times.
+6. Render + verify: `bash "${CLAUDE_PLUGIN_ROOT:-.claude}/scripts/tsrun.sh" scripts/mermaid-verify.ts --file <output>`. Fail → fix, ≤2 times.
 7. Append the **Code provenance** table (element → file:line → confidence).
 8. Output report (list file + 🔵 inferred spots).
 ```
@@ -109,7 +109,7 @@ Pick the formula by diagram type:
 ### Render + verify
 
 ```bash
-node "${CLAUDE_PLUGIN_ROOT:-.claude}/scripts/mermaid-verify.mjs" --file docs/{feature}/code-flow/{slug}-flow.md
+bash "${CLAUDE_PLUGIN_ROOT:-.claude}/scripts/tsrun.sh" scripts/mermaid-verify.ts --file docs/{feature}/code-flow/{slug}-flow.md
 ```
 
 ## L1 plan preview (HARD STOP — template)
@@ -155,4 +155,4 @@ Need changes? /code-flow {target} again → update mode; or /code-flow {target} 
 - @../scan-project/SKILL.md (the whole-codebase sibling — provenance + read-only-subagent pattern)
 - @../sequence/SKILL.md · @../activity/SKILL.md · @../state/SKILL.md (formula per diagram type)
 - @./references/example-code-flow.md
-- @../../scripts/mermaid-verify.mjs (render-verify after Write — Phase 2)
+- @../../scripts/mermaid-verify.ts (render-verify after Write — Phase 2)

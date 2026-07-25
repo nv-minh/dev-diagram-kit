@@ -82,7 +82,7 @@ Features with flows.md: !`for d in docs/*/srs/*-flows.md; do [ -f "$d" ] && echo
    > **Full-form IDs mandatory** in the 3 Related lines — always `FR-{feature}-NNN` / `E-{feature}-NNN`, NOT short-form `FR-001` (edge source for the KG; short-form causes phantom features + lost traces).
 8. **Call again with a matching slug** (automatic update mode) → L2 diff for that section.
 9. **Activity log** — set env `CLAUDE_SKILL_NAME=/activity` + `CLAUDE_CHANGELOG_NOTE` (note: `added {process-title} activity diagram`) BEFORE Write — the hook appends to `docs/_shared/activity.log` (independent of whether spec.md exists, no more routing/fallback). Update flows.md `updated: {date}`.
-9.5. **Render-verify (MANDATORY, run right after Write)** — `node "${CLAUDE_PLUGIN_ROOT:-.claude}/scripts/mermaid-verify.mjs" --file docs/{feature}/srs/{feature}-flows.md`. Mermaid does not render in chat (this is why L3 is skipped), so this is the only way to catch syntax errors BEFORE reporting "done" instead of letting the user discover them when opening the IDE.
+9.5. **Render-verify (MANDATORY, run right after Write)** — `bash "${CLAUDE_PLUGIN_ROOT:-.claude}/scripts/tsrun.sh" scripts/mermaid-verify.ts --file docs/{feature}/srs/{feature}-flows.md`. Mermaid does not render in chat (this is why L3 is skipped), so this is the only way to catch syntax errors BEFORE reporting "done" instead of letting the user discover them when opening the IDE.
    - **Pass** → continue to step 10, the report includes a "compile OK" line.
    - **Fail** (usually nested quotes inside `[...]`/`{}` — see Mermaid syntax safety in `diagram-selection.md`) → read the line/column error the script returns, fix the just-appended section (do NOT touch other sections), re-verify. Up to 2 self-fix attempts.
    - **Still failing after 2 attempts** → report the specific error + the mermaid snippet to the user, suggest pasting into mermaid.live to debug manually. Do NOT silently leave a broken file and report "done" as usual.
@@ -151,7 +151,7 @@ flowchart TB
 - **Subgraph naming** — a lane name with a space uses `subgraph "Customer Support"`.
 - **Loop** — `A --> B --> A` is OK, but ≥2 different loops render messily; split into 2 diagrams.
 - **Decision with >3 branches** — Mermaid has no native multi-way; use several diamonds in sequence.
-- **Mermaid syntax failure** — step 9.5 catches errors via `mermaid-verify.mjs` RIGHT after Write, self-fixing up to 2 times. No more silent "write anyway, warn" — only tell the user to paste into mermaid.live if 2 self-fix attempts still fail.
+- **Mermaid syntax failure** — step 9.5 catches errors via `mermaid-verify.ts` RIGHT after Write, self-fixing up to 2 times. No more silent "write anyway, warn" — only tell the user to paste into mermaid.live if 2 self-fix attempts still fail.
 - **Missing coverage ≠ syntax error** — step 9.5 (compile) and 9.6 (coverage + no-loose-ends) are two different things. A diagram that compiles OK can still miss a lane or have a dead-end branch — don't mistake "compile OK" for "done".
 - **Don't lock in lanes from the heuristic** — step 3.5 mandatorily asks the user to confirm the detected role list before generating, because keyword scanning easily misses actors hidden/implied in the text.
 - **Sub-process** — not native in Mermaid; use a node label "[Sub: refund-eligibility-check]" + comment.
@@ -167,5 +167,5 @@ flowchart TB
 - @../../rules/feature-bootstrap.md
 - @../../rules/language.md
 - @../../templates/diagram-activity.md
-- @../../scripts/mermaid-verify.mjs (render-verify after Write — step 9.5)
+- @../../scripts/mermaid-verify.ts (render-verify after Write — step 9.5)
 - @../../agents/diagram-reviewer.md (Diagram_Reviewer — reviews coverage when complexity thresholds are exceeded, step 9.7)

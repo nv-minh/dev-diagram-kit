@@ -1,0 +1,12 @@
+{
+  "name": "dev-diagram-kit",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Diagram + documentation skills for developers doing BA work (Claude Code plugin). Scripts run as TypeScript via tsx (see scripts/tsrun.sh).",
+  "devDependencies": {
+    "tsx": "^4.19.2",
+    "typescript": "^5.6.0",
+    "@types/node": "^22.0.0"
+  }
+}

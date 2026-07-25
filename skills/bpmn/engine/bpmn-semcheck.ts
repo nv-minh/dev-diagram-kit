@@ -1,9 +1,9 @@
-// bpmn-semcheck.mjs — Validates the IR (intermediate representation) before layout.
+// bpmn-semcheck.ts — Validates the IR (intermediate representation) before layout.
 // 2 tiers:
 //   (A) STRUCTURAL — 100% machine-checkable: IR is graph-valid (start/end, reachable, gateway branches, orphans...).
 //   (B) COVERAGE   — cross-checks the IR against "source facts" (actors/branches/errors extracted from UC/SRS).
 //                    The machine compares COUNTS + approximate names → warns on mismatch; final semantic judgment is left to the AI/user.
-// Usage: import { checkIR } from './bpmn-semcheck.mjs'; const rep = checkIR(ir, sourceFacts?);
+// Usage: import { checkIR } from './bpmn-semcheck.ts'; const rep = checkIR(ir, sourceFacts?);
 //   ir: { process, lanes[], nodes[], flows[] }
 //   sourceFacts (optional): { actors:[...], branches:[...], errors:[...], expectedEnds:[...] }
 // Returns: { ok, errors:[], warnings:[], coverage:{...} }  (ok=false if there's a structural error)
@@ -92,7 +92,7 @@ export function checkIR(ir, source = {}) {
   return { ok: errors.length === 0, errors, warnings, coverage };
 }
 
-// CLI: node bpmn-semcheck.mjs <ir.json> [source.json]
+// CLI: node bpmn-semcheck.ts <ir.json> [source.json]
 if (import.meta.url === `file://${process.argv[1]}`) {
   const { readFileSync } = await import('node:fs');
   const ir = JSON.parse(readFileSync(process.argv[2], 'utf8'));

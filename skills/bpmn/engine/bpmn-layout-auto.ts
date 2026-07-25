@@ -1,4 +1,4 @@
-// bpmn-layout-auto.mjs — BPMN layout engine using bpmn-auto-layout (official bpmn-io lib).
+// bpmn-layout-auto.ts — BPMN layout engine using bpmn-auto-layout (official bpmn-io lib).
 // IR { process, nodes[], flows[] } → PURE BPMN semantic → layoutProcess() generates clean DI.
 //
 // Why we switched from the custom-patched ELK: ELK/self-routing was already good, BUT layering
@@ -8,7 +8,7 @@
 //
 // Result: routing as clean as hand-drawn, gateways have the standard OMG X marker, loop-backs route nicely.
 // bpmn-auto-layout limitation: NO swimlanes (only lays out the first participant). Fine for /bpmn's
-// default no-lane mode. Need lanes → use bpmn-layout-elk.mjs (BPMN_ENGINE=elk).
+// default no-lane mode. Need lanes → use bpmn-layout-elk.ts (BPMN_ENGINE=elk).
 import { layoutProcess } from 'bpmn-auto-layout';
 
 const esc = s => String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');

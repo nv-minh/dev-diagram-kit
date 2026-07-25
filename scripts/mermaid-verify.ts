@@ -1,14 +1,14 @@
 #!/usr/bin/env node
 /*
- * mermaid-verify.mjs — compile-verify every ```mermaid block in a .md file via mmdc.
+ * mermaid-verify.ts — compile-verify every ```mermaid block in a .md file via mmdc.
  *
  * Used by /sequence /activity /erd /state AFTER Write — mermaid doesn't render in chat
  * (Mermaid syntax safety, diagram-selection.md), so syntax errors used to only surface once the
  * user opened an IDE/Obsidian/GitHub. This script catches errors IMMEDIATELY, before the skill reports "done".
  *
  * Usage:
- *   node .claude/scripts/mermaid-verify.mjs --file docs/{feature}/srs/flows.md
- *   node .claude/scripts/mermaid-verify.mjs --file docs/x/srs/x-erd.md --png /tmp/erd-review
+ *   node .claude/scripts/mermaid-verify.ts --file docs/{feature}/srs/flows.md
+ *   node .claude/scripts/mermaid-verify.ts --file docs/x/srs/x-erd.md --png /tmp/erd-review
  *
  * Output: each block's PASS/FAIL with the nearest heading (## ...) so you know where the error is in the file.
  * Exit code = number of FAIL blocks (0 if all pass).

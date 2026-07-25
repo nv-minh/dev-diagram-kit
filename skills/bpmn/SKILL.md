@@ -12,7 +12,7 @@ argument-hint: "\"<process description>\" [--feature <slug>]"
 
 Generate BPMN 2.0 for a multi-role business process, **draws correctly on run + business-accurate**.
 
-**Shared ENGINE at `${CLAUDE_PLUGIN_ROOT:-.claude}/skills/bpmn/engine/`** (do NOT copy into each feature). Contains `bpmn-build.mjs` + `bpmn-layout-*.mjs` + `bpmn-semcheck.mjs` + `_viewer_template.html` + `node_modules` (installed once). Call it pointed at the feature via `--dir docs/{feature}/bpmn`.
+**Shared ENGINE at `${CLAUDE_PLUGIN_ROOT:-.claude}/skills/bpmn/engine/`** (do NOT copy into each feature). Contains `bpmn-build.ts` + `bpmn-layout-*.ts` + `bpmn-semcheck.ts` + `_viewer_template.html` + `node_modules` (installed once). Call it pointed at the feature via `--dir docs/{feature}/bpmn`.
 
 **Per-feature OUTPUT** in `docs/{feature}/bpmn/` — ONLY 3-5 business files (no engine/deps):
 
@@ -30,7 +30,7 @@ Generate BPMN 2.0 for a multi-role business process, **draws correctly on run + 
 UC/SRS/flows ──(AI reads + infers)──► {slug}.ir.json   (lanes / nodes / flows)
                                        {slug}.src.json  (actors / branches / errors extracted from source)
                                           │
-              bpmn-build.mjs:             ▼
+              bpmn-build.ts:             ▼
    (A) semcheck ── structural MANDATORY pass (start/end, reachable, gateway ≥2 branches, no orphans)
                 ── coverage: actor↔lane, branch↔gateway, error↔end  → warn if it diverges from source
                                           │ (ok)
@@ -39,16 +39,16 @@ UC/SRS/flows ──(AI reads + infers)──► {slug}.ir.json   (lanes / nodes 
                                   {slug}.bpmn  ──► {feature}-bpmn-editor.html
 ```
 
-> **The AI ONLY generates the IR JSON + src facts. Do NOT write XML, do NOT compute coordinates.** The `bpmn-layout-auto.mjs` engine (bpmn-auto-layout) handles the entire layout. Semcheck `bpmn-semcheck.mjs` blocks business-invalid IR before drawing.
+> **The AI ONLY generates the IR JSON + src facts. Do NOT write XML, do NOT compute coordinates.** The `bpmn-layout-auto.ts` engine (bpmn-auto-layout) handles the entire layout. Semcheck `bpmn-semcheck.ts` blocks business-invalid IR before drawing.
 >
 > **2 main engines, chosen by whether there are swimlanes:**
 > - **No-lane (default)** = `bpmn-auto-layout` (official bpmn-io) — clean hand-drawn-like routing, OMG-standard `X` gateways, loop-backs that route around nicely. IR → pure BPMN semantic (NO coordinates) → `layoutProcess()` generates DI → auto-inserts `<BPMNLabel>`. **Lesson:** the library routes very well on its own; do NOT layer custom routing on top (clip/dogleg → "crooked" kinks). Hard limitation: **NO concept of swimlanes** (it only sets Lane size 400×100, does not partition nodes) — cannot be forced into lanes.
-> - **VERTICAL swimlane (default when there are lanes)** = the custom-written grid engine `bpmn-layout-grid.mjs` (since 2026-07-13). **lane = COLUMN, step = ROW** (longest-path rank), nodes centered in the lane column, flow runs DOWNWARD. Fan-out gateway (each branch on a different edge — avoiding stacked bottom stubs), fan-in (multiple edges into 1 node attach at different top points), loops run along the right-edge corridor (not over the top). Enter via `BPMN_LANES=1` + IR with ≥2 lanes. Verify by inspecting vertical/horizontal overlap + task crossings → the grid engine PASSes clean.
-> - `BPMN_ENGINE=grid` forces the vertical grid even for no-lane; `BPMN_ENGINE=elk` forces the old HORIZONTAL ELK swimlane (fallback, `bpmn-layout-elk.mjs`); `BPMN_ENGINE=legacy` the old 267-line custom engine.
+> - **VERTICAL swimlane (default when there are lanes)** = the custom-written grid engine `bpmn-layout-grid.ts` (since 2026-07-13). **lane = COLUMN, step = ROW** (longest-path rank), nodes centered in the lane column, flow runs DOWNWARD. Fan-out gateway (each branch on a different edge — avoiding stacked bottom stubs), fan-in (multiple edges into 1 node attach at different top points), loops run along the right-edge corridor (not over the top). Enter via `BPMN_LANES=1` + IR with ≥2 lanes. Verify by inspecting vertical/horizontal overlap + task crossings → the grid engine PASSes clean.
+> - `BPMN_ENGINE=grid` forces the vertical grid even for no-lane; `BPMN_ENGINE=elk` forces the old HORIZONTAL ELK swimlane (fallback, `bpmn-layout-elk.ts`); `BPMN_ENGINE=legacy` the old 267-line custom engine.
 >
 > **Why a custom grid for swimlanes:** bpmn-auto-layout is pretty but does not do lanes (a hard bpmn-io limitation); ELK can partition but loops shoot over the top and cross + it does not compress same-lane nodes → ugly. The grid gives 100% control: nodes aligned by rank, clean vertical lanes (like hand-drawn draw.io), compact routing.
 >
-> **Lanes are OFF BY DEFAULT (no-lane / flat).** A flow with many lane-jumping branches → flat is still pretty & clear. Turn on swimlanes deliberately when the process has clear role separation (each role a contiguous cluster): `BPMN_LANES=1 node bpmn-build.mjs`. The IR still declares `lanes` (used for flowNodeRef + coverage).
+> **Lanes are OFF BY DEFAULT (no-lane / flat).** A flow with many lane-jumping branches → flat is still pretty & clear. Turn on swimlanes deliberately when the process has clear role separation (each role a contiguous cluster): `BPMN_LANES=1 node bpmn-build.ts`. The IR still declares `lanes` (used for flowNodeRef + coverage).
 >
 > **Why IR?** It separates "understanding the business" (AI is good) from "drawing pixels" (the engine is good). AI getting coordinates wrong = disaster; AI generating business structure is trustworthy + checkable. IR also makes update mode edit only JSON, with layout regenerated automatically.
 
@@ -108,10 +108,10 @@ Features with bpmn/: !`for d in docs/*/bpmn/*-bpmn-index.md; do [ -f "$d" ] && d
 6. **Write** after user Y:
    - Create `docs/{feature}/bpmn/` (contains only OUTPUT — no longer copy the engine into the feature).
    - Write `{slug}.ir.json` + `{slug}.src.json`.
-   - Run the SHARED engine pointed at the feature: `NODE_PATH="${CLAUDE_PLUGIN_DATA:-}/node_modules" node "${CLAUDE_PLUGIN_ROOT:-.claude}/skills/bpmn/engine/bpmn-build.mjs" --dir docs/{feature}/bpmn` → semcheck + layout → `{slug}.bpmn` + rebuild `{feature}-bpmn-editor.html` (in the feature dir).
+   - Run the SHARED engine pointed at the feature: `NODE_PATH="${CLAUDE_PLUGIN_DATA:-}/node_modules" bash "${CLAUDE_PLUGIN_ROOT:-.claude}/scripts/tsrun.sh" skills/bpmn/engine/bpmn-build.ts --dir docs/{feature}/bpmn` → semcheck + layout → `{slug}.bpmn` + rebuild `{feature}-bpmn-editor.html` (in the feature dir).
    - Create/update `bpmn/{feature}-bpmn-index.md`.
-7. **Call again with a matching slug** (automatic update mode) → L2 diff for `{slug}.ir.json`, then rerun `... bpmn-build.mjs --dir docs/{feature}/bpmn` (layout regenerates automatically).
-8. **Verify** (MANDATORY): `NODE_PATH="${CLAUDE_PLUGIN_DATA:-}/node_modules" node "${CLAUDE_PLUGIN_ROOT:-.claude}/skills/bpmn/engine/bpmn-build.mjs" --dir docs/{feature}/bpmn --verify` → semcheck + clean layout. Structural error → fix the IR. Coverage warning → reconcile with the source. Do NOT report success while a ✗ remains.
+7. **Call again with a matching slug** (automatic update mode) → L2 diff for `{slug}.ir.json`, then rerun `... bpmn-build.ts --dir docs/{feature}/bpmn` (layout regenerates automatically).
+8. **Verify** (MANDATORY): `NODE_PATH="${CLAUDE_PLUGIN_DATA:-}/node_modules" bash "${CLAUDE_PLUGIN_ROOT:-.claude}/scripts/tsrun.sh" skills/bpmn/engine/bpmn-build.ts --dir docs/{feature}/bpmn --verify` → semcheck + clean layout. Structural error → fix the IR. Coverage warning → reconcile with the source. Do NOT report success while a ✗ remains.
 9. **Activity log** — before Write set env `CLAUDE_SKILL_NAME=/bpmn` + `CLAUDE_CHANGELOG_AUTHOR={@author}` + `CLAUDE_CHANGELOG_NOTE=added BPMN {title} ({N} lanes, covers {a}/{b} branches)` (≤80 chars); the hook appends the whole line to `docs/_shared/activity.log`.
 10. **Output report:**
     ```
@@ -152,12 +152,12 @@ src.json: `{ "actors": [...], "branches": [...], "errors": [...] }` — facts ex
 
 | File | Role |
 |------|---------|
-| `bpmn-semcheck.mjs` | Checks the IR: structural (blocks) + coverage (warns). Function `checkIR(ir, src)`. |
-| `bpmn-layout-auto.mjs` | DEFAULT no-lane engine (bpmn-auto-layout bpmn-io). IR → semantic → `layoutProcess()`. Cleanest routing. |
-| `bpmn-layout-grid.mjs` | Default VERTICAL SWIMLANE engine (custom-written). lane=column, step=row, fan-out/fan-in, right-corridor loops. Function `layoutToBpmn(ir)`. |
-| `bpmn-layout-elk.mjs` | Fallback HORIZONTAL swimlane engine (elkjs partitioning). `BPMN_ENGINE=elk`. |
-| `bpmn-layout.mjs` | Old custom engine (`BPMN_ENGINE=legacy`). Function `layoutIR(ir)`. |
-| `bpmn-build.mjs` | Pipeline: IR → semcheck → choose engine → .bpmn → viewer. `--verify` / `--no-ir`. |
+| `bpmn-semcheck.ts` | Checks the IR: structural (blocks) + coverage (warns). Function `checkIR(ir, src)`. |
+| `bpmn-layout-auto.ts` | DEFAULT no-lane engine (bpmn-auto-layout bpmn-io). IR → semantic → `layoutProcess()`. Cleanest routing. |
+| `bpmn-layout-grid.ts` | Default VERTICAL SWIMLANE engine (custom-written). lane=column, step=row, fan-out/fan-in, right-corridor loops. Function `layoutToBpmn(ir)`. |
+| `bpmn-layout-elk.ts` | Fallback HORIZONTAL swimlane engine (elkjs partitioning). `BPMN_ENGINE=elk`. |
+| `bpmn-layout.ts` | Old custom engine (`BPMN_ENGINE=legacy`). Function `layoutIR(ir)`. |
+| `bpmn-build.ts` | Pipeline: IR → semcheck → choose engine → .bpmn → viewer. `--verify` / `--no-ir`. |
 | `_viewer_template.html` | bpmn-js CDN viewer, multi-process dropdown. |
 
 ## Gotchas

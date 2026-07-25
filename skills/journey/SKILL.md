@@ -49,7 +49,7 @@ Features with journey.md: !`for d in docs/*/srs/*-journey.md; do [ -f "$d" ] && 
 6. **L1 plan preview** — persona + section/step count + the lowest-rated (pain) steps.
 7. **Write** — append `## Journey: {Name}` section with the ```mermaid block.
 8. **Activity log** — set `CLAUDE_SKILL_NAME=/journey` + `CLAUDE_CHANGELOG_NOTE` before Write. Update `updated:`.
-9. **Render-verify (MANDATORY)** — `node "${CLAUDE_PLUGIN_ROOT:-.claude}/scripts/mermaid-verify.mjs" --file docs/{feature}/srs/{feature}-journey.md`. Fail → fix the section, ≤2 attempts.
+9. **Render-verify (MANDATORY)** — `bash "${CLAUDE_PLUGIN_ROOT:-.claude}/scripts/tsrun.sh" scripts/mermaid-verify.ts --file docs/{feature}/srs/{feature}-journey.md`. Fail → fix the section, ≤2 attempts.
 10. **Output report** — call out the pain steps (rating ≤2) so they are not lost.
 
 ## Mermaid syntax reference (Claude composes it, do NOT hard-paste)
@@ -108,4 +108,4 @@ Need changes? /journey "{name}" --feature {feature} again → update mode.
 - @../../rules/diagram-style.md
 - @../../templates/diagram-journey.md
 - @./references/example-journey.md
-- @../../scripts/mermaid-verify.mjs (render-verify after Write — step 9)
+- @../../scripts/mermaid-verify.ts (render-verify after Write — step 9)

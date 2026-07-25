@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /*
- * gallery-build.mjs — build ONE self-contained HTML gallery from a feature's diagrams.
+ * gallery-build.ts — build ONE self-contained HTML gallery from a feature's diagrams.
  *
  * Scans docs/{feature} (+ docs/_shared) for:
  *   - every .svg artifact (D2 / PlantUML / BPMN already render to .svg)
@@ -10,7 +10,7 @@
  * as skills/system-design/resources/c4-export-template.html, generalized to "tabs of diagrams".
  *
  * Usage:
- *   node skills/gallery/resources/gallery-build.mjs --feature <slug> [--out path.html] [--root path]
+ *   node skills/gallery/resources/gallery-build.ts --feature <slug> [--out path.html] [--root path]
  *
  * Output (default): docs/{feature}/{feature}-gallery.html — open it directly, hand it to a stakeholder.
  * No runtime network needed for SVGs; mermaid blocks need mmdc+Chrome at BUILD time (else skipped).
@@ -66,7 +66,7 @@ const skip = (f) => /-gallery\.html$|-system-design\.html$|-architecture\.html$/
 
 const svgs = [...walk(FEATURE_DIR, isSvg), ...walk(SHARED_DIR, isSvg)].filter((f) => !skip(f));
 
-// ---------- extract ```mermaid blocks (same logic as mermaid-verify.mjs) ----------
+// ---------- extract ```mermaid blocks (same logic as mermaid-verify.ts) ----------
 function extractMermaid(mdPath) {
   const lines = fs.readFileSync(mdPath, 'utf8').split('\n');
   const blocks = [];
@@ -80,9 +80,9 @@ function extractMermaid(mdPath) {
   return blocks;
 }
 
-// ---------- resolve Chrome (same heuristic as mermaid-verify.mjs) ----------
+// ---------- resolve Chrome (same heuristic as mermaid-verify.ts) ----------
 function findChrome() {
-  // Search both puppeteer cache layouts (old < 22 and new >= 22) — same logic as mermaid-verify.mjs.
+  // Search both puppeteer cache layouts (old < 22 and new >= 22) — same logic as mermaid-verify.ts.
   const roots = [
     path.join(os.homedir(), '.puppeteer-cache', 'chrome'),
     path.join(os.homedir(), '.cache', 'puppeteer', 'chrome'),

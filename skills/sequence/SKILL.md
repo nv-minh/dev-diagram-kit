@@ -83,7 +83,7 @@ In-progress features: !`for d in docs/*/srs/*-spec.md; do grep -l "status: draft
    ```
    > **Full-form IDs required** in the 3 Related lines — always `FR-{feature}-NNN` / `E-{feature}-NNN`, NOT the short form `FR-001` (edge source for the KG; short forms cause phantom-features + lost traceability).
 9. **Activity log** — set env `CLAUDE_SKILL_NAME=/sequence` + `CLAUDE_CHANGELOG_NOTE` (note: `added {flow-title} sequence`) BEFORE Write — the hook appends to `docs/_shared/activity.log` (independent of whether spec.md exists yet, no more routing/fallback). Update flows.md `updated: {date}`.
-9.5. **Render-verify (MANDATORY, run immediately after Write)** — `node "${CLAUDE_PLUGIN_ROOT:-.claude}/scripts/mermaid-verify.mjs" --file docs/{feature}/srs/{feature}-flows.md`. Mermaid does not render in chat (this is why L3 is skipped), so this is the only way to catch syntax errors BEFORE reporting "done" rather than letting the user discover them when opening the IDE.
+9.5. **Render-verify (MANDATORY, run immediately after Write)** — `bash "${CLAUDE_PLUGIN_ROOT:-.claude}/scripts/tsrun.sh" scripts/mermaid-verify.ts --file docs/{feature}/srs/{feature}-flows.md`. Mermaid does not render in chat (this is why L3 is skipped), so this is the only way to catch syntax errors BEFORE reporting "done" rather than letting the user discover them when opening the IDE.
    - **Pass** → continue to step 10, the report includes a "compile OK" line.
    - **Fail** (usually a nested quote inside `[...]`/`{...}` — see Mermaid syntax safety in `diagram-selection.md`) → read the line/column error the script returns, fix the section just appended (do NOT touch other sections), re-verify. At most 2 self-fix attempts.
    - **Still failing after 2 attempts** → report the specific error + the mermaid snippet to the user, suggest pasting into mermaid.live to debug by hand. Do NOT silently leave a broken file and report "done" as usual.
@@ -149,7 +149,7 @@ sequenceDiagram
 - **Error branch convention** — `alt` for 2-way, `opt` for optional. Nest at most 2 levels.
 - **`participant X as Y`** vs `actor X`: actor for a human, participant for a system.
 - **Arrows do NOT mean "async"** — `->>` (solid line) = request/call, `-->>` (dashed line) = response, this is a **team convention** for readability, NOT the UML "synchronous/asynchronous" meaning. Mermaid has separate async arrows `-)`/`--)` (open arrowheads) — only used when the business is genuinely fire-and-forget. Don't annotate `->>` as "async".
-- **Mermaid syntax fail** — step 9.5 catches errors via `mermaid-verify.mjs` RIGHT after Write, self-fix at most 2 times. No more silent "write anyway, warn" — only tell the user to paste into mermaid.live if 2 self-fix attempts still fail.
+- **Mermaid syntax fail** — step 9.5 catches errors via `mermaid-verify.ts` RIGHT after Write, self-fix at most 2 times. No more silent "write anyway, warn" — only tell the user to paste into mermaid.live if 2 self-fix attempts still fail.
 - **Missing coverage ≠ syntax error** — step 9.5 (compile) and 9.6 (coverage) are two different things. A diagram can compile OK (9.5 pass) but still miss an error branch versus the fact-list (9.6 fail) — do not confuse "compile OK" with "done".
 - **UC embed** — if the user asks to "draw a sequence into UC X", refuse + explain "sequences belong in flows.md, a UC contains only prose". Suggest an activity diagram if inline-in-UC is needed.
 
@@ -164,5 +164,5 @@ sequenceDiagram
 - @../../rules/language.md
 - @../../templates/diagram-sequence.md
 - @./references/example-sequence.md
-- @../../scripts/mermaid-verify.mjs (render-verify after Write — step 9.5)
+- @../../scripts/mermaid-verify.ts (render-verify after Write — step 9.5)
 - @../../agents/diagram-reviewer.md (Diagram_Reviewer — coverage review when over the complexity threshold, step 9.7)

@@ -60,7 +60,7 @@ Features with ERD: !`for d in docs/*/srs/*-erd.md; do [ -f "$d" ] && grep -l "er
 7. **Write** from `templates/diagram-erd.md` (slim frontmatter `type: srs-erd`/`feature`/`updated`). Fill `mermaid_code`, `entity_descriptions`, `notes`.
 8. **Update mode (file already exists)** → L2 diff. Update `updated: {date}`.
 9. **Activity log** — set env `CLAUDE_SKILL_NAME=/erd` + `CLAUDE_CHANGELOG_NOTE` (note: `{N} entities, {M} relationships — {note}`) BEFORE Write — the hook appends to `docs/_shared/activity.log` (independent of whether spec.md exists yet, no more routing/fallback). Update erd.md `updated: {date}`.
-9.5. **Render-verify + SELF-VIEW THE IMAGE (MANDATORY, run immediately after Write)** — `node "${CLAUDE_PLUGIN_ROOT:-.claude}/scripts/mermaid-verify.mjs" --file docs/{feature}/srs/{feature}-erd.md --png <scratchpad>/erd-review`. The `--png` flag both compile-checks and exports a PNG per block so the skill can **Read and view the image itself**. Mermaid does not render in chat (this is why L3 is skipped), so this is the only way to catch errors BEFORE reporting "done".
+9.5. **Render-verify + SELF-VIEW THE IMAGE (MANDATORY, run immediately after Write)** — `bash "${CLAUDE_PLUGIN_ROOT:-.claude}/scripts/tsrun.sh" scripts/mermaid-verify.ts --file docs/{feature}/srs/{feature}-erd.md --png <scratchpad>/erd-review`. The `--png` flag both compile-checks and exports a PNG per block so the skill can **Read and view the image itself**. Mermaid does not render in chat (this is why L3 is skipped), so this is the only way to catch errors BEFORE reporting "done".
    - **Compile fail** (usually an attribute missing its type token — see the "2-token" gotcha — or a relationship label missing quotes) → read the line/column error the script returns, fix the block just written, re-verify. At most 2 self-fix attempts.
    - **Compile pass** → **Read the PNG** (`<scratchpad>/erd-review/block-0.png`) and self-review the business content (compile-check does NOT catch content errors):
      - [ ] All entities present? No entity from the source/description is missing.
@@ -144,7 +144,7 @@ erDiagram
 - **Composite PK** — Mermaid doesn't render it clearly. Note: `(user_id, role_id) PK` in the attribute description.
 - **Soft-deleted column convention** — `deleted_at timestamp "nullable, soft-delete"`.
 - **Update mode** with new entities → preserve existing layout, add new entities at the end of the block.
-- **Mermaid syntax fail** — step 9.5 catches errors via `mermaid-verify.mjs` RIGHT after Write, self-fix at most 2 times. Do NOT write then abandon — only tell the user to paste into mermaid.live if 2 self-fix attempts still fail.
+- **Mermaid syntax fail** — step 9.5 catches errors via `mermaid-verify.ts` RIGHT after Write, self-fix at most 2 times. Do NOT write then abandon — only tell the user to paste into mermaid.live if 2 self-fix attempts still fail.
 
 ## References
 
@@ -157,5 +157,5 @@ erDiagram
 - @../../rules/language.md
 - @../../templates/diagram-erd.md
 - @./references/example-erd.md
-- @../../scripts/mermaid-verify.mjs (render-verify after Write — step 9.5)
+- @../../scripts/mermaid-verify.ts (render-verify after Write — step 9.5)
 - @../../agents/diagram-reviewer.md (Diagram_Reviewer — coverage review when over the complexity threshold, step 9.7)

@@ -1,8 +1,8 @@
-#!/usr/bin/env node
-// bpmn-build.mjs — IR → BPMN → viewer pipeline.
-//   node bpmn-build.mjs --dir <feature>  → (1) every *.ir.json: semcheck + layout → write .bpmn  (2) build {feature}-bpmn-editor.html
-//   node bpmn-build.mjs --verify   → semcheck every IR + validate layout of every .bpmn (node in correct lane / lines don't overlap / task not clipped)
-//   node bpmn-build.mjs --no-ir    → skip the IR step, just build the viewer from existing .bpmn
+#!/usr/bin/env -S tsx
+// bpmn-build.ts — IR → BPMN → viewer pipeline (TypeScript; runs via tsx — see scripts/tsrun.sh).
+//   tsrun.sh bpmn-build.ts --dir <feature>  → (1) every *.ir.json: semcheck + layout → write .bpmn  (2) build {feature}-bpmn-editor.html
+//   tsrun.sh bpmn-build.ts --verify   → semcheck every IR + validate layout of every .bpmn (node in correct lane / lines don't overlap / task not clipped)
+//   tsrun.sh bpmn-build.ts --no-ir    → skip the IR step, just build the viewer from existing .bpmn
 // AI generates the {slug}.ir.json file (business intermediate representation); the script handles semcheck + layout + render.
 // The resulting .bpmn file ALREADY HAS <BPMNDiagram> (swimlane + coordinates). The viewer just importXML's it. node_modules is gitignored.
 
@@ -11,15 +11,15 @@ import { execSync } from 'node:child_process';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { dirname, join } from 'node:path';
 import { createRequire } from 'node:module';
-import { layoutToBpmn as layoutAuto } from './bpmn-layout-auto.mjs';  // bpmn-auto-layout (DEFAULT no-lane — cleanest routing)
-import { layoutToBpmn as layoutGrid } from './bpmn-layout-grid.mjs';  // custom-built grid (VERTICAL SWIMLANE — default when there are lanes)
-import { layoutToBpmn as layoutElk } from './bpmn-layout-elk.mjs';    // custom-patched ELK (horizontal swimlane fallback: BPMN_ENGINE=elk)
-import { layoutIR } from './bpmn-layout.mjs';                          // old custom-built engine (BPMN_ENGINE=legacy)
-import { checkIR } from './bpmn-semcheck.mjs';
+import { layoutToBpmn as layoutAuto } from './bpmn-layout-auto.ts';  // bpmn-auto-layout (DEFAULT no-lane — cleanest routing)
+import { layoutToBpmn as layoutGrid } from './bpmn-layout-grid.ts';  // custom-built grid (VERTICAL SWIMLANE — default when there are lanes)
+import { layoutToBpmn as layoutElk } from './bpmn-layout-elk.ts';    // custom-patched ELK (horizontal swimlane fallback: BPMN_ENGINE=elk)
+import { layoutIR } from './bpmn-layout.ts';                          // old custom-built engine (BPMN_ENGINE=legacy)
+import { checkIR } from './bpmn-semcheck.ts';
 
 // ── Choose layout engine ──
 // DEFAULT no-lane: bpmn-auto-layout (official bpmn-io lib) — cleanest routing, standard X gateway.
-// BPMN_LANES=1 + IR with ≥2 lanes → VERTICAL SWIMLANE via the custom-built grid engine (bpmn-layout-grid.mjs):
+// BPMN_LANES=1 + IR with ≥2 lanes → VERTICAL SWIMLANE via the custom-built grid engine (bpmn-layout-grid.ts):
 //   lane = column, step = row (longest-path rank), loops go through the right corridor, labels split the line.
 //   This is the default swimlane engine (nicer than ELK — nodes line up, loops don't shoot to the top).
 // BPMN_ENGINE=elk    → force the old horizontal ELK swimlane (fallback).

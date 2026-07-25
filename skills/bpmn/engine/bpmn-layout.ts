@@ -1,9 +1,9 @@
-// bpmn-layout.mjs — automatic BPMN swimlane layout engine from an IR.
+// bpmn-layout.ts — automatic BPMN swimlane layout engine from an IR.
 // Takes IR { process, lanes[], nodes[], flows[] } → generates full BPMN 2.0 XML (semantic + BPMNDiagram).
 // Handles: (1) column assignment via longest-path rank, (2) row splitting on cell collisions, (3) edge
 //     routing that avoids overlap (vertical segments offset by x-track, horizontal by y-track;
 //     back-edges/loops route around empty space).
-// NO dependencies needed. Usage: import { layoutIR } from './bpmn-layout.mjs'; const xml = layoutIR(ir);
+// NO dependencies needed. Usage: import { layoutIR } from './bpmn-layout.ts'; const xml = layoutIR(ir);
 
 const GRID = {
   POOL_X: 160, POOL_Y: 80, LANE_X: 190, LANE_H: 200,

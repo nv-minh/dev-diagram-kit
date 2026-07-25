@@ -51,7 +51,7 @@ Features with timeline: !`for d in docs/*/*-timeline.md; do [ -f "$d" ] && echo 
 6. **L1 plan preview** — subject + period/milestone count.
 7. **Write** — append `## Timeline: {Subject}` section with the ```mermaid block.
 8. **Activity log** — set `CLAUDE_SKILL_NAME=/timeline` + `CLAUDE_CHANGELOG_NOTE` before Write. Update `updated:`.
-9. **Render-verify (MANDATORY)** — `node "${CLAUDE_PLUGIN_ROOT:-.claude}/scripts/mermaid-verify.mjs" --file docs/{feature}/{feature}-timeline.md`. Fail → fix the section, ≤2 attempts.
+9. **Render-verify (MANDATORY)** — `bash "${CLAUDE_PLUGIN_ROOT:-.claude}/scripts/tsrun.sh" scripts/mermaid-verify.ts --file docs/{feature}/{feature}-timeline.md`. Fail → fix the section, ≤2 attempts.
 10. **Output report.**
 
 ## Mermaid syntax reference (Claude composes it, do NOT hard-paste)
@@ -107,4 +107,4 @@ Need changes? /timeline "{subject}" --feature {feature} again → update mode.
 - @../../rules/diagram-style.md
 - @../../templates/diagram-timeline.md
 - @./references/example-timeline.md
-- @../../scripts/mermaid-verify.mjs (render-verify after Write — step 9)
+- @../../scripts/mermaid-verify.ts (render-verify after Write — step 9)

@@ -92,7 +92,7 @@ Features with states.md: !`for d in docs/*/srs/*-states.md; do [ -f "$d" ] && ec
    > **Full-form IDs required** in the Related line — always `BR-{feature}-NNN`, NOT the short form `BR-001` (edge source for the KG; short forms cause phantom-features + lost traceability). **Related entity** written in CamelCase matching the ERD.
 8. **Called again with a matching entity** (automatic update mode) → L2 diff for that section.
 9. **Activity log** — set env `CLAUDE_SKILL_NAME=/state` + `CLAUDE_CHANGELOG_NOTE` (note: `added/updated {Entity} state diagram`) BEFORE Write — the hook appends to `docs/_shared/activity.log` (independent of whether spec.md exists yet, no more routing/fallback). Update states.md `updated: {date}`.
-9.5. **Render-verify + SELF-VIEW THE IMAGE (MANDATORY, run immediately after Write)** — `node "${CLAUDE_PLUGIN_ROOT:-.claude}/scripts/mermaid-verify.mjs" --file docs/{feature}/srs/{feature}-states.md --png <scratchpad>/state-review`. The `--png` flag both compile-checks and exports a PNG per block so the skill can **Read and view the image itself**. Mermaid does not render in chat (this is why L3 is skipped), so this is the only way to catch errors BEFORE reporting "done" rather than letting the user discover them when opening the IDE.
+9.5. **Render-verify + SELF-VIEW THE IMAGE (MANDATORY, run immediately after Write)** — `bash "${CLAUDE_PLUGIN_ROOT:-.claude}/scripts/tsrun.sh" scripts/mermaid-verify.ts --file docs/{feature}/srs/{feature}-states.md --png <scratchpad>/state-review`. The `--png` flag both compile-checks and exports a PNG per block so the skill can **Read and view the image itself**. Mermaid does not render in chat (this is why L3 is skipped), so this is the only way to catch errors BEFORE reporting "done" rather than letting the user discover them when opening the IDE.
    - **Compile fail** → read the line/column error the script returns, fix the section just appended (do NOT touch other entities), re-verify. At most 2 self-fix attempts.
    - **Compile pass** → **Read the PNG** (`<scratchpad>/state-review/block-{n}.png` — the block of the entity just written) and self-review the business content (compile-check + coverage text do NOT catch visual errors):
      - [ ] Orphan state? Every state has an inbound edge (and outbound, except terminal) — no state left dangling unconnected.
@@ -144,7 +144,7 @@ stateDiagram-v2
 - **Invalid transitions** — do NOT draw in the diagram (messy); separate table.
 - **Update mode** — preserve user edits in the notes section; only regenerate the mermaid + tables.
 - **UC embed** — if the user asks to "draw a state into UC X", refuse + explain "states belong in states.md because an entity is usually shared across UCs".
-- **Mermaid syntax fail** — step 9.5 catches errors via `mermaid-verify.mjs` RIGHT after Write, self-fix at most 2 times. Do NOT write then abandon — only tell the user to paste into mermaid.live if 2 self-fix attempts still fail.
+- **Mermaid syntax fail** — step 9.5 catches errors via `mermaid-verify.ts` RIGHT after Write, self-fix at most 2 times. Do NOT write then abandon — only tell the user to paste into mermaid.live if 2 self-fix attempts still fail.
 - **Missing coverage ≠ syntax error** — step 9.5 (compile) and 9.6 (coverage) are two different things. A diagram that compiles OK can still miss a state versus the fact-list — do not confuse "compile OK" with "done".
 
 ## References
@@ -157,5 +157,5 @@ stateDiagram-v2
 - @../../rules/feature-bootstrap.md
 - @../../rules/language.md
 - @../../templates/diagram-state.md
-- @../../scripts/mermaid-verify.mjs (render-verify after Write — step 9.5)
+- @../../scripts/mermaid-verify.ts (render-verify after Write — step 9.5)
 - @../../agents/diagram-reviewer.md (Diagram_Reviewer — coverage review when over the complexity threshold, step 9.7)

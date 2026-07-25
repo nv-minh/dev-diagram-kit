@@ -32,7 +32,7 @@ Draw at the **logical architecture level** (module/service/data store + relation
 - **Fixed output** `docs/_shared/architecture/` (architecture is cross-feature). Files per the pattern in Goal.
 - **2 mandatory phases, HARD STOP between them:** Phase 1 scan → `scan-plan.md` → **user confirms** (L1) → only then Phase 2 generates diagrams. Do NOT generate the whole set before confirmation.
 - **Read code via a subagent** (Task) to keep the main context lean — the subagent RETURNS findings, the main thread synthesizes (do NOT let the subagent Write diagrams itself — per `approval-gate.md`).
-- **Render via the shared scripts**: D2 `"${CLAUDE_PLUGIN_ROOT:-.claude}/skills/d2-activity/render.sh"`; Mermaid `node "${CLAUDE_PLUGIN_ROOT:-.claude}/scripts/mermaid-verify.mjs"`. Do NOT write a new renderer.
+- **Render via the shared scripts**: D2 `"${CLAUDE_PLUGIN_ROOT:-.claude}/skills/d2-activity/render.sh"`; Mermaid `bash "${CLAUDE_PLUGIN_ROOT:-.claude}/scripts/tsrun.sh" scripts/mermaid-verify.ts`. Do NOT write a new renderer.
 - **Compile EVERY diagram to PASS** before reporting done.
 - **Provenance + confidence** on every inferred element. **Do NOT fabricate**: if it cannot be read, mark 🟡 + note "needs confirmation", do not make it up.
 - **Auto-icon (per @../../rules/icon-map.md)** — tech detected from code (redis/postgres/kafka/aws-sdk/nginx/react...) → auto-attach `icon:` via `"${CLAUDE_PLUGIN_ROOT:-.claude}/scripts/icon-path.sh"` (this is where icons are most valuable — one glance reveals the stack). `--no-icons` to disable.
@@ -126,7 +126,7 @@ Prompt for each subagent (Task): "Read-only. Scan `<root/focus>` for aspect <X>.
 ### Render + verify
 ```bash
 "${CLAUDE_PLUGIN_ROOT:-.claude}/skills/d2-activity/render.sh" docs/_shared/architecture/{proj}-context.d2
-node "${CLAUDE_PLUGIN_ROOT:-.claude}/scripts/mermaid-verify.mjs" --file docs/_shared/architecture/{proj}-flows.md
+bash "${CLAUDE_PLUGIN_ROOT:-.claude}/scripts/tsrun.sh" scripts/mermaid-verify.ts --file docs/_shared/architecture/{proj}-flows.md
 ```
 
 ## L1 plan preview (HARD STOP — template)

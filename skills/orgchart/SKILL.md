@@ -116,7 +116,7 @@ quadrantChart
   "End users": [0.35, 0.15]
 ```
 
-**Quadrant layout:** **1 = top-right** (high power + high interest → Manage closely) · **2 = top-left** (high power, low interest → Keep satisfied) · **3 = bottom-left** (Monitor) · **4 = bottom-right** (low power, high interest → Keep informed). Render-verify with `scripts/mermaid-verify.mjs`. Append a small engagement-strategy note under the chart if useful.
+**Quadrant layout:** **1 = top-right** (high power + high interest → Manage closely) · **2 = top-left** (high power, low interest → Keep satisfied) · **3 = bottom-left** (Monitor) · **4 = bottom-right** (low power, high interest → Keep informed). Render-verify with `scripts/mermaid-verify.ts`. Append a small engagement-strategy note under the chart if useful.
 
 ### Step 3 — Render + verify
 
@@ -170,4 +170,4 @@ Need changes? /orgchart --feature {feature} (enters update mode automatically).
 - @./references/example-orgchart.d2
 - @./references/example-orgchart-stakeholder.md (power/interest map — only with `--stakeholder`)
 - @../../skills/d2-activity/render.sh (shared D2 renderer — the reporting tree)
-- @../../scripts/mermaid-verify.mjs (render-verify for the `--stakeholder` quadrantChart)
+- @../../scripts/mermaid-verify.ts (render-verify for the `--stakeholder` quadrantChart)

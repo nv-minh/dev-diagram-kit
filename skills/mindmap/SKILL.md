@@ -48,7 +48,7 @@ Features with scope.md: !`for d in docs/*/srs/*-scope.md; do [ -f "$d" ] && echo
 6. **L1 plan preview** — path + branch count.
 7. **Write** — append the `## Scope: {Topic}` section with the ```mermaid block.
 8. **Activity log** — set env `CLAUDE_SKILL_NAME=/mindmap` + `CLAUDE_CHANGELOG_NOTE` before Write (the hook appends to `docs/_shared/activity.log`). Update `updated:`.
-9. **Render-verify (MANDATORY)** — `node "${CLAUDE_PLUGIN_ROOT:-.claude}/scripts/mermaid-verify.mjs" --file docs/{feature}/srs/{feature}-scope.md`. Fail → fix the section just written, ≤2 attempts; still failing → report the snippet + suggest mermaid.live.
+9. **Render-verify (MANDATORY)** — `bash "${CLAUDE_PLUGIN_ROOT:-.claude}/scripts/tsrun.sh" scripts/mermaid-verify.ts --file docs/{feature}/srs/{feature}-scope.md`. Fail → fix the section just written, ≤2 attempts; still failing → report the snippet + suggest mermaid.live.
 10. **Output report.**
 
 ## Mermaid syntax reference (Claude composes it, do NOT hard-paste)
@@ -91,7 +91,7 @@ Need changes? /mindmap "{topic}" --feature {feature} again → update mode.
 - **No classDef** — mindmap ignores `classDef`; the global init (`diagram-style.md`) is the only theme lever.
 - **Shapes** — `((round))`, `[square]`, `)cloud(`, `{{hexagon}}`. Don't mix too many in one tree.
 - **Update mode** — re-run the same topic → regenerate that section only (preserve other sections).
-- **Mermaid syntax fail** — step 9 catches via `mermaid-verify.mjs` right after Write, self-fix ≤2 times.
+- **Mermaid syntax fail** — step 9 catches via `mermaid-verify.ts` right after Write, self-fix ≤2 times.
 
 ## References
 
@@ -105,4 +105,4 @@ Need changes? /mindmap "{topic}" --feature {feature} again → update mode.
 - @../../rules/diagram-style.md
 - @../../templates/diagram-mindmap.md
 - @./references/example-mindmap.md
-- @../../scripts/mermaid-verify.mjs (render-verify after Write — step 9)
+- @../../scripts/mermaid-verify.ts (render-verify after Write — step 9)
