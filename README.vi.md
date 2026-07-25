@@ -158,7 +158,7 @@ Kit viết cho Claude Code. Có hai cách cài.
 ### Cài bằng plugin (khuyên dùng)
 
 ```
-/plugin marketplace add <đường-dẫn-repo-này | owner/repo>
+/plugin marketplace add https://github.com/nv-minh/dev-diagram-kit
 /plugin install dev-diagram-kit
 ```
 
