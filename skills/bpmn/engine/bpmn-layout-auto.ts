@@ -1,3 +1,6 @@
+// @ts-nocheck — ported .mjs → .ts 1:1 (see repo policy in drawio/engine/builder.ts header). Also:
+// this file imports from the engine's OWN node_modules (bpmn-auto-layout), which only exists after
+// the engine's npm install — without @ts-nocheck, repo-root `tsc --noEmit` (CI) fails on TS2307.
 // bpmn-layout-auto.ts — BPMN layout engine using bpmn-auto-layout (official bpmn-io lib).
 // IR { process, nodes[], flows[] } → PURE BPMN semantic → layoutProcess() generates clean DI.
 //
