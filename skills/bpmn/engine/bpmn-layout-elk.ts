@@ -1,3 +1,5 @@
+// @ts-nocheck — ported .mjs → .ts 1:1 (see repo policy in drawio/engine/builder.ts header):
+// engine files migrated from plain JS skip the type-audit; kit-native .ts files stay fully checked.
 // bpmn-layout-elk.ts — BPMN layout engine using ELK (replaces the custom-built bpmn-layout.ts).
 // IR { process, lanes[], nodes[], flows[] } → BPMN 2.0 XML (semantic + BPMNDiagram).
 //

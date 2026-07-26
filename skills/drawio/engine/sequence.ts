@@ -1,5 +1,5 @@
-// @ts-nocheck
 // kit-native UML sequence layout for the draw.io engine (NOT vendored — see ../NOTICE.md).
+// Fully type-checked (unlike the vendored builder/layout files, which are ported 1:1 with @ts-nocheck).
 //
 // Sequence diagrams are a different paradigm from the tree/cloud engine: N vertical lifelines (one per
 // participant) on a top-to-bottom TIME axis, with horizontal "message" arrows pinned at each step's Y.
@@ -22,7 +22,47 @@
 //   d.title("Bind flow");   // call AFTER renderSequence (it sets the page size)
 //   return d;
 
-export function renderSequence(d, [x, y] = [40, 40], opts = {}) {
+export interface SeqParticipant {
+  id: string;
+  label: string;
+  /** true → stick-figure (umlActor) header instead of a box. */
+  actor?: boolean;
+}
+
+export interface SeqMessage {
+  from: string;
+  to: string;
+  label: string;
+  /** true → dashed open arrow (return message). */
+  reply?: boolean;
+  /** true → solid open arrow (async signal). Default (neither flag) → solid filled block (sync call). */
+  async?: boolean;
+}
+
+export interface RenderSequenceOpts {
+  laneW?: number;
+  headerW?: number;
+  headerH?: number;
+  stepH?: number;
+  pad?: number;
+  stroke?: string;
+  headerFill?: string;
+  actorFill?: string;
+}
+
+interface Rect { x: number; y: number; w: number; h: number; ob?: boolean }
+
+/** The slice of builder.ts Diagram that renderSequence needs (builder is @ts-nocheck → no usable type). */
+export interface SequenceHost {
+  seqParticipants: SeqParticipant[];
+  seqMessages: SeqMessage[];
+  page: [number, number];
+  R: Record<string, Rect>;
+  _put(id: string, parent: string, x: number, y: number, w: number, h: number, style: string, label: string): Rect;
+  link(src: string, tgt: string, label?: string, opts?: { style?: string }): unknown;
+}
+
+export function renderSequence(d: SequenceHost, [x, y]: [number, number] = [40, 40], opts: RenderSequenceOpts = {}): void {
   const {
     laneW = 180, headerW = 120, headerH = 48, stepH = 44, pad = 24,
     stroke = "#5A6B7B", headerFill = "#E8F0FE", actorFill = "#E8F0FE",
@@ -32,12 +72,17 @@ export function renderSequence(d, [x, y] = [40, 40], opts = {}) {
   const msgs = d.seqMessages || [];
   if (!parts.length) throw new Error("renderSequence: declare participants first via d.participant(id, label).");
 
+  // belt & braces — participant()/message() already validate at call time, but a Diagram can be
+  // assembled by other code paths; fail here with the same actionable messages before drawing.
   const ids = new Set(parts.map((p) => p.id));
+  for (const p of parts) {
+    if (!p.label) throw new Error(`renderSequence: participant "${p.id}" has no label.`);
+  }
   for (const m of msgs) {
     if (!ids.has(m.from)) throw new Error(`renderSequence: message from unknown participant "${m.from}"`);
     if (!ids.has(m.to)) throw new Error(`renderSequence: message to unknown participant "${m.to}"`);
   }
-  const idx = {}; parts.forEach((p, i) => (idx[p.id] = i));
+  const idx: Record<string, number> = {}; parts.forEach((p, i) => (idx[p.id] = i));
 
   const n = parts.length;
   const totalW = pad * 2 + n * laneW;
@@ -80,7 +125,7 @@ export function renderSequence(d, [x, y] = [40, 40], opts = {}) {
     const fy = (yMid - spineTop) / spineH;   // identical on both spines → drawio draws a straight horizontal
     const head = m.reply ? "endArrow=open;dashed=1;" : m.async ? "endArrow=open;" : "endArrow=block;";
     const src = `${m.from}_spine`, tgt = `${m.to}_spine`;
-    let style;
+    let style: string;
     if (m.from === m.to) {
       // self-call: a small loop to the right of the lifeline, anchored near this step's Y.
       style = `edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;exitX=1;exitY=${(fy - 0.015).toFixed(4)};exitDx=0;exitDy=0;entryX=1;entryY=${(fy + 0.015).toFixed(4)};entryDx=0;entryDy=0;${head}fontSize=10;fontColor=#1A1A1A;strokeColor=${stroke};strokeWidth=1;labelBackgroundColor=#FFFFFF;verticalLabelPosition=right;verticalAlign=middle;`;

@@ -17,8 +17,11 @@ import { THEME } from "./theme.ts";
 
 const esc = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 
-// Kit repo root (parent of src/), real path so the symlinked-skill install resolves to the true repo.
-const KIT_ROOT = (() => { const d = resolve(dirname(fileURLToPath(import.meta.url)), ".."); try { return realpathSync(d); } catch { return d; } })();
+// Kit root, real path so the symlinked-skill install resolves to the true repo. Upstream this was
+// "parent of src/"; after vendoring the engine sits 3 levels deep (skills/drawio/engine/), so go up
+// to the kit itself — the repo checkout in plugin mode, or the workspace's .claude/ in copy mode.
+// (With the old 1-level parent the guard only covered skills/drawio/ and save() could pollute the kit.)
+const KIT_ROOT = (() => { const d = resolve(dirname(fileURLToPath(import.meta.url)), "..", "..", ".."); try { return realpathSync(d); } catch { return d; } })();
 // True iff an output path lands inside the kit repo → the hard rule forbids writing there.
 const insideKit = (dir, filename) => {
   let base; try { base = realpathSync(dir); } catch { base = resolve(dir); }   // dir may not exist yet → resolve without symlinks
@@ -159,11 +162,23 @@ export class Diagram {
     return this;
   }
 
-  /** UML sequence: declare a participant (lifeline). `actor:true` → stick-figure header. */
-  participant(id, label, opts = {}) { this.seqParticipants.push({ id, label, ...opts }); return this; }
+  /** UML sequence: declare a participant (lifeline). `actor:true` → stick-figure header.
+   *  Validates at CALL time (not render time) so the error points at the offending line. */
+  participant(id, label, opts = {}) {
+    if (!id) throw new Error("participant: a non-empty id is required.");
+    if (!label) throw new Error(`participant: "${id}" needs a non-empty label.`);
+    if (this.seqParticipants.some((p) => p.id === id)) throw new Error(`participant: duplicate id "${id}".`);
+    this.seqParticipants.push({ id, label, ...opts }); return this;
+  }
   /** UML sequence: a time-ordered message. `reply:true` → dashed open arrow (return);
-   *  `async:true` → solid open arrow (signal); default → solid filled block (synchronous call). */
-  message(from, to, label = "", opts = {}) { this.seqMessages.push({ from, to, label, ...opts }); return this; }
+   *  `async:true` → solid open arrow (signal); default → solid filled block (synchronous call).
+   *  Both ends must already be declared via participant() — fail fast with the offending id. */
+  message(from, to, label = "", opts = {}) {
+    for (const [end, v] of [["from", from], ["to", to]])
+      if (!this.seqParticipants.some((p) => p.id === v))
+        throw new Error(`message: ${end} is an unknown participant "${v}" — call d.participant("${v}", "...") first.`);
+    this.seqMessages.push({ from, to, label, ...opts }); return this;
+  }
 
   /** Build all edges — deterministic ORTHOGONAL router with HARD obstacle avoidance.
    *  Same three-stage shape as libavoid: (1) orthogonal visibility graph, (2) A* shortest path,
@@ -178,11 +193,13 @@ export class Diagram {
     const specs = this.edgeSpecs, R = (id) => this.R[id];
     const cards = [];
     for (const id in this.R) { const r = this.R[id]; if (r.ob) cards.push({ id, x: r.x, y: r.y, w: r.w, h: r.h }); }
-    const M = 7;
+    // COLLISION_MARGIN: keep-out halo (px) around every leaf icon/card — a segment closer than this
+    // counts as a hit, so routed lines never brush an icon's border.
+    const COLLISION_MARGIN = 7;
     const segHit = (p, q, ex) => {
       for (const c of cards) {
         if (ex.has(c.id)) continue;
-        const x0 = c.x - M, x1 = c.x + c.w + M, y0 = c.y - M, y1 = c.y + c.h + M;
+        const x0 = c.x - COLLISION_MARGIN, x1 = c.x + c.w + COLLISION_MARGIN, y0 = c.y - COLLISION_MARGIN, y1 = c.y + c.h + COLLISION_MARGIN;
         if (Math.abs(p.y - q.y) < 1) { if (p.y > y0 && p.y < y1 && Math.min(p.x, q.x) < x1 && Math.max(p.x, q.x) > x0) return true; }
         else if (Math.abs(p.x - q.x) < 1) { if (p.x > x0 && p.x < x1 && Math.min(p.y, q.y) < y1 && Math.max(p.y, q.y) > y0) return true; }
         else { if (Math.min(p.x, q.x) < x1 && Math.max(p.x, q.x) > x0 && Math.min(p.y, q.y) < y1 && Math.max(p.y, q.y) > y0) return true; } // diagonal (shouldn't happen) — be safe
@@ -208,14 +225,16 @@ export class Diagram {
       }
       return best;
     };
-    const BM = 24;
+    // BORDER_HUG_MARGIN: a segment running parallel within this distance (px) of a container border
+    // "hugs" it — visually reads as part of the frame, so along() penalises/rejects it.
+    const BORDER_HUG_MARGIN = 24;
     const insideAny = (px, py) => containers.some(c => px > c.x + 1 && px < c.x + c.w - 1 && py > c.y + 1 && py < c.y + c.h - 1);
     const along = (p, q, a = null, b = null) => {
       if (Math.abs(p.x - q.x) < 1) { const y0 = Math.min(p.y, q.y), y1 = Math.max(p.y, q.y); if (y1 - y0 < 28) return false;
         // interior routing — skip border-hugging penalty, only cross-container check applies
         if (!insideAny(p.x, (y0 + y1) / 2)) {
           for (const c of containers)
-            for (const bx of [c.x, c.x + c.w]) if (Math.abs(p.x - bx) < BM && Math.min(y1, c.y + c.h) - Math.max(y0, c.y) > 28) return true;
+            for (const bx of [c.x, c.x + c.w]) if (Math.abs(p.x - bx) < BORDER_HUG_MARGIN && Math.min(y1, c.y + c.h) - Math.max(y0, c.y) > 28) return true;
         }
         if (a && b) for (const c of containers) {
           if (p.x > c.x + 8 && p.x < c.x + c.w - 8 && Math.min(y1, c.y + c.h) - Math.max(y0, c.y) > 28) {
@@ -228,7 +247,7 @@ export class Diagram {
       else { const x0 = Math.min(p.x, q.x), x1 = Math.max(p.x, q.x); if (x1 - x0 < 28) return false;
         if (!insideAny((x0 + x1) / 2, p.y)) {
           for (const c of containers)
-            for (const by of [c.y, c.y + c.h]) if (Math.abs(p.y - by) < BM && Math.min(x1, c.x + c.w) - Math.max(x0, c.x) > 28) return true;
+            for (const by of [c.y, c.y + c.h]) if (Math.abs(p.y - by) < BORDER_HUG_MARGIN && Math.min(x1, c.x + c.w) - Math.max(x0, c.x) > 28) return true;
         }
         if (a && b) for (const c of containers) {
           if (p.y > c.y + 8 && p.y < c.y + c.h - 8 && Math.min(x1, c.x + c.w) - Math.max(x0, c.x) > 28) {
@@ -309,21 +328,24 @@ export class Diagram {
       };
       const s0 = pushOff(sp, a, b), g0 = pushOff(ep, b, a);
       const xs = new Set([s0.x, g0.x, sp.x, ep.x]), ys = new Set([s0.y, g0.y, sp.y, ep.y]);
-      for (const c of cards) { if (ex.has(c.id)) continue; xs.add(c.x - M); xs.add(c.x + c.w + M); ys.add(c.y - M); ys.add(c.y + c.h + M); }
-      for (const c of containers) { xs.add(c.x - M); xs.add(c.x + c.w + M); ys.add(c.y - M); ys.add(c.y + c.h + M); }
+      for (const c of cards) { if (ex.has(c.id)) continue; xs.add(c.x - COLLISION_MARGIN); xs.add(c.x + c.w + COLLISION_MARGIN); ys.add(c.y - COLLISION_MARGIN); ys.add(c.y + c.h + COLLISION_MARGIN); }
+      for (const c of containers) { xs.add(c.x - COLLISION_MARGIN); xs.add(c.x + c.w + COLLISION_MARGIN); ys.add(c.y - COLLISION_MARGIN); ys.add(c.y + c.h + COLLISION_MARGIN); }
       let X = [...xs].sort((p, q) => p - q), Y = [...ys].sort((p, q) => p - q);
       const newX = new Set(X), newY = new Set(Y);
-      const step = 20;
-      const margin = 24; // Ensure at least 24px clearance from container borders
+      // LANE_STEP: grid pitch (px) of the candidate lanes seeded inside each gap between obstacles —
+      // more lanes = more routing freedom but a bigger A* graph. LANE_MARGIN: clearance (px) kept
+      // between the outermost lane and the gap's borders so routes don't hug container edges.
+      const LANE_STEP = 20;
+      const LANE_MARGIN = 24;
       for (let k = 0; k < X.length - 1; k++) {
         const gap = X[k+1] - X[k];
-        if (gap >= 2 * margin + 8) {
-          const available = gap - 2 * margin;
-          const numLanes = Math.floor(available / step) + 1;
+        if (gap >= 2 * LANE_MARGIN + 8) {
+          const available = gap - 2 * LANE_MARGIN;
+          const numLanes = Math.floor(available / LANE_STEP) + 1;
           if (numLanes > 0) {
-            const occupied = (numLanes - 1) * step;
+            const occupied = (numLanes - 1) * LANE_STEP;
             const leftMargin = Math.round((gap - occupied) / 2);
-            for (let i = 0; i < numLanes; i++) newX.add(X[k] + leftMargin + i * step);
+            for (let i = 0; i < numLanes; i++) newX.add(X[k] + leftMargin + i * LANE_STEP);
           }
         } else if (gap > 32) {
           newX.add(Math.round((X[k] + X[k+1]) / 2));
@@ -331,13 +353,13 @@ export class Diagram {
       }
       for (let k = 0; k < Y.length - 1; k++) {
         const gap = Y[k+1] - Y[k];
-        if (gap >= 2 * margin + 8) {
-          const available = gap - 2 * margin;
-          const numLanes = Math.floor(available / step) + 1;
+        if (gap >= 2 * LANE_MARGIN + 8) {
+          const available = gap - 2 * LANE_MARGIN;
+          const numLanes = Math.floor(available / LANE_STEP) + 1;
           if (numLanes > 0) {
-            const occupied = (numLanes - 1) * step;
+            const occupied = (numLanes - 1) * LANE_STEP;
             const leftMargin = Math.round((gap - occupied) / 2);
-            for (let i = 0; i < numLanes; i++) newY.add(Y[k] + leftMargin + i * step);
+            for (let i = 0; i < numLanes; i++) newY.add(Y[k] + leftMargin + i * LANE_STEP);
           }
         } else if (gap > 32) {
           newY.add(Math.round((Y[k] + Y[k+1]) / 2));

@@ -1,4 +1,6 @@
 #!/usr/bin/env -S tsx
+// @ts-nocheck — ported .mjs → .ts 1:1 (see repo policy in drawio/engine/builder.ts header):
+// engine files migrated from plain JS skip the type-audit; kit-native .ts files stay fully checked.
 // bpmn-build.ts — IR → BPMN → viewer pipeline (TypeScript; runs via tsx — see scripts/tsrun.sh).
 //   tsrun.sh bpmn-build.ts --dir <feature>  → (1) every *.ir.json: semcheck + layout → write .bpmn  (2) build {feature}-bpmn-editor.html
 //   tsrun.sh bpmn-build.ts --verify   → semcheck every IR + validate layout of every .bpmn (node in correct lane / lines don't overlap / task not clipped)

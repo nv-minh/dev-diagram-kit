@@ -1,3 +1,5 @@
+// @ts-nocheck — ported .mjs → .ts 1:1 (see repo policy in drawio/engine/builder.ts header):
+// engine files migrated from plain JS skip the type-audit; kit-native .ts files stay fully checked.
 // bpmn-layout.ts — automatic BPMN swimlane layout engine from an IR.
 // Takes IR { process, lanes[], nodes[], flows[] } → generates full BPMN 2.0 XML (semantic + BPMNDiagram).
 // Handles: (1) column assignment via longest-path rank, (2) row splitting on cell collisions, (3) edge

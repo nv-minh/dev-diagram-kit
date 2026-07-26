@@ -1,3 +1,5 @@
+// @ts-nocheck — ported .mjs → .ts 1:1 (see repo policy in drawio/engine/builder.ts header):
+// engine files migrated from plain JS skip the type-audit; kit-native .ts files stay fully checked.
 // bpmn-semcheck.ts — Validates the IR (intermediate representation) before layout.
 // 2 tiers:
 //   (A) STRUCTURAL — 100% machine-checkable: IR is graph-valid (start/end, reachable, gateway branches, orphans...).
