@@ -113,10 +113,11 @@ Client: Client (Web / Mobile) {
 }
 
 Backend: Backend {
-  API: API Gateway
-  Auth: Auth Service
-  Core: Core Engine { style.fill: "#FFF4E5" }   # highlight the main component
-  DB: Database { shape: cylinder; style.fill: "#E6F4EA" }   # DB = cylinder
+  API: API Gateway { shape: hexagon; style.fill: "#E0E7FF" }    # gateway/proxy/LB = hexagon
+  Auth: Auth Service { style.fill: "#E6F4EA" }                 # service = rectangle (default) + green
+  Core: Core Engine { style.fill: "#FFF4E5" }                  # highlight the main component
+  Cache: Redis cache { shape: stored_data; style.fill: "#CCFBF1" }  # cache = stored_data
+  DB: Database { shape: cylinder; style.fill: "#F1EAFB" }      # DB/store = cylinder
 }
 
 # External services = dashed-border container:
@@ -136,7 +137,7 @@ Backend.Auth -> External.Google: OAuth callback
 
 **Rules:**
 - Nested container: `Backend: { API: ...; DB: {shape: cylinder} }`. Reference children: `Backend.API`.
-- Suggested shapes: `person` (actor), `cylinder` (DB/storage), `queue` (message queue), default ▭ (service).
+- Suggested shapes (full catalog in @../../rules/node-shapes.md): `person` (actor) · `cylinder` (DB/store/warehouse/vector DB) · `stored_data` (cache/object/lake) · `queue` (bus/topic) · `hexagon` (API gateway/proxy/LB/ingress) · `cloud` (CDN/DNS) · `parallelogram` (ETL/pipeline/CI-CD) · `package` (registry/container/cluster) · `document` (config/log) · `oval` (trigger/scheduler) · `diamond` (decision/policy) · default `rectangle` (service/function/worker). **Pick the shape that reveals the type — don't default everything to a rectangle.**
 - **Technology icons (optional, per @../../rules/icon-map.md):** infrastructure/tech/external-system nodes (DB/cache/queue/cloud/3rd-party) → add `icon:` from the resolver: `ICON="$("${CLAUDE_PLUGIN_ROOT:-.claude}/scripts/icon-path.sh" redis)"` then `Cache: Redis { icon: "$ICON" }`. Automatic when the node name matches a tech; `--no-icons` to disable; **only infrastructure/tech nodes** (don't stuff every box — wrong altitude).
 - External services: wrap in a `style.stroke-dash: 3` container (dashed border) — to distinguish "outside our control".
 - Highlight the main component with `style.fill`. Don't color everything — 1-2 accent colors is enough.
@@ -196,3 +197,4 @@ Need changes? /d2-architect --feature {feature} (the skill enters update mode au
 - @../../rules/feature-bootstrap.md
 - @../../rules/language.md
 - @../../rules/icon-map.md (inserting technology icons; resolver `scripts/icon-path.sh`)
+- @../../rules/node-shapes.md (node type → D2 shape + icon + color — gateway=hexagon, cache=stored_data, DB=cylinder, …)

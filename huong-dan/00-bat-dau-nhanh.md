@@ -68,9 +68,9 @@ claude
 Trong chat gõ (không cần chuẩn bị gì — skill sẽ hỏi lại chỗ thiếu):
 
 ```
-/activity-swimlane "Khách đặt món; hệ thống tính tiền và gọi cổng thanh toán;
-nhà hàng xác nhận rồi chuẩn bị; hệ thống gán shipper; shipper giao;
-khách nhận. Nhánh lỗi: thanh toán fail, nhà hàng từ chối, giao thất bại" --feature food-delivery
+/activity-swimlane "Claims đăng ký claim; Underwriter kiểm coverage; nếu được cover
+thì Claims yêu cầu thanh toán; Finance duyệt và trả tiền; Claims đóng. Nhánh lỗi: không cover → từ chối,
+thanh toán bị reject" --feature atlas-re
 ```
 
 Skill sẽ:
@@ -82,7 +82,7 @@ Skill sẽ:
 
 ## Bước 4 — Xem kết quả mẫu trước khi tự làm
 
-Mở thư mục `example/food-delivery/` trong gói này — đó là **feature nhiều luồng** đã vẽ sẵn qua **11/12 skill** (chưa gồm `/system-design`), kèm ảnh render trong `example/food-delivery/_rendered/`. Đối chiếu output của bạn với bản mẫu để biết "đúng thì trông thế nào".
+Mở thư mục `example/atlas-re/` trong gói này — ví dụ làm sẵn cho **mọi skill diagram** (kiến trúc, hành vi, dữ liệu, con người, cloud), sinh bằng pipeline thật của từng skill. Đối chiếu output của bạn với bản mẫu để biết "đúng thì trông thế nào".
 
 Đọc `example/README.md` để có bản đồ file → skill.
 

@@ -1,0 +1,37 @@
+{
+  "process": { "id": "Process_claim_approval", "title": "Claim Approval — End to End" },
+  "lanes": [
+    { "id": "Lane_claims",     "name": "Claims handler" },
+    { "id": "Lane_underwriter","name": "Underwriter" },
+    { "id": "Lane_finance",    "name": "Finance" }
+  ],
+  "nodes": [
+    { "id": "Start_1",         "kind": "start",   "lane": "Lane_claims",      "name": "Loss reported" },
+    { "id": "Task_register",   "kind": "task",    "lane": "Lane_claims",      "name": "Register claim (precautionary)" },
+    { "id": "Task_validate",   "kind": "task",    "lane": "Lane_underwriter", "name": "Validate against contract" },
+    { "id": "GW_covered",      "kind": "gateway", "lane": "Lane_underwriter", "name": "Loss covered?" },
+    { "id": "End_decline",     "kind": "end",     "lane": "Lane_claims",      "name": "Decline claim (stop)" },
+    { "id": "Task_progress",   "kind": "task",    "lane": "Lane_claims",      "name": "Move claim to in-progress" },
+    { "id": "Task_request",    "kind": "task",    "lane": "Lane_claims",      "name": "Request claim payment" },
+    { "id": "Task_approve",    "kind": "task",    "lane": "Lane_finance",     "name": "Approve payment" },
+    { "id": "GW_approve",      "kind": "gateway", "lane": "Lane_finance",     "name": "Payment approved?" },
+    { "id": "End_rejected",    "kind": "end",     "lane": "Lane_finance",     "name": "Payment rejected (stop)" },
+    { "id": "Task_pay",        "kind": "task",    "lane": "Lane_finance",     "name": "Pay the claim" },
+    { "id": "Task_close",      "kind": "task",    "lane": "Lane_claims",      "name": "Close claim" },
+    { "id": "End_closed",      "kind": "end",     "lane": "Lane_claims",      "name": "Claim closed" }
+  ],
+  "flows": [
+    { "id": "Flow_start",     "src": "Start_1",       "tgt": "Task_register" },
+    { "id": "Flow_toval",     "src": "Task_register", "tgt": "Task_validate" },
+    { "id": "Flow_togw1",     "src": "Task_validate", "tgt": "GW_covered" },
+    { "id": "Flow_no",        "src": "GW_covered",    "tgt": "End_decline",  "name": "No" },
+    { "id": "Flow_yes",       "src": "GW_covered",    "tgt": "Task_progress", "name": "Yes" },
+    { "id": "Flow_toreq",     "src": "Task_progress", "tgt": "Task_request" },
+    { "id": "Flow_toappr",    "src": "Task_request",  "tgt": "Task_approve" },
+    { "id": "Flow_togw2",     "src": "Task_approve",  "tgt": "GW_approve" },
+    { "id": "Flow_rej",       "src": "GW_approve",    "tgt": "End_rejected", "name": "No" },
+    { "id": "Flow_ok",        "src": "GW_approve",    "tgt": "Task_pay",     "name": "Yes" },
+    { "id": "Flow_toclose",   "src": "Task_pay",      "tgt": "Task_close" },
+    { "id": "Flow_todone",    "src": "Task_close",    "tgt": "End_closed" }
+  ]
+}

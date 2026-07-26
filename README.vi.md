@@ -2,7 +2,7 @@
 
 Bộ skill vẽ sơ đồ và làm tài liệu cho **dev làm công việc BA**, đóng gói thành plugin [Claude Code](https://docs.claude.com/en/docs/claude-code). Mô tả hệ thống hoặc quy trình bằng lời — hoặc trỏ vào một codebase — kit sẽ vẽ đúng loại sơ đồ (Mermaid, PlantUML, D2 hoặc BPMN), tự kiểm cú pháp rồi render. Output song ngữ, tự bám theo ngôn ngữ bạn gõ.
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE) &nbsp; 22 skill &nbsp;·&nbsp; Mermaid / PlantUML / D2 / BPMN &nbsp;·&nbsp; EN / VI
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE) &nbsp; 26 skill &nbsp;·&nbsp; Mermaid / PlantUML / D2 / BPMN / draw.io &nbsp;·&nbsp; EN / VI
 
 [English](README.md) · **Tiếng Việt**
 
@@ -10,7 +10,7 @@ Bộ skill vẽ sơ đồ và làm tài liệu cho **dev làm công việc BA**,
 
 ## Danh sách skill
 
-Hai mươi hai skill. Mười bảy skill vẽ sơ đồ; `/scan-project` và `/code-flow` đọc code; `/diagram` chọn đúng loại; `/gallery` gom thành một file bàn giao; `/sync-confluence` sync sang Confluence.
+Hai mươi sáu skill. Hai mươi mốt skill vẽ sơ đồ (gồm bốn skill **draw.io** vẽ kiến trúc cloud với stencil AWS/Azure/GCP/Databricks thật); `/scan-project` và `/code-flow` đọc code; `/diagram` chọn đúng loại; `/gallery` gom thành một file bàn giao; `/sync-confluence` sync sang Confluence. Mọi sơ đồ đều qua cổng validate thống nhất (`diagram-validate`) trước khi báo xong.
 
 | Skill | Vẽ gì | Engine | Khi nào dùng |
 |---|---|---|---|
@@ -32,6 +32,7 @@ Hai mươi hai skill. Mười bảy skill vẽ sơ đồ; `/scan-project` và `/
 | `/system-design` | **C4 đa tầng** (Context → Container → Component) + runtime view + bản HTML | D2 + HTML | Hệ thống lớn cần zoom nhiều mức + export PNG/PDF |
 | `/usecase-diagram` | Use case diagram (actor + use case) | PlantUML | Kickoff, phạm vi hệ thống, include/extend |
 | `/orgchart` | Sơ đồ tổ chức / reporting (+ tuỳ chọn bản power/interest) | D2 (+ Mermaid) | Kickoff — ai báo cáo ai, phân tích stakeholder |
+| `/drawio-aws` · `/drawio-azure` · `/drawio-gcp` · `/drawio-databricks` | **Kiến trúc cloud với stencil cloud thật** (icon dịch vụ chính chủ, đã validate) | draw.io | Review kiến trúc / Well-Architected — đúng thương hiệu, không phải hộp chung chung |
 | `/scan-project` | **Scan codebase** → bộ sơ đồ kiến trúc (C4 + module + ERD + sequence) | D2 + Mermaid | Reverse-engineer project có sẵn (brownfield) |
 | `/diagram` | **Router** — mô tả nhu cầu, tự chọn + chạy đúng skill | — | "Nên dùng cái nào trong đám này?" |
 | `/gallery` | **Bộ bàn giao 1 file** — mọi sơ đồ của 1 feature, tab, có toolbar export | HTML | Bàn giao stakeholder (Copy/PNG/PDF) |
@@ -159,6 +160,35 @@ Table payments {
 
 Bản trình bày C4 (dark theme, export PNG/PDF một chạm) ghi ở `docs/{feature}/system-design/`.
 
+## Ví dụ làm sẵn — Atlas Re
+
+Một nền tảng underwriting tái bảo hiểm *giả định, ẩn danh* (mô phỏng theo codebase NestJS + React thật — không tên/field/path thật). **Mỗi skill diagram có một ví dụ render sẵn**, sinh bằng pipeline thật. Xem [`example/atlas-re/README.md`](example/atlas-re/README.md) cho danh sách đầy đủ + [`DOMAIN.md`](example/atlas-re/DOMAIN.md) cho domain.
+
+**Kiến trúc hệ thống** — `/d2-architect` (mọi khối đều có icon tech: React, nginx, NestJS, Postgres, Redis, Kafka, Azure; gateway = hexagon, cache = `stored_data`, DB = cylinder, queue = `queue`):
+
+<img src="example/atlas-re/d2-architect/atlas-re.svg" alt="Kiến trúc Atlas Re" width="780">
+
+**C4 Container (L2)** — `/system-design` (cấp Context + Container):
+
+<img src="example/atlas-re/system-design/atlas-re-container.svg" alt="C4 container Atlas Re" width="780">
+
+**Data model** — `/d2-erd` (cũng có DBML + `/erd` inline):
+
+<img src="example/atlas-re/d2-erd/atlas-re.svg" alt="Data model Atlas Re" width="780">
+
+**Hành vi + con người** — `/sequence` · `/state` · `/erd` (Mermaid inline trong [`srs/`](example/atlas-re/srs/)), `/activity-swimlane` & `/usecase-diagram` (PlantUML):
+
+<img src="example/atlas-re/activity-swimlane/atlas-re-claim-approval-swimlane.svg" alt="Swimlane claim Atlas Re" width="520"> <img src="example/atlas-re/usecases/atlas-re-usecase-diagram.svg" alt="Use case Atlas Re" width="360">
+
+**Cloud (draw.io, stencil thật)** — `/drawio-azure` (cloud chính), cộng fabricated `/drawio-aws` · `/drawio-gcp` · `/drawio-databricks`. Click ảnh để mở file `.drawio` nguồn (sửa được bằng [draw.io](https://app.diagrams.net)):
+
+<a href="example/atlas-re/drawio/atlas-re-azure.drawio"><img src="example/atlas-re/drawio/atlas-re-azure.png" alt="Atlas Re — Azure" width="360"></a>
+<a href="example/atlas-re/drawio/atlas-re-aws.drawio"><img src="example/atlas-re/drawio/atlas-re-aws.png" alt="Atlas Re — AWS" width="360"></a>
+<a href="example/atlas-re/drawio/atlas-re-gcp.drawio"><img src="example/atlas-re/drawio/atlas-re-gcp.png" alt="Atlas Re — GCP" width="360"></a>
+<a href="example/atlas-re/drawio/atlas-re-databricks.drawio"><img src="example/atlas-re/drawio/atlas-re-databricks.png" alt="Atlas Re — Databricks lakehouse" width="360"></a>
+
+Trong example còn: `/dfd`, `/journey`, `/mindmap`, `/timeline`, `/orgchart`, `/bpmn`, `/code-flow`. Sinh lại bằng lệnh trong [`example/atlas-re/README.md`](example/atlas-re/README.md).
+
 ## Bắt đầu
 
 Kit viết cho Claude Code. Có hai cách cài.
@@ -170,7 +200,7 @@ Kit viết cho Claude Code. Có hai cách cài.
 /plugin install dev-diagram-kit
 ```
 
-Cả 22 lệnh có sẵn ngay. BPMN engine tự cài dependency Node ở phiên đầu qua hook — không phải làm tay.
+Cả 26 lệnh có sẵn ngay. BPMN engine tự cài dependency Node ở phiên đầu qua hook — không phải làm tay.
 
 ### Cài kiểu copy (mọi trường hợp / tool khác)
 
@@ -193,8 +223,8 @@ Chỉ cài thứ skill bạn dùng cần (`scripts/doctor.sh` báo cái nào thi
 ### Chạy thử
 
 ```
-/sequence "Khách đặt món, hệ thống gọi cổng thanh toán, nhà hàng xác nhận" --feature food-delivery
-/system-design "Hệ thống đặt món: web/mobile, backend, DB, cổng thanh toán" --feature food-delivery
+/sequence "Underwriter nộp rủi ro, engine định giá, hợp đồng được bind" --feature atlas-re
+/system-design "Nền tảng underwriting: web, API gateway, services, Postgres, Azure AD" --feature atlas-re
 /scan-project              # reverse-engineer sơ đồ từ codebase hiện tại
 ```
 
@@ -204,7 +234,7 @@ Chỉ cài thứ skill bạn dùng cần (`scripts/doctor.sh` báo cái nào thi
 - **Output song ngữ.** Nhãn, câu hỏi, báo cáo bám theo ngôn ngữ input; ép bằng `--lang en|vi` (xem `rules/language.md`). Keyword cú pháp và tên định danh thật giữ nguyên tiếng Anh.
 - **Icon công nghệ tự động.** Sơ đồ kiến trúc và `/scan-project` tự chèn logo (Redis, Postgres, Kafka, AWS, nginx, React, …) khi node khớp một công nghệ — Devicon bundle offline + fallback CDN (`rules/icon-map.md`). Tắt bằng `--no-icons`.
 - **Đúng mức chi tiết (altitude).** Audience là dev nên chi tiết kỹ thuật (column, endpoint, schema) được dùng khi hợp; kit chọn mức theo loại sơ đồ và người đọc, không cấm đoán.
-- **Tự bắt lỗi.** Mermaid compile-check (`mermaid-verify.mjs`); D2/DBML validate qua CLI; BPMN semcheck kiểm phủ; sơ đồ D2/C4 tự soi lại từ ảnh render trước khi báo xong.
+- **Tự bắt lỗi.** Mọi sơ đồ qua một cổng validate thống nhất (`scripts/diagram-validate.ts`) trước khi báo xong — compile-check qua Mermaid / D2 / PlantUML / BPMN / draw.io, cộng audit stencil-catalog + design-principle của draw.io (không icon bịa, không edge đứt, lời khuyên AWS Well-Architected). Mermaid compile-check (`mermaid-verify.ts`); D2/DBML validate qua CLI; BPMN semcheck kiểm phủ; sơ đồ D2/C4 tự soi lại từ ảnh render.
 - **Router + bộ bàn giao.** `/diagram` chọn đúng skill cho một nhu cầu (hỏi tối đa 2 câu rồi chạy); `/gallery` gom mọi sơ đồ của 1 feature thành một HTML tabbed self-contained (Copy/PNG/PDF) để bàn giao stakeholder.
 - **Human-in-the-loop.** Skill không tự ghi im lặng — mọi thay đổi đều preview và xác nhận trước (`rules/approval-gate.md`). `/sync-confluence` luôn hiện diff và hỏi trước khi đụng trang.
 
@@ -215,14 +245,14 @@ dev-diagram-kit/
 ├── .claude-plugin/plugin.json     Manifest plugin (/plugin install)
 ├── marketplace.json               Catalog marketplace (/plugin marketplace add)
 ├── install.sh                     Installer kiểu copy (không cần plugin)
-├── skills/                        22 skill
+├── skills/                        26 skill
 ├── agents/                        diagram-reviewer
 ├── rules/                         Rule dùng chung (approval-gate, diagram-selection, diagram-style, language, icon-map, …)
-├── scripts/                       mermaid-verify.mjs · doctor.sh · plantuml-ensure.sh · icon-path.sh · render helper
+├── scripts/                       mermaid-verify.ts · diagram-validate.ts · doctor.sh · plantuml-ensure.sh · drawio-catalog-ensure.sh · icon-path.sh · tsrun.sh · render helper
 ├── templates/                     Khung file diagram
 ├── hooks/                         SessionStart hook (tự cài BPMN engine)
 ├── assets/icons/                  Icon công nghệ bundle sẵn (Devicon MIT, Simple Icons CC0)
-├── example/                       Ví dụ đầy đủ: feature food-delivery
+├── example/                       Ví dụ đầy đủ: feature atlas-re
 ├── explain-skills/                Giải thích từng skill (song ngữ: `*.md` tiếng Anh, `*.vi.md` tiếng Việt)
 └── guides/ · huong-dan/           Hướng dẫn bắt đầu (tiếng Anh / tiếng Việt)
 ```

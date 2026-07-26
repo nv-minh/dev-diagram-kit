@@ -2,9 +2,9 @@
 
 **English** · [Tiếng Việt](../huong-dan/03-huong-dan-tung-skill.md)
 
-> Each skill: call syntax, what to prepare, what it asks, where the output goes, a real example (compare with `example/food-delivery/`). All skills follow the **approval gate** — preview before writing.
+> Each skill: call syntax, what to prepare, what it asks, where the output goes, a real example (compare with `example/atlas-re/`). All skills follow the **approval gate** — preview before writing.
 
-Notation: `<slug>` = feature name in kebab-case (e.g. `food-delivery`). `"..."` = business description in words.
+Notation: `<slug>` = feature name in kebab-case (e.g. `atlas-re`). `"..."` = business description in words.
 
 ---
 
@@ -18,14 +18,14 @@ Notation: `<slug>` = feature name in kebab-case (e.g. `food-delivery`). `"..."` 
 
 **What the skill asks:** which actors are involved · message order · error/alt branches.
 
-**Output:** `docs/{slug}/srs/{slug}-flows.md` — one section per flow, inline Mermaid `sequenceDiagram`. Auto compile-checked via `mermaid-verify.mjs`.
+**Output:** `docs/{slug}/srs/{slug}-flows.md` — one section per flow, inline Mermaid `sequenceDiagram`. Auto compile-checked via `mermaid-verify.ts`.
 
 **Example:**
 ```
-/sequence "Customer confirms the order; the system calls the payment gateway; if payment succeeds
-then send the order to the restaurant, the restaurant confirms or declines; declining triggers a refund" --feature food-delivery
+/sequence "Underwriter creates a submission, the pricing engine rates it, the contract is bound;
+if pricing fails the submission is declined" --feature atlas-re
 ```
-→ Compare with: `example/food-delivery/srs/food-delivery-flows.md` (2 sequences) + `_rendered/sequence-*.png`.
+→ Compare with: `example/atlas-re/srs/atlas-re-flows.md` (submission → quote → bind sequence).
 
 **Tip:** solid arrow `->>` = synchronous call, dashed arrow `-->>` = response/internal. Branches use `alt/else`.
 
@@ -43,10 +43,10 @@ then send the order to the restaurant, the restaurant confirms or declines; decl
 
 **Example:**
 ```
-/activity "Process an order from placement to completion: check payment, send to restaurant,
-assign shipper, deliver, handle COD" --feature food-delivery
+/activity "Handle a claim end-to-end: validate coverage, register, investigate, approve payment,
+settle; if not covered, decline" --feature atlas-re
 ```
-→ Compare with: the "Flow: End-to-end order processing" section + `_rendered/activity-order-flowchart.png`.
+→ Compare with: the "Claim registration" activity section in `example/atlas-re/srs/atlas-re-flows.md`.
 
 ---
 
@@ -54,7 +54,7 @@ assign shipper, deliver, handle COD" --feature food-delivery
 
 **Syntax:** `/activity-swimlane "<process description>" --feature <slug>`
 
-**Use when:** **default for multi-role processes** — each role gets its own straight-column lane, nodes jump lanes according to who performs them. This is the clearest diagram type when there's a lot of cross-role interaction (Customer/System/Restaurant/Shipper/Support...).
+**Use when:** **default for multi-role processes** — each role gets its own straight-column lane, nodes jump lanes according to who performs them. This is the clearest diagram type when there's a lot of cross-role interaction (Underwriter/Broker/Claims/Finance...).
 
 **Needs internet** (renders via plantuml.com — see the privacy note in `01-install-tools.md`).
 
@@ -64,11 +64,11 @@ assign shipper, deliver, handle COD" --feature food-delivery
 
 **Example:**
 ```
-/activity-swimlane "Coordinate a food order: customer orders, the system calculates the total and calls payment,
-the restaurant confirms, the system assigns a shipper, the shipper delivers; exceptions: payment fails,
-restaurant declines, no shippers available, delivery fails and routes to support" --feature food-delivery
+/activity-swimlane "Claim approval: Claims handler registers the claim, Underwriter validates coverage,
+Claims requests payment, Finance approves and pays, Claims closes; exceptions: not covered → decline,
+payment rejected" --feature atlas-re
 ```
-→ Compare with: `example/food-delivery/activity-swimlane/*.puml/.svg/.png` — **5 real lanes**.
+→ Compare with: `example/atlas-re/activity-swimlane/atlas-re-claim-approval-swimlane.svg` — **3 real lanes**.
 
 ---
 
@@ -88,10 +88,10 @@ restaurant declines, no shippers available, delivery fails and routes to support
 
 **Example:**
 ```
-/bpmn "End-to-end food ordering & delivery process, 4 roles Customer/System/Restaurant/Shipper,
-including COD branch, payment failure, restaurant decline, no shippers available, delivery failure" --feature food-delivery
+/bpmn "End-to-end claim approval, 3 roles Claims handler/Underwriter/Finance,
+including the coverage check branch, payment approval branch, decline and rejection paths" --feature atlas-re
 ```
-→ Compare with: `example/food-delivery/bpmn/order-fulfillment.ir.json` → `.bpmn`. Open the HTML editor to view/edit.
+→ Compare with: `example/atlas-re/bpmn/claim-approval.ir.json` → `.bpmn`. Open the HTML editor to view/edit.
 
 ---
 
@@ -107,9 +107,9 @@ including COD branch, payment failure, restaurant decline, no shippers available
 
 **Example:**
 ```
-/state Order --feature food-delivery
+/state Contract --feature atlas-re
 ```
-→ Compare with: `example/food-delivery/srs/food-delivery-states.md` (Order: 11 states + Payment: 7 states) + `_rendered/state-*.png`.
+→ Compare with: `example/atlas-re/srs/atlas-re-states.md` (Contract + Claim state machines).
 
 ---
 
@@ -123,7 +123,7 @@ including COD branch, payment failure, restaurant decline, no shippers available
 
 **Output:** `docs/{slug}/srs/{slug}-erd.md` — Mermaid `erDiagram`. Auto compile-checked.
 
-**Example:** `/erd --feature food-delivery` → `example/food-delivery/srs/food-delivery-erd.md` + `_rendered/erd-mermaid.png`.
+**Example:** `/erd --feature atlas-re` → `example/atlas-re/srs/atlas-re-erd.md`.
 
 ---
 
@@ -137,7 +137,7 @@ including COD branch, payment failure, restaurant decline, no shippers available
 
 **Output:** `docs/{slug}/d2-erd/{slug}.d2` + `.svg` (+ `.png` if Chrome is available). Renders via `.claude/skills/d2-activity/render.sh` (shared).
 
-**Example:** `/d2-erd --feature food-delivery` → `example/food-delivery/d2-erd/food-delivery.svg/.png`.
+**Example:** `/d2-erd --feature atlas-re` → `example/atlas-re/d2-erd/atlas-re.svg`.
 
 ---
 
@@ -153,7 +153,7 @@ including COD branch, payment failure, restaurant decline, no shippers available
 
 **Output:** `docs/{slug}/dbdiagram/{slug}.dbml` (source) + `.sql` (PostgreSQL export, auto-validated). Import into dbdiagram.io/dbdocs.io.
 
-**Example:** `/dbdiagram --feature food-delivery` → `example/food-delivery/dbdiagram/food-delivery.dbml` + `.sql` (has 4 enums + indexes).
+**Example:** `/dbdiagram --feature atlas-re` → `example/atlas-re/dbdiagram/atlas-re.dbml` (5 enums + indexes).
 
 ---
 
@@ -167,7 +167,7 @@ including COD branch, payment failure, restaurant decline, no shippers available
 
 **Output:** `docs/{slug}/d2-activity/{slug}.d2` + `.svg`/`.png`.
 
-**Example:** `/d2-activity "End-to-end order processing" --feature food-delivery` → `example/food-delivery/d2-activity/food-delivery.svg`.
+**Example:** `/d2-activity "Claim handling with reopen branch" --feature atlas-re` → `example/atlas-re/d2-activity/atlas-re.svg`.
 
 ---
 
@@ -183,7 +183,7 @@ including COD branch, payment failure, restaurant decline, no shippers available
 
 **Output:** `docs/{slug}/d2-architect/{slug}.d2` + `.svg`/`.png`.
 
-**Example:** `/d2-architect --feature food-delivery` → `example/food-delivery/d2-architect/food-delivery.svg` (client apps → gateway → services + DB + queue → external services).
+**Example:** `/d2-architect --feature atlas-re` → `example/atlas-re/d2-architect/atlas-re.svg` (client apps → gateway → services + DB + queue → external services).
 
 ---
 
@@ -199,7 +199,7 @@ including COD branch, payment failure, restaurant decline, no shippers available
 
 **Output:** `docs/{slug}/usecases/{slug}-usecase-diagram.puml` + `.svg`, image + Actors/Relationships table embedded into `{slug}-usecase-index.md`.
 
-**Example:** `/usecase-diagram --feature food-delivery` → `example/food-delivery/usecases/food-delivery-usecase-diagram.svg` (5 actors, 9 use cases, include/extend).
+**Example:** `/usecase-diagram --feature atlas-re` → `example/atlas-re/usecases/atlas-re-usecase-diagram.svg` (4 actors, 6 use cases, include/extend).
 
 ---
 
@@ -224,8 +224,8 @@ By default draws **L1 Context + L2 Container**; L3 Component is only drawn with 
 
 **Example:**
 ```
-/system-design --feature food-delivery
-/system-design --feature food-delivery --component order-service
+/system-design --feature atlas-re
+/system-design --feature atlas-re --component order-service
 ```
 
 ---

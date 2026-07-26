@@ -99,4 +99,4 @@ Every skill writes into `docs/{slug}/` per the `rules/naming-conventions.md` con
 
 > ✱ `/scan-project` writes into `docs/_shared/architecture/` (architecture is cross-feature, not tied to a single slug). `/sync-confluence` is the one exception that does **not** generate a file in `docs/` — it writes to Confluence (a side effect outside the vault).
 
-See `example/food-delivery/` for the real structure.
+See `example/atlas-re/` for the real structure.

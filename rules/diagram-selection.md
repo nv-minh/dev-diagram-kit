@@ -21,6 +21,10 @@ paths:
   - ".claude/skills/diagram/**"
   - ".claude/skills/gallery/**"
   - ".claude/skills/orgchart/**"
+  - ".claude/skills/drawio-aws/**"
+  - ".claude/skills/drawio-azure/**"
+  - ".claude/skills/drawio-gcp/**"
+  - ".claude/skills/drawio-databricks/**"
   - "docs/**/srs/*.md"
 ---
 
@@ -50,6 +54,7 @@ paths:
 | **Roadmap / milestones over time** (PM-light, NOT Gantt task-dependency) | **Timeline (Mermaid)** | `/timeline` | `docs/{feature}/{feature}-timeline.md` (or `_shared/`) | Milestones grouped by period; deliberately not a Gantt |
 | **Who reports to whom** (org / reporting hierarchy, grouped by team — kickoff, stakeholder analysis) | **Org chart (D2)** | `/orgchart` | `docs/{feature}/orgchart/{slug}-orgchart.svg` (or `_shared/`) | Reporting tree with `shape: person`; NOT a RACI or power/interest map |
 | **Trace ONE function/module in code → a flow** (sequence/activity/state) with `file:line` provenance | **Code-flow** | `/code-flow` | `docs/{feature}/code-flow/{slug}-flow.md` | Reads code for a SINGLE target's behavior; the targeted sibling of `/scan-project` (whole codebase) |
+| **Cloud architecture with REAL cloud stencils** (AWS/Azure/GCP/Databricks services shown with their official icons, validated against a ground-truth stencil catalog — for an arch review / Well-Architected discussion) | **Cloud architecture (draw.io)** | `/drawio-aws` `/drawio-azure` `/drawio-gcp` `/drawio-databricks` | `docs/{feature}/drawio/{slug}.drawio` (+ optional `.svg`) | Cloud-brand-accurate icons (mxgraph.*), not generic boxes; `.drawio` opens in draw.io app/web/VS Code. Differs from `/system-design`/`/d2-architect` (C4 logical, D2, generic shapes). |
 
 ## Abstraction level — DON'T mix diagrams with UC
 
@@ -236,6 +241,25 @@ paths:
 **Use when:** you have code and want a FLOW diagram (sequence/activity/state) for ONE specific function/method/module — read the code, trace its behavior, render with `file:line` provenance.
 **Different from `/scan-project`:** scan-project draws the WHOLE-codebase architecture set (C4/modules/ERD); code-flow draws ONE target's behavior. Use code-flow to explain "how does this function work"; use scan-project for "what's the architecture of this project".
 
+### Cloud architecture (draw.io) — `/drawio-aws` `/drawio-azure` `/drawio-gcp` `/drawio-databricks`
+
+**Use when:** the diagram must show actual cloud services with their **official icons** (AWS S3/Lambda/DynamoDB, Azure AKS/Cosmos DB, GCP GKE/Cloud SQL, Databricks Delta/Unity Catalog) — e.g. for a cloud-architecture review, a Well-Architected discussion, or a deck stakeholders recognize by brand. Output is a `.drawio` file; stencils are validated against a ground-truth catalog (no hallucinated icons).
+
+**Don't use when:**
+- You only need a generic **logical** architecture (boxes, not brand icons) → `/system-design` (C4, D2) or `/d2-architect` (1-level context). Those are lighter and render to SVG inline.
+- azure/gcp catalogs aren't downloaded yet (they're large, gitignored) → run `scripts/drawio-catalog-ensure.sh` first, or use `/drawio-aws`/`/drawio-databricks` (ship in-repo).
+
+**`/system-design` (C4/D2) vs `/drawio-*` — quick pick (both are architecture):**
+
+| | `/system-design` / `/d2-architect` | `/drawio-aws` … `/drawio-databricks` |
+|---|---|---|
+| Shapes | generic logical boxes (D2) | **official cloud-brand icons** (mxgraph.*) |
+| Output | `.d2`/`.svg` (+ HTML for C4) | `.drawio` (+ optional `.svg`) |
+| Validation | compile + diagram-validate lint | compile + **stencil catalog** + Well-Architected + geometry audits |
+| When | logical C4 / context story, brand-agnostic | cloud-brand-accurate, arch review / Well-Architected |
+
+→ Need a logical "what blocks + who calls whom" story → `/system-design`. Need stakeholders to recognize each cloud service by its real icon → `/drawio-*`.
+
 ## Combining multiple diagrams for one feature
 
 A complex feature often needs **multiple complementary diagrams**:
@@ -292,4 +316,4 @@ The Mermaid parser is strict about certain characters in a node label. A violati
 
 ## One-line summary
 
-> **Time-based → Sequence. State-based → State. Multi-role process → Activity-swimlane (PlantUML). Compact process needing inline embed → Activity (Mermaid). Scope-based → Use Case. Data-based → ERD. OMG-standard/BPM-import → BPMN. Data-flow (where data moves) → DFD. Decompose scope → Mindmap. Experience + emotion → Journey. Milestones (PM-light) → Timeline. Reporting hierarchy → Org chart. One function in code → Code-flow. Whole codebase → Scan-project. Not sure which → `/diagram`.**
+> **Time-based → Sequence. State-based → State. Multi-role process → Activity-swimlane (PlantUML). Compact process needing inline embed → Activity (Mermaid). Scope-based → Use Case. Data-based → ERD. OMG-standard/BPM-import → BPMN. Data-flow (where data moves) → DFD. Decompose scope → Mindmap. Experience + emotion → Journey. Milestones (PM-light) → Timeline. Reporting hierarchy → Org chart. One function in code → Code-flow. Whole codebase → Scan-project. Cloud architecture with real cloud icons → /drawio-aws|azure|gcp|databricks. Not sure which → `/diagram`.**

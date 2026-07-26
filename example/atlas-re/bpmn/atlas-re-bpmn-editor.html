@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BPMN — atlas-re</title>
+<!-- MODELER (not a viewer) → drag-and-drop editing like bpmn.io. Download/Save buttons to keep changes. -->
+<link rel="stylesheet" href="https://unpkg.com/bpmn-js@17.11.1/dist/assets/diagram-js.css">
+<link rel="stylesheet" href="https://unpkg.com/bpmn-js@17.11.1/dist/assets/bpmn-js.css">
+<link rel="stylesheet" href="https://unpkg.com/bpmn-js@17.11.1/dist/assets/bpmn-font/css/bpmn.css">
+<style>
+  html, body { margin: 0; height: 100%; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+  #toolbar { position: fixed; top: 0; left: 0; right: 0; height: 46px; background: #1a1a2e; color: #fff;
+             display: flex; align-items: center; gap: 10px; padding: 0 16px; z-index: 10; font-size: 14px; }
+  #toolbar b { font-weight: 600; }
+  #toolbar select { background: #16213e; color: #fff; border: 1px solid #0f3460; border-radius: 6px;
+                    padding: 5px 10px; font-size: 13px; }
+  #toolbar .sp { flex: 1; }
+  #toolbar button { background: #16213e; color: #fff; border: 1px solid #0f3460; border-radius: 6px;
+                    padding: 5px 12px; cursor: pointer; font-size: 13px; }
+  #toolbar button:hover { background: #0f3460; }
+  #toolbar button.primary { background: #2d6a4f; border-color: #40916c; }
+  #toolbar button.primary:hover { background: #40916c; }
+  #dirty { color: #ffd166; font-size: 12px; display: none; }
+  #canvas { position: absolute; top: 46px; left: 0; right: 0; bottom: 0; background: #fafafa; }
+  #err { position: fixed; top: 60px; left: 16px; right: 16px; background: #fee; color: #900;
+         padding: 12px; border-radius: 8px; font-family: monospace; font-size: 12px; white-space: pre-wrap;
+         display: none; z-index: 20; }
+  .bjs-powered-by { display: none; }
+</style>
+<script src="https://unpkg.com/bpmn-js@17.11.1/dist/bpmn-modeler.production.min.js"></script>
+</head>
+<body>
+<div id="toolbar">
+  <b>✏️ BPMN Editor</b>
+  <select id="picker"></select>
+  <span id="dirty">● unsaved changes</span>
+  <span class="sp"></span>
+  <button onclick="zoomFit()">Fit</button>
+  <button onclick="zoomIn()">+</button>
+  <button onclick="zoomOut()">−</button>
+  <button class="primary" onclick="download()">⬇ Download .bpmn</button>
+  <button class="primary" id="saveBtn" onclick="saveToFile()" title="Overwrite the file (requires running through a server, or a browser that supports the File System Access API)">💾 Save</button>
+</div>
+<div id="canvas"></div>
+<div id="err"></div>
+
+<script>
+  // Each process is {slug, title, xml}. The modeler allows edits; remember to Download/Save before switching process.
+  var PROCESSES = [
+  { slug: "claim-approval", title: "Claim Approval — End to End", xml: `<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Def_1" targetNamespace="http://bpmn.io/schema/bpmn">
+  <bpmn:collaboration id="Collaboration_1">
+    <bpmn:participant id="Participant_1" name="Claim Approval — End to End" processRef="Process_claim_approval"/>
+  </bpmn:collaboration>
+  <bpmn:process id="Process_claim_approval" isExecutable="false">
+    <bpmn:laneSet id="LaneSet_1">
+      <bpmn:lane id="Lane_claims" name="Claims handler"><bpmn:flowNodeRef>Start_1</bpmn:flowNodeRef><bpmn:flowNodeRef>Task_register</bpmn:flowNodeRef><bpmn:flowNodeRef>End_decline</bpmn:flowNodeRef><bpmn:flowNodeRef>Task_progress</bpmn:flowNodeRef><bpmn:flowNodeRef>Task_request</bpmn:flowNodeRef><bpmn:flowNodeRef>Task_close</bpmn:flowNodeRef><bpmn:flowNodeRef>End_closed</bpmn:flowNodeRef></bpmn:lane>
+      <bpmn:lane id="Lane_underwriter" name="Underwriter"><bpmn:flowNodeRef>Task_validate</bpmn:flowNodeRef><bpmn:flowNodeRef>GW_covered</bpmn:flowNodeRef></bpmn:lane>
+      <bpmn:lane id="Lane_finance" name="Finance"><bpmn:flowNodeRef>Task_approve</bpmn:flowNodeRef><bpmn:flowNodeRef>GW_approve</bpmn:flowNodeRef><bpmn:flowNodeRef>End_rejected</bpmn:flowNodeRef><bpmn:flowNodeRef>Task_pay</bpmn:flowNodeRef></bpmn:lane>
+    </bpmn:laneSet>
+    <bpmn:startEvent id="Start_1" name="Loss reported"><bpmn:outgoing>Flow_start</bpmn:outgoing></bpmn:startEvent>
+    <bpmn:task id="Task_register" name="Register claim (precautionary)"><bpmn:incoming>Flow_start</bpmn:incoming><bpmn:outgoing>Flow_toval</bpmn:outgoing></bpmn:task>
+    <bpmn:task id="Task_validate" name="Validate against contract"><bpmn:incoming>Flow_toval</bpmn:incoming><bpmn:outgoing>Flow_togw1</bpmn:outgoing></bpmn:task>
+    <bpmn:exclusiveGateway id="GW_covered" name="Loss covered?"><bpmn:incoming>Flow_togw1</bpmn:incoming><bpmn:outgoing>Flow_no</bpmn:outgoing><bpmn:outgoing>Flow_yes</bpmn:outgoing></bpmn:exclusiveGateway>
+    <bpmn:endEvent id="End_decline" name="Decline claim (stop)"><bpmn:incoming>Flow_no</bpmn:incoming></bpmn:endEvent>
+    <bpmn:task id="Task_progress" name="Move claim to in-progress"><bpmn:incoming>Flow_yes</bpmn:incoming><bpmn:outgoing>Flow_toreq</bpmn:outgoing></bpmn:task>
+    <bpmn:task id="Task_request" name="Request claim payment"><bpmn:incoming>Flow_toreq</bpmn:incoming><bpmn:outgoing>Flow_toappr</bpmn:outgoing></bpmn:task>
+    <bpmn:task id="Task_approve" name="Approve payment"><bpmn:incoming>Flow_toappr</bpmn:incoming><bpmn:outgoing>Flow_togw2</bpmn:outgoing></bpmn:task>
+    <bpmn:exclusiveGateway id="GW_approve" name="Payment approved?"><bpmn:incoming>Flow_togw2</bpmn:incoming><bpmn:outgoing>Flow_rej</bpmn:outgoing><bpmn:outgoing>Flow_ok</bpmn:outgoing></bpmn:exclusiveGateway>
+    <bpmn:endEvent id="End_rejected" name="Payment rejected (stop)"><bpmn:incoming>Flow_rej</bpmn:incoming></bpmn:endEvent>
+    <bpmn:task id="Task_pay" name="Pay the claim"><bpmn:incoming>Flow_ok</bpmn:incoming><bpmn:outgoing>Flow_toclose</bpmn:outgoing></bpmn:task>
+    <bpmn:task id="Task_close" name="Close claim"><bpmn:incoming>Flow_toclose</bpmn:incoming><bpmn:outgoing>Flow_todone</bpmn:outgoing></bpmn:task>
+    <bpmn:endEvent id="End_closed" name="Claim closed"><bpmn:incoming>Flow_todone</bpmn:incoming></bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_start" name="" sourceRef="Start_1" targetRef="Task_register"/>
+    <bpmn:sequenceFlow id="Flow_toval" name="" sourceRef="Task_register" targetRef="Task_validate"/>
+    <bpmn:sequenceFlow id="Flow_togw1" name="" sourceRef="Task_validate" targetRef="GW_covered"/>
+    <bpmn:sequenceFlow id="Flow_no" name="No" sourceRef="GW_covered" targetRef="End_decline"/>
+    <bpmn:sequenceFlow id="Flow_yes" name="Yes" sourceRef="GW_covered" targetRef="Task_progress"/>
+    <bpmn:sequenceFlow id="Flow_toreq" name="" sourceRef="Task_progress" targetRef="Task_request"/>
+    <bpmn:sequenceFlow id="Flow_toappr" name="" sourceRef="Task_request" targetRef="Task_approve"/>
+    <bpmn:sequenceFlow id="Flow_togw2" name="" sourceRef="Task_approve" targetRef="GW_approve"/>
+    <bpmn:sequenceFlow id="Flow_rej" name="No" sourceRef="GW_approve" targetRef="End_rejected"/>
+    <bpmn:sequenceFlow id="Flow_ok" name="Yes" sourceRef="GW_approve" targetRef="Task_pay"/>
+    <bpmn:sequenceFlow id="Flow_toclose" name="" sourceRef="Task_pay" targetRef="Task_close"/>
+    <bpmn:sequenceFlow id="Flow_todone" name="" sourceRef="Task_close" targetRef="End_closed"/>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="Diagram_1">
+    <bpmndi:BPMNPlane id="Plane_1" bpmnElement="Collaboration_1">
+      <bpmndi:BPMNShape bpmnElement="Participant_1" isHorizontal="false"><dc:Bounds x="0" y="0" width="1130" height="1400"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="Lane_claims" isHorizontal="false"><dc:Bounds x="0" y="30" width="440" height="1370"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="Lane_underwriter" isHorizontal="false"><dc:Bounds x="440" y="30" width="250" height="1370"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="Lane_finance" isHorizontal="false"><dc:Bounds x="690" y="30" width="440" height="1370"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="Start_1"><dc:Bounds x="107" y="92" width="36" height="36"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="Task_register"><dc:Bounds x="60" y="195" width="130" height="70"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="Task_validate"><dc:Bounds x="500" y="315" width="130" height="70"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="GW_covered"><dc:Bounds x="540" y="445" width="50" height="50"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="End_decline"><dc:Bounds x="107" y="572" width="36" height="36"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="Task_progress"><dc:Bounds x="250" y="555" width="130" height="70"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="Task_request"><dc:Bounds x="60" y="675" width="130" height="70"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="Task_approve"><dc:Bounds x="750" y="795" width="130" height="70"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="GW_approve"><dc:Bounds x="790" y="925" width="50" height="50"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="End_rejected"><dc:Bounds x="797" y="1052" width="36" height="36"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="Task_pay"><dc:Bounds x="940" y="1035" width="130" height="70"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="Task_close"><dc:Bounds x="60" y="1155" width="130" height="70"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="End_closed"><dc:Bounds x="107" y="1292" width="36" height="36"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="Flow_start"><di:waypoint x="125" y="128"/><di:waypoint x="125" y="195"/></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="Flow_toval"><di:waypoint x="125" y="265"/><di:waypoint x="125" y="290"/><di:waypoint x="565" y="290"/><di:waypoint x="565" y="315"/></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="Flow_togw1"><di:waypoint x="565" y="385"/><di:waypoint x="565" y="445"/></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="Flow_no"><di:waypoint x="540" y="470"/><di:waypoint x="520" y="470"/><di:waypoint x="520" y="552"/><di:waypoint x="125" y="552"/><di:waypoint x="125" y="572"/><bpmndi:BPMNLabel><dc:Bounds x="488" y="463" width="24" height="14"/></bpmndi:BPMNLabel></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="Flow_yes"><di:waypoint x="565" y="495"/><di:waypoint x="565" y="525"/><di:waypoint x="315" y="525"/><di:waypoint x="315" y="555"/><bpmndi:BPMNLabel><dc:Bounds x="573" y="518" width="24" height="14"/></bpmndi:BPMNLabel></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="Flow_toreq"><di:waypoint x="315" y="625"/><di:waypoint x="315" y="650"/><di:waypoint x="125" y="650"/><di:waypoint x="125" y="675"/></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="Flow_toappr"><di:waypoint x="125" y="745"/><di:waypoint x="125" y="770"/><di:waypoint x="815" y="770"/><di:waypoint x="815" y="795"/></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="Flow_togw2"><di:waypoint x="815" y="865"/><di:waypoint x="815" y="925"/></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="Flow_rej"><di:waypoint x="815" y="975"/><di:waypoint x="815" y="1052"/><bpmndi:BPMNLabel><dc:Bounds x="823" y="998" width="24" height="14"/></bpmndi:BPMNLabel></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="Flow_ok"><di:waypoint x="840" y="950"/><di:waypoint x="860" y="950"/><di:waypoint x="860" y="1015"/><di:waypoint x="1005" y="1015"/><di:waypoint x="1005" y="1035"/><bpmndi:BPMNLabel><dc:Bounds x="868" y="943" width="24" height="14"/></bpmndi:BPMNLabel></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="Flow_toclose"><di:waypoint x="1005" y="1105"/><di:waypoint x="1005" y="1130"/><di:waypoint x="125" y="1130"/><di:waypoint x="125" y="1155"/></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="Flow_todone"><di:waypoint x="125" y="1225"/><di:waypoint x="125" y="1292"/></bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>` }
+];
+
+  var modeler = new BpmnJS({ container: '#canvas' });
+  var current = null;           // currently open process
+  var dirty = false;            // has unsaved edits
+  var fileHandles = {};         // slug → FileSystemFileHandle (if already picked/opened via the FS API)
+
+  var picker = document.getElementById('picker');
+  PROCESSES.forEach(function (p) {
+    var o = document.createElement('option');
+    o.value = p.slug; o.textContent = p.title;
+    picker.appendChild(o);
+  });
+  picker.addEventListener('change', function () {
+    if (dirty && !confirm('This process has unsaved changes. Switching will lose them. Continue?')) {
+      picker.value = current.slug; return;
+    }
+    location.hash = picker.value;
+  });
+
+  function setDirty(v) { dirty = v; document.getElementById('dirty').style.display = v ? 'inline' : 'none'; }
+
+  function show(slug) {
+    var p = PROCESSES.filter(function (x) { return x.slug === slug; })[0] || PROCESSES[0];
+    if (!p) return;
+    current = p; picker.value = p.slug;
+    document.title = 'BPMN — ' + p.title;
+    document.getElementById('err').style.display = 'none';
+    modeler.importXML(p.xml).then(function () {
+      zoomFit(); setDirty(false);
+      // mark dirty when the user makes an edit
+      modeler.on('commandStack.changed', function () { setDirty(true); });
+    }).catch(function (e) {
+      var el = document.getElementById('err');
+      el.style.display = 'block';
+      el.textContent = 'Error rendering "' + p.title + '":\n' + (e && e.message ? e.message : e) +
+        (e && e.warnings ? '\n\nWarnings:\n' + JSON.stringify(e.warnings, null, 2) : '');
+      console.error(e);
+    });
+  }
+
+  // Get the current (edited) XML from the modeler
+  function currentXml() {
+    return modeler.saveXML({ format: true }).then(function (r) { return r.xml; });
+  }
+
+  // Download the .bpmn file to disk (simple mode — no server needed)
+  window.download = function () {
+    currentXml().then(function (xml) {
+      var blob = new Blob([xml], { type: 'application/xml' });
+      var a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = current.slug + '.bpmn';
+      a.click(); URL.revokeObjectURL(a.href);
+      setDirty(false);
+    });
+  };
+
+  // Overwrite the original file (requires the File System Access API — Chrome/Edge, running over http(s) or a file opened via the picker)
+  window.saveToFile = function () {
+    currentXml().then(function (xml) {
+      if (!window.showSaveFilePicker) {
+        alert('This browser does not support writing files directly.\nUse the "⬇ Download .bpmn" button then overwrite the copy in the repo,\nor run through a server (see the instructions at the end of this HTML file).');
+        return;
+      }
+      var h = fileHandles[current.slug];
+      var chain = h ? Promise.resolve(h) : window.showSaveFilePicker({
+        suggestedName: current.slug + '.bpmn',
+        types: [{ description: 'BPMN', accept: { 'application/xml': ['.bpmn'] } }]
+      }).then(function (handle) { fileHandles[current.slug] = handle; return handle; });
+      chain.then(function (handle) {
+        return handle.createWritable().then(function (w) {
+          return w.write(xml).then(function () { return w.close(); });
+        });
+      }).then(function () { setDirty(false); }).catch(function (e) { if (e.name !== 'AbortError') alert('Save failed: ' + e.message); });
+    });
+  };
+
+  window.zoomFit = function () { modeler.get('canvas').zoom('fit-viewport', 'auto'); };
+  window.zoomIn  = function () { modeler.get('zoomScroll').stepZoom(1); };
+  window.zoomOut = function () { modeler.get('zoomScroll').stepZoom(-1); };
+  window.addEventListener('hashchange', function () { show(location.hash.slice(1)); });
+  window.addEventListener('beforeunload', function (e) { if (dirty) { e.preventDefault(); e.returnValue = ''; } });
+
+  show(location.hash.slice(1) || (PROCESSES[0] && PROCESSES[0].slug));
+</script>
+<!--
+  ═══ HOW TO USE ═══
+  1. Double-click this file → opens in the browser → DRAG-AND-DROP edit like bpmn.io (add/remove nodes, rename labels, draw arrows).
+  2. Keep your changes:
+     • "⬇ Download .bpmn"  → downloads the edited file to disk; overwrite docs/{feature}/bpmn/{slug}.bpmn with it (ALWAYS works).
+     • "💾 Save"             → overwrites directly (Chrome/Edge, first time pick the correct original file). Requires running through a server:
+         cd docs/{feature}/bpmn && npx serve   (then open http://localhost:3000/_viewer.html)
+  3. After manually editing + saving the .bpmn: do NOT rerun `node bpmn-build.mjs` (it will regenerate and overwrite your manual edits).
+     To keep both: edit the .ir.json IR then rebuild, or only edit the .bpmn by hand.
+-->
+</body>
+</html>

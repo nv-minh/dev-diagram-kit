@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Def_1" targetNamespace="http://bpmn.io/schema/bpmn">
+  <bpmn:process id="Process_claim_approval" isExecutable="false">
+    <bpmn:startEvent id="Start_1" name="Loss reported">
+      <bpmn:outgoing>Flow_start</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:task id="Task_register" name="Register claim (precautionary)">
+      <bpmn:incoming>Flow_start</bpmn:incoming>
+      <bpmn:outgoing>Flow_toval</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:task id="Task_validate" name="Validate against contract">
+      <bpmn:incoming>Flow_toval</bpmn:incoming>
+      <bpmn:outgoing>Flow_togw1</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:exclusiveGateway id="GW_covered" name="Loss covered?">
+      <bpmn:incoming>Flow_togw1</bpmn:incoming>
+      <bpmn:outgoing>Flow_no</bpmn:outgoing>
+      <bpmn:outgoing>Flow_yes</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:endEvent id="End_decline" name="Decline claim (stop)">
+      <bpmn:incoming>Flow_no</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:task id="Task_progress" name="Move claim to in-progress">
+      <bpmn:incoming>Flow_yes</bpmn:incoming>
+      <bpmn:outgoing>Flow_toreq</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:task id="Task_request" name="Request claim payment">
+      <bpmn:incoming>Flow_toreq</bpmn:incoming>
+      <bpmn:outgoing>Flow_toappr</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:task id="Task_approve" name="Approve payment">
+      <bpmn:incoming>Flow_toappr</bpmn:incoming>
+      <bpmn:outgoing>Flow_togw2</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:exclusiveGateway id="GW_approve" name="Payment approved?">
+      <bpmn:incoming>Flow_togw2</bpmn:incoming>
+      <bpmn:outgoing>Flow_rej</bpmn:outgoing>
+      <bpmn:outgoing>Flow_ok</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:endEvent id="End_rejected" name="Payment rejected (stop)">
+      <bpmn:incoming>Flow_rej</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:task id="Task_pay" name="Pay the claim">
+      <bpmn:incoming>Flow_ok</bpmn:incoming>
+      <bpmn:outgoing>Flow_toclose</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:task id="Task_close" name="Close claim">
+      <bpmn:incoming>Flow_toclose</bpmn:incoming>
+      <bpmn:outgoing>Flow_todone</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:endEvent id="End_closed" name="Claim closed">
+      <bpmn:incoming>Flow_todone</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_start" name="" sourceRef="Start_1" targetRef="Task_register" />
+    <bpmn:sequenceFlow id="Flow_toval" name="" sourceRef="Task_register" targetRef="Task_validate" />
+    <bpmn:sequenceFlow id="Flow_togw1" name="" sourceRef="Task_validate" targetRef="GW_covered" />
+    <bpmn:sequenceFlow id="Flow_no" name="No" sourceRef="GW_covered" targetRef="End_decline" />
+    <bpmn:sequenceFlow id="Flow_yes" name="Yes" sourceRef="GW_covered" targetRef="Task_progress" />
+    <bpmn:sequenceFlow id="Flow_toreq" name="" sourceRef="Task_progress" targetRef="Task_request" />
+    <bpmn:sequenceFlow id="Flow_toappr" name="" sourceRef="Task_request" targetRef="Task_approve" />
+    <bpmn:sequenceFlow id="Flow_togw2" name="" sourceRef="Task_approve" targetRef="GW_approve" />
+    <bpmn:sequenceFlow id="Flow_rej" name="No" sourceRef="GW_approve" targetRef="End_rejected" />
+    <bpmn:sequenceFlow id="Flow_ok" name="Yes" sourceRef="GW_approve" targetRef="Task_pay" />
+    <bpmn:sequenceFlow id="Flow_toclose" name="" sourceRef="Task_pay" targetRef="Task_close" />
+    <bpmn:sequenceFlow id="Flow_todone" name="" sourceRef="Task_close" targetRef="End_closed" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_Process_claim_approval">
+    <bpmndi:BPMNPlane id="BPMNPlane_Process_claim_approval" bpmnElement="Process_claim_approval">
+      <bpmndi:BPMNShape id="Start_1_di" bpmnElement="Start_1">
+        <dc:Bounds x="57" y="52" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_register_di" bpmnElement="Task_register">
+        <dc:Bounds x="175" y="30" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_validate_di" bpmnElement="Task_validate">
+        <dc:Bounds x="325" y="30" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="GW_covered_di" bpmnElement="GW_covered" isMarkerVisible="true">
+        <dc:Bounds x="500" y="45" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="End_decline_di" bpmnElement="End_decline">
+        <dc:Bounds x="657" y="52" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_progress_di" bpmnElement="Task_progress">
+        <dc:Bounds x="625" y="170" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_request_di" bpmnElement="Task_request">
+        <dc:Bounds x="775" y="170" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_approve_di" bpmnElement="Task_approve">
+        <dc:Bounds x="925" y="170" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="GW_approve_di" bpmnElement="GW_approve" isMarkerVisible="true">
+        <dc:Bounds x="1100" y="185" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="End_rejected_di" bpmnElement="End_rejected">
+        <dc:Bounds x="1257" y="192" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_pay_di" bpmnElement="Task_pay">
+        <dc:Bounds x="1225" y="310" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_close_di" bpmnElement="Task_close">
+        <dc:Bounds x="1375" y="310" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="End_closed_di" bpmnElement="End_closed">
+        <dc:Bounds x="1557" y="332" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_start_di" bpmnElement="Flow_start">
+        <di:waypoint x="93" y="70" />
+        <di:waypoint x="175" y="70" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_toval_di" bpmnElement="Flow_toval">
+        <di:waypoint x="275" y="70" />
+        <di:waypoint x="325" y="70" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_togw1_di" bpmnElement="Flow_togw1">
+        <di:waypoint x="425" y="70" />
+        <di:waypoint x="500" y="70" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_no_di" bpmnElement="Flow_no">
+        <di:waypoint x="550" y="70" />
+        <di:waypoint x="657" y="70" />
+      
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="592" y="50" width="24" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_yes_di" bpmnElement="Flow_yes">
+        <di:waypoint x="525" y="95" />
+        <di:waypoint x="525" y="210" />
+        <di:waypoint x="625" y="210" />
+      
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="513" y="133" width="24" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_toreq_di" bpmnElement="Flow_toreq">
+        <di:waypoint x="725" y="210" />
+        <di:waypoint x="775" y="210" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_toappr_di" bpmnElement="Flow_toappr">
+        <di:waypoint x="875" y="210" />
+        <di:waypoint x="925" y="210" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_togw2_di" bpmnElement="Flow_togw2">
+        <di:waypoint x="1025" y="210" />
+        <di:waypoint x="1100" y="210" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_rej_di" bpmnElement="Flow_rej">
+        <di:waypoint x="1150" y="210" />
+        <di:waypoint x="1257" y="210" />
+      
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1192" y="190" width="24" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ok_di" bpmnElement="Flow_ok">
+        <di:waypoint x="1125" y="235" />
+        <di:waypoint x="1125" y="350" />
+        <di:waypoint x="1225" y="350" />
+      
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1113" y="273" width="24" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_toclose_di" bpmnElement="Flow_toclose">
+        <di:waypoint x="1325" y="350" />
+        <di:waypoint x="1375" y="350" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_todone_di" bpmnElement="Flow_todone">
+        <di:waypoint x="1475" y="350" />
+        <di:waypoint x="1557" y="350" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

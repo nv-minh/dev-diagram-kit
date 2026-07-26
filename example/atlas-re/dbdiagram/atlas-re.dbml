@@ -1,0 +1,126 @@
+// Atlas Re — DBML schema (anonymized, generic types/enums/indexes).
+// View at https://dbdiagram.io/d  ·  export SQL: dbml2sql atlas-re.dbml
+// See ../DOMAIN.md. Mirrors ../srs/atlas-re-erd.md + ../d2-erd/atlas-re.d2.
+
+Enum submission_status {
+  DRAFT
+  QUOTED
+  BOUND
+  DECLINED
+}
+
+Enum contract_status {
+  QUOTED
+  PENDING
+  BOUND
+  CANCELLED
+  NOT_TAKEN_UP
+}
+
+Enum claim_status {
+  PRECAUTIONARY
+  REGISTERED
+  IN_PROGRESS
+  CLOSED
+}
+
+Enum payment_status {
+  PENDING_APPROVAL
+  APPROVED
+  PAID
+}
+
+Enum user_role {
+  UNDERWRITER
+  FINANCE
+  CLAIMS
+  ADMIN
+}
+
+Table insured {
+  id         varchar  [pk, note: 'unique']
+  name       varchar
+  industry   varchar
+  country    varchar
+  created_at timestamp
+}
+
+Table broker {
+  id              varchar [pk]
+  name            varchar
+  brokerage_house varchar
+}
+
+Table submission [
+  label: 'Submission'
+  note: 'A risk being placed'
+] {
+  id            varchar            [pk]
+  insured_id    varchar            [ref: > insured.id]
+  broker_id     varchar            [ref: > broker.id]
+  business_line varchar
+  status        submission_status  [default: 'DRAFT']
+  created_at    timestamp
+
+  Indexes {
+    insured_id
+    broker_id
+    status
+    (broker_id, status) [name: 'ix_submission_broker_status']
+  }
+}
+
+Table layer {
+  id            varchar  [pk]
+  submission_id varchar  [ref: > submission.id]
+  limit         decimal  [note: 'reinsurance limit']
+  excess        decimal
+}
+
+Table contract {
+  id            varchar         [pk]
+  submission_id varchar         [ref: > submission.id, unique]
+  premium       decimal
+  inception_date date
+  status        contract_status [default: 'QUOTED']
+
+  Indexes {
+    status
+    inception_date
+  }
+}
+
+Table claim {
+  id           varchar      [pk]
+  contract_id  varchar      [ref: > contract.id]
+  loss_amount  decimal
+  reported_at  timestamp
+  status       claim_status [default: 'PRECAUTIONARY']
+
+  Indexes {
+    contract_id
+    status
+  }
+}
+
+Table claim_payment {
+  id        varchar        [pk]
+  claim_id  varchar        [ref: > claim.id]
+  amount    decimal
+  status    payment_status [default: 'PENDING_APPROVAL']
+  paid_at   timestamp      [note: 'null until PAID']
+}
+
+Table premium_schedule {
+  id            varchar   [pk]
+  contract_id   varchar   [ref: > contract.id]
+  installment_no int
+  due_date       date
+  amount         decimal
+}
+
+Table platform_user {
+  id    varchar  [pk]
+  name  varchar
+  role  user_role
+}

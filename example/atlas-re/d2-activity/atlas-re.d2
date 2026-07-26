@@ -1,0 +1,26 @@
+# Atlas Re — claim handling (D2 activity, multi-branch with reopen). Regenerate: bash skills/d2-activity/render.sh atlas-re.d2
+direction: right
+vars: { beFill:"#E6F4EA"; secFill:"#FFE4E6"; dbFill:"#F1EAFB"; highlightFill:"#FFF4E5" }
+
+Report: Loss reported { shape: oval; style.fill:${beFill} }
+Validate: Validate coverage { shape: diamond; style.fill:${highlightFill} }
+Decline: Decline claim { style.fill:${secFill} }
+Create: Create claim (PRECAUTIONARY) { style.fill:${beFill} }
+Register: Register claim { style.fill:${beFill} }
+Investigate: Investigate { style.fill:${beFill} }
+Decide: Reserve decision { shape: diamond; style.fill:${highlightFill} }
+Settle: Settle and pay { style.fill:${beFill} }
+Closed: Closed { shape: oval; style.fill:${beFill} }
+Reopen: Reopen { style.fill:${secFill} }
+
+Report -> Validate: reported
+Validate -> Decline: not covered
+Validate -> Create: covered
+Create -> Register: filed
+Register -> Investigate: opens
+Investigate -> Decide
+Decide -> Settle: approve pay
+Decide -> Closed: deny
+Settle -> Closed
+Closed -> Reopen: new info
+Reopen -> Investigate: reopens

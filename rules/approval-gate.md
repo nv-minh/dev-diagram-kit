@@ -110,6 +110,26 @@ Readiness gate examples:
 - `/userstory payment` but no `/usecase` yet → warn "No UC yet, running anyway" + proceed.
 - `/jira push` but a US has `status: stale` → **refuse** (this is a hard-gate exception, because Jira is an external side-effect).
 
+## Diagram validation gate (before reporting "done")
+
+Any skill that produces a diagram (Mermaid / D2 / PlantUML / BPMN / draw.io) MUST run the unified
+audit gate on its output before reporting done — **in addition to** the skill's own engine-specific
+compile check:
+
+```bash
+bash "${CLAUDE_PLUGIN_ROOT:-.claude}/scripts/tsrun.sh" scripts/diagram-validate.ts docs/{feature}/<file-or-dir>
+```
+
+- **exit 0** → clean. Report done.
+- **exit 2** → warnings/advice only. Report done, but surface the advice to the user.
+- **exit 1** → ERRORS. Do NOT report done — fix the source and rerun (max 2 self-fix attempts, then
+  report the specific error to the user like any other failed compile).
+
+This is a **hard gate on errors** (broken stencils, dangling refs, won't-compile) and **advisory on
+warnings** (palette/style/soft-completeness). See `@./diagram-principles.md` for exactly what each
+engine is checked on. The `/drawio-*` skills already enforce this inside `drawio-build.ts`
+(`validateDiagram` runs before the `.drawio` is written); the other engines run it as the final step.
+
 ## Reference in SKILL.md
 
 Every SKILL.md MUST have the line:

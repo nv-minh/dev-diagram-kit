@@ -83,11 +83,11 @@ These 2 skills differ from the whole group above: they do **not** draw from a de
 
 ## Tip: a feature usually needs several diagrams
 
-See `example/food-delivery/` — the same "order & deliver food" feature drawn with:
+See `example/atlas-re/` — the same reinsurance underwriting platform drawn with:
 
-- `/sequence` (ordering + payment, delivery)
-- `/activity` + `/activity-swimlane` + `/bpmn` (the same order-processing process, 3 ways of presenting it)
-- `/state` (Order + Payment lifecycle)
+- `/sequence` (submission → quote → bind)
+- `/activity` + `/activity-swimlane` + `/bpmn` (the claim-handling process, 3 ways of presenting it)
+- `/state` (Contract + Claim lifecycle)
 - `/erd` + `/d2-erd` + `/dbdiagram` (the same data model, 3 levels of detail)
 - `/usecase-diagram` (system scope)
 - `/d2-architect` (architecture)

@@ -81,11 +81,11 @@ Hai skill này khác cả nhóm trên: chúng **không** vẽ từ lời mô t�
 
 ## Gợi ý: một feature thường cần nhiều sơ đồ
 
-Xem `example/food-delivery/` — cùng một feature "đặt & giao đồ ăn" được vẽ bằng:
+Xem `example/atlas-re/` — cùng một nền tảng underwriting tái bảo hiểm được vẽ bằng:
 
-- `/sequence` (đặt món + thanh toán, giao hàng)
-- `/activity` + `/activity-swimlane` + `/bpmn` (cùng quy trình xử lý đơn, 3 cách trình bày)
-- `/state` (vòng đời Order + Payment)
+- `/sequence` (submission → quote → bind)
+- `/activity` + `/activity-swimlane` + `/bpmn` (cùng quy trình xử lý claim, 3 cách trình bày)
+- `/state` (vòng đời Contract + Claim)
 - `/erd` + `/d2-erd` + `/dbdiagram` (cùng data model, 3 độ chi tiết)
 - `/usecase-diagram` (phạm vi hệ thống)
 - `/d2-architect` (kiến trúc)

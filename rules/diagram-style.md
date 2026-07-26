@@ -32,6 +32,12 @@ paths:
 | Database / Data store | `#F1EAFB` | `#A78BFA` | Store of business data |
 | Message bus / Queue | `#FFF1E6` | `#FB923C` | Kafka/RabbitMQ/SQS |
 | Highlight (main element) | `#FFF4E5` | `#F59E0B` | The 1-2 elements in focus (cream yellow) |
+| Gateway / proxy / LB | `#E0E7FF` | `#6366F1` | API gateway, reverse proxy, load balancer, ingress, NAT |
+| Cache / object / file / lake | `#CCFBF1` | `#14B8A6` | Cache, object storage, file store, data lake |
+| Security (appliance/policy) | `#FFE4E6` | `#F43F5E` | WAF, firewall, vault, IAM, bastion, alerting |
+| Observability | `#F1F5F9` | `#64748B` | Monitoring, metrics, logging, tracing |
+| Cloud edge | `#E0F2FE` | `#0EA5E9` | CDN, DNS, VPN, cloud-hosted external |
+| AI / ML | `#FCE7F3` | `#EC4899` | LLM, model, embedding, training, inference, agent |
 
 **Rules:** 1-2 accent colors are enough — do not color everything. External systems ALWAYS dashed border + real name + one-phrase purpose. Do NOT draw infra (port/replica/VPC).
 
@@ -47,6 +53,9 @@ vars: {
   feFill:        "#E6F6FA";  beFill:          "#E6F4EA"
   dbFill:        "#F1EAFB";  busFill:         "#FFF1E6"
   highlightFill: "#FFF4E5"
+  gatewayFill:   "#E0E7FF";  cacheFill:       "#CCFBF1"
+  secFill:       "#FFE4E6";  obsFill:         "#F1F5F9"
+  cloudFill:     "#E0F2FE";  aiFill:          "#FCE7F3"
 }
 
 # Person        -> shape: person;       style.fill: ${personFill};    style.stroke: ${personStroke}
@@ -55,7 +64,7 @@ vars: {
 # External      -> style.fill: ${externalFill}; style.stroke-dash: 3; style.stroke: "#94A3B8"
 ```
 
-**Shape per type:** Person=`person` · Data store=`cylinder` · Queue=`queue` · everything else=`rectangle` (a DFD process uses `rectangle` + `style.border-radius: 10` — see `/dfd`; D2 has no dedicated rounded-rectangle shape).
+**Shape per type (full catalog):** see `@./node-shapes.md` — Person=`person` · Data store=`cylinder` · Cache/object/lake=`stored_data` · Queue/bus=`queue` · Gateway/proxy/LB=`hexagon` · CDN/DNS/VPN=`cloud` · Pipeline/ETL/CI-CD=`parallelogram` · Registry/cluster/container=`package` · Config/log/notebook=`document` · Trigger/scheduler=`oval` · Decision/policy=`diamond` · Service/generic=`rectangle`. (A DFD process uses `rectangle` + `style.border-radius: 10` — see `/dfd`; D2 has no dedicated rounded-rectangle shape.)
 
 ## 3. Mermaid — global init + per-type classDef
 
@@ -82,7 +91,7 @@ classDef highlight fill:#FFF4E5,stroke:#F59E0B,color:#78350F
 
 ## 4. Quick mapping (1 line)
 
-> **Person = blue · Own system = light navy · External = gray dashed · Frontend = cyan · Backend/Process = green · Database = purple (cylinder) · Bus = orange (queue) · Highlight = cream yellow — same colors in D2 and Mermaid.**
+> **Person = blue · Own system = light navy · External = gray dashed · Frontend = cyan · Backend/Process = green · Database = purple (cylinder) · Bus = orange (queue) · Highlight = cream yellow · Gateway = indigo (hexagon) · Cache/lake = teal (stored_data) · Security = rose · Observability = slate · Cloud edge = sky (cloud) · AI/ML = pink — same colors in D2 and Mermaid. Shapes per type in `node-shapes.md`.**
 
 ## 5. Multi-board — D2 `layers` / `scenarios` (optional, advanced)
 

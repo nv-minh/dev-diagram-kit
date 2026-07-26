@@ -1,0 +1,21 @@
+# Atlas Re — C4 L1 System Context. Tech icons on external nodes. Regenerate: bash skills/d2-activity/render.sh atlas-re-context.d2
+direction: right
+vars: {
+  personFill:"#E8F0FE"; ownFill:"#DCEEFB"; externalFill:"#EEF1F4"
+  cdn: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/"
+}
+
+UW: Underwriter { shape: person; style.fill:${personFill} }
+Broker: Broker { shape: person; style.fill:${personFill} }
+
+Atlas: "Atlas Re (underwriting platform)" { style.fill:${ownFill}; style.bold: true }
+
+AD: "Azure AD (identity)" { icon:"${cdn}azure/azure-original.svg"; style.fill:${externalFill}; style.stroke-dash: 3 }
+Blob: "Azure Blob (files)" { icon:"${cdn}azure/azure-original.svg"; style.fill:${externalFill}; style.stroke-dash: 3 }
+FX: "Currency API (rates)" { icon:"${cdn}azure/azure-original.svg"; style.fill:${externalFill}; style.stroke-dash: 3 }
+
+UW -> Atlas: "underwrite / price / bind"
+Broker -> Atlas: "place submission"
+Atlas -> AD: "authenticate"
+Atlas -> Blob: "store SoV / documents"
+Atlas -> FX: "fetch FX rates"

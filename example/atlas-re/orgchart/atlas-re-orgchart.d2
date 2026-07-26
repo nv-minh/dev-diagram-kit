@@ -1,0 +1,21 @@
+# Atlas Re — org / reporting hierarchy (D2). Regenerate: bash skills/d2-activity/render.sh atlas-re-orgchart.d2
+direction: down
+vars: { personFill:"#E8F0FE"; beFill:"#E6F4EA"; feFill:"#E6F6FA"; highlightFill:"#FFF4E5" }
+
+CEO: CEO { shape: person; style.fill:${personFill}; style.bold: true }
+COO: COO — Underwriting { shape: person; style.fill:${personFill} }
+CFO: CFO — Finance { shape: person; style.fill:${personFill} }
+CIO: CIO — Technology { shape: person; style.fill:${personFill} }
+
+UWLead: Underwriting Lead { shape: person; style.fill:${beFill} }
+ClaimsLead: Claims Lead { shape: person; style.fill:${beFill} }
+FinLead: Finance Lead { shape: person; style.fill:${beFill} }
+TechLead: Tech Lead { shape: person; style.fill:${feFill} }
+
+CEO -> COO
+CEO -> CFO
+CEO -> CIO
+COO -> UWLead
+COO -> ClaimsLead
+CFO -> FinLead
+CIO -> TechLead

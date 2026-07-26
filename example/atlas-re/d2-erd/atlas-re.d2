@@ -1,0 +1,71 @@
+# Atlas Re — data model (D2 standalone ERD, sql_table). Anonymized — generic fields/types.
+# Regenerate: bash skills/d2-activity/render.sh atlas-re.d2
+
+direction: right
+
+Insured: {
+  shape: sql_table
+  id: string { constraint: primary_key }
+  name: string
+  industry: string
+  country: string
+}
+
+Broker: {
+  shape: sql_table
+  id: string { constraint: primary_key }
+  name: string
+  brokerageHouse: string
+}
+
+Submission: {
+  shape: sql_table
+  id: string { constraint: primary_key }
+  insuredId: string { constraint: foreign_key }
+  brokerId: string { constraint: foreign_key }
+  businessLine: string
+  status: "DRAFT | QUOTED | BOUND | DECLINED"
+  createdAt: datetime
+}
+
+Layer: {
+  shape: sql_table
+  id: string { constraint: primary_key }
+  submissionId: string { constraint: foreign_key }
+  limit: "decimal"
+  excess: "decimal"
+}
+
+Contract: {
+  shape: sql_table
+  id: string { constraint: primary_key }
+  submissionId: string { constraint: foreign_key }
+  premium: "decimal"
+  inceptionDate: date
+  status: "QUOTED | PENDING | BOUND | CANCELLED | NOT_TAKEN_UP"
+}
+
+Claim: {
+  shape: sql_table
+  id: string { constraint: primary_key }
+  contractId: string { constraint: foreign_key }
+  lossAmount: "decimal"
+  reportedAt: datetime
+  status: "PRECAUTIONARY | REGISTERED | IN_PROGRESS | CLOSED"
+}
+
+ClaimPayment: {
+  shape: sql_table
+  id: string { constraint: primary_key }
+  claimId: string { constraint: foreign_key }
+  amount: "decimal"
+  status: "PENDING_APPROVAL | APPROVED | PAID"
+}
+
+# Relationships — business labels:
+Insured.id -> Submission.insuredId: places
+Broker.id -> Submission.brokerId: brokers
+Submission.id -> Layer.submissionId: structured as
+Submission.id -> Contract.submissionId: binds into
+Contract.id -> Claim.contractId: may incur
+Claim.id -> ClaimPayment.claimId: settled by

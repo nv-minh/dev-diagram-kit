@@ -1,0 +1,53 @@
+# Atlas Re — system architecture (D2, ELK). Showcases the node-shapes catalog + tech icons on every node:
+#   API Gateway = hexagon · Postgres = cylinder · Redis = stored_data · Kafka = queue · Azure AD = dashed external.
+# Icons: react (Web) · nginx (gateway) · nestjs (services) · postgresql/redis/apachekafka · azure (external).
+# Redis + Kafka are FABRICATED (proposed) — see ../DOMAIN.md. Regenerate: bash skills/d2-activity/render.sh atlas-re.d2
+
+direction: right
+vars: {
+  personFill:"#E8F0FE"; feFill:"#E6F6FA"; beFill:"#E6F4EA"; gatewayFill:"#E0E7FF"
+  dbFill:"#F1EAFB"; cacheFill:"#CCFBF1"; busFill:"#FFF1E6"; externalFill:"#EEF1F4"
+  cdn: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/"
+}
+
+UW: Underwriter { shape: person; style.fill:${personFill} }
+
+Web: Atlas Re Web (React) { icon:"${cdn}react/react-original.svg"; style.fill:${feFill} }
+
+Platform: Atlas Re platform {
+  style.fill:"#FFFFFF"
+  API: API Gateway { shape: hexagon; icon:"${cdn}nginx/nginx-original.svg"; style.fill:${gatewayFill} }
+
+  svc: Backend services {
+    style.fill:"#FBFBFB"
+    sub: Submission svc { icon:"${cdn}nestjs/nestjs-original.svg"; style.fill:${beFill} }
+    con: Contract svc { icon:"${cdn}nestjs/nestjs-original.svg"; style.fill:${beFill} }
+    clm: Claim svc { icon:"${cdn}nestjs/nestjs-original.svg"; style.fill:${beFill} }
+    pri: Pricing svc (fire/cat) { icon:"${cdn}nestjs/nestjs-original.svg"; style.fill:${beFill} }
+  }
+
+  DB: PostgreSQL { shape: cylinder; icon:"${cdn}postgresql/postgresql-original.svg"; style.fill:${dbFill} }
+  Cache: Redis (proposed) { shape: stored_data; icon:"${cdn}redis/redis-original.svg"; style.fill:${cacheFill} }
+  Bus: Kafka (proposed) { shape: queue; icon:"${cdn}apachekafka/apachekafka-original.svg"; style.fill:${busFill} }
+}
+
+External: External {
+  style.stroke-dash: 3
+  style.fill:${externalFill}
+  AD: Azure AD (auth) { icon:"${cdn}azure/azure-original.svg" }
+  Blob: Azure Blob (files) { icon:"${cdn}azure/azure-original.svg" }
+}
+
+UW -> Web: HTTPS
+Web -> Platform.API: REST / WebSocket
+Platform.API -> Platform.svc.sub: route
+Platform.API -> Platform.svc.con: route
+Platform.API -> Platform.svc.clm: route
+Platform.svc.sub -> Platform.DB: read/write
+Platform.svc.con -> Platform.DB: read/write
+Platform.svc.pri -> Platform.DB: load rates
+Platform.svc.sub -> Platform.Cache: lookup (proposed)
+Platform.svc.con -> Platform.Bus: contract.* events (proposed)
+Platform.svc.clm -> Platform.Bus: claim.* events (proposed)
+Platform.API -> External.AD: verify token
+Platform.svc.sub -> External.Blob: upload SoV

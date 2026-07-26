@@ -1,8 +1,8 @@
 # 03 — Hướng dẫn chi tiết từng skill
 
-> Mỗi skill: cú pháp gọi, cần chuẩn bị gì, hỏi gì, output ở đâu, ví dụ thật (đối chiếu `example/food-delivery/`). Skill đều tuân **approval gate** — xem trước rồi mới ghi.
+> Mỗi skill: cú pháp gọi, cần chuẩn bị gì, hỏi gì, output ở đâu, ví dụ thật (đối chiếu `example/atlas-re/`). Skill đều tuân **approval gate** — xem trước rồi mới ghi.
 
-Ký hiệu: `<slug>` = tên feature dạng kebab-case (vd `food-delivery`). `"..."` = mô tả nghiệp vụ bằng lời.
+Ký hiệu: `<slug>` = tên feature dạng kebab-case (vd `atlas-re`). `"..."` = mô tả nghiệp vụ bằng lời.
 
 ---
 
@@ -20,10 +20,10 @@ Ký hiệu: `<slug>` = tên feature dạng kebab-case (vd `food-delivery`). `"..
 
 **Ví dụ:**
 ```
-/sequence "Khách xác nhận đặt món; hệ thống gọi cổng thanh toán; nếu thu tiền OK
-thì gửi đơn cho nhà hàng, nhà hàng xác nhận hoặc từ chối; từ chối thì hoàn tiền" --feature food-delivery
+/sequence "Underwriter tạo submission, engine định giá, hợp đồng được bind;
+nếu định giá fail thì submission bị decline" --feature atlas-re
 ```
-→ Đối chiếu: `example/food-delivery/srs/food-delivery-flows.md` (2 sequence) + `_rendered/sequence-*.png`.
+→ Đối chiếu: `example/atlas-re/srs/atlas-re-flows.md` (sequence submission → quote → bind).
 
 **Mẹo:** nét liền `->>` = gọi đồng bộ, nét đứt `-->>` = phản hồi/nội bộ. Nhánh dùng `alt/else`.
 
@@ -41,10 +41,10 @@ thì gửi đơn cho nhà hàng, nhà hàng xác nhận hoặc từ chối; từ
 
 **Ví dụ:**
 ```
-/activity "Xử lý đơn hàng từ lúc đặt tới hoàn tất: kiểm thanh toán, gửi nhà hàng,
-gán shipper, giao, xử lý COD" --feature food-delivery
+/activity "Xử lý claim đầu cuối: kiểm coverage, đăng ký, điều tra, duyệt thanh toán,
+giải quyết; nếu không được cover thì từ chối" --feature atlas-re
 ```
-→ Đối chiếu: section "Flow: Xử lý đơn hàng đầu-cuối" + `_rendered/activity-order-flowchart.png`.
+→ Đối chiếu: section activity "Claim registration" trong `example/atlas-re/srs/atlas-re-flows.md`.
 
 ---
 
@@ -52,7 +52,7 @@ gán shipper, giao, xử lý COD" --feature food-delivery
 
 **Cú pháp:** `/activity-swimlane "<mô tả quy trình>" --feature <slug>`
 
-**Dùng khi:** **mặc định cho quy trình đa vai trò** — mỗi vai một lane thẳng cột, node nhảy lane theo người thực hiện. Đây là loại sơ đồ rõ nhất khi có nhiều tương tác chéo giữa các vai (Khách/Hệ thống/Nhà hàng/Shipper/CSKH...).
+**Dùng khi:** **mặc định cho quy trình đa vai trò** — mỗi vai một lane thẳng cột, node nhảy lane theo người thực hiện. Đây là loại sơ đồ rõ nhất khi có nhiều tương tác chéo giữa các vai (Underwriter/Broker/Claims/Finance...).
 
 **Cần internet** (render qua plantuml.com — xem lưu ý riêng tư ở `01-cai-dat-cong-cu.md`).
 
@@ -62,11 +62,11 @@ gán shipper, giao, xử lý COD" --feature food-delivery
 
 **Ví dụ:**
 ```
-/activity-swimlane "Điều phối đơn đặt món: khách đặt, hệ thống tính tiền và gọi thanh toán,
-nhà hàng xác nhận, hệ thống gán shipper, shipper giao; ngoại lệ: fail thanh toán,
-nhà hàng từ chối, hết shipper, giao thất bại chuyển CSKH" --feature food-delivery
+/activity-swimlane "Duyệt claim: Claims đăng ký claim, Underwriter kiểm coverage,
+Claims yêu cầu thanh toán, Finance duyệt và trả tiền, Claims đóng; ngoại lệ: không cover → từ chối,
+thanh toán bị reject" --feature atlas-re
 ```
-→ Đối chiếu: `example/food-delivery/activity-swimlane/*.puml/.svg/.png` — **5 lane thật**.
+→ Đối chiếu: `example/atlas-re/activity-swimlane/atlas-re-claim-approval-swimlane.svg` — **3 lane thật**.
 
 ---
 
@@ -86,10 +86,10 @@ nhà hàng từ chối, hết shipper, giao thất bại chuyển CSKH" --featur
 
 **Ví dụ:**
 ```
-/bpmn "Quy trình đặt & giao đồ ăn đầu cuối, 4 vai Khách/Hệ thống/Nhà hàng/Shipper,
-gồm nhánh COD, thanh toán fail, nhà hàng từ chối, hết shipper, giao thất bại" --feature food-delivery
+/bpmn "Quy trình duyệt claim đầu cuối, 3 vai Claims handler/Underwriter/Finance,
+gồm nhánh kiểm coverage, nhánh duyệt thanh toán, path từ chối và reject" --feature atlas-re
 ```
-→ Đối chiếu: `example/food-delivery/bpmn/order-fulfillment.ir.json` → `.bpmn`. Mở editor HTML để xem/sửa.
+→ Đối chiếu: `example/atlas-re/bpmn/claim-approval.ir.json` → `.bpmn`. Mở editor HTML để xem/sửa.
 
 ---
 
@@ -105,9 +105,9 @@ gồm nhánh COD, thanh toán fail, nhà hàng từ chối, hết shipper, giao 
 
 **Ví dụ:**
 ```
-/state Order --feature food-delivery
+/state Contract --feature atlas-re
 ```
-→ Đối chiếu: `example/food-delivery/srs/food-delivery-states.md` (Order 11 trạng thái + Payment 7 trạng thái) + `_rendered/state-*.png`.
+→ Đối chiếu: `example/atlas-re/srs/atlas-re-states.md` (state machine Contract + Claim).
 
 ---
 
@@ -121,7 +121,7 @@ gồm nhánh COD, thanh toán fail, nhà hàng từ chối, hết shipper, giao 
 
 **Output:** `docs/{slug}/srs/{slug}-erd.md` — mermaid `erDiagram`. Compile-check tự động.
 
-**Ví dụ:** `/erd --feature food-delivery` → `example/food-delivery/srs/food-delivery-erd.md` + `_rendered/erd-mermaid.png`.
+**Ví dụ:** `/erd --feature atlas-re` → `example/atlas-re/srs/atlas-re-erd.md`.
 
 ---
 
@@ -135,7 +135,7 @@ gồm nhánh COD, thanh toán fail, nhà hàng từ chối, hết shipper, giao 
 
 **Output:** `docs/{slug}/d2-erd/{slug}.d2` + `.svg` (+ `.png` nếu có Chrome). Render qua `.claude/skills/d2-activity/render.sh` (dùng chung).
 
-**Ví dụ:** `/d2-erd --feature food-delivery` → `example/food-delivery/d2-erd/food-delivery.svg/.png`.
+**Ví dụ:** `/d2-erd --feature atlas-re` → `example/atlas-re/d2-erd/atlas-re.svg`.
 
 ---
 
@@ -151,7 +151,7 @@ gồm nhánh COD, thanh toán fail, nhà hàng từ chối, hết shipper, giao 
 
 **Output:** `docs/{slug}/dbdiagram/{slug}.dbml` (source) + `.sql` (export PostgreSQL, tự validate). Import dbdiagram.io/dbdocs.io.
 
-**Ví dụ:** `/dbdiagram --feature food-delivery` → `example/food-delivery/dbdiagram/food-delivery.dbml` + `.sql` (có 4 enum + index).
+**Ví dụ:** `/dbdiagram --feature atlas-re` → `example/atlas-re/dbdiagram/atlas-re.dbml` (5 enum + index).
 
 ---
 
@@ -165,7 +165,7 @@ gồm nhánh COD, thanh toán fail, nhà hàng từ chối, hết shipper, giao 
 
 **Output:** `docs/{slug}/d2-activity/{slug}.d2` + `.svg`/`.png`.
 
-**Ví dụ:** `/d2-activity "Xử lý đơn hàng đầu cuối" --feature food-delivery` → `example/food-delivery/d2-activity/food-delivery.svg`.
+**Ví dụ:** `/d2-activity "Xử lý claim có nhánh reopen" --feature atlas-re` → `example/atlas-re/d2-activity/atlas-re.svg`.
 
 ---
 
@@ -181,7 +181,7 @@ gồm nhánh COD, thanh toán fail, nhà hàng từ chối, hết shipper, giao 
 
 **Output:** `docs/{slug}/d2-architect/{slug}.d2` + `.svg`/`.png`.
 
-**Ví dụ:** `/d2-architect --feature food-delivery` → `example/food-delivery/d2-architect/food-delivery.svg` (client apps → gateway → services + DB + queue → dịch vụ ngoài).
+**Ví dụ:** `/d2-architect --feature atlas-re` → `example/atlas-re/d2-architect/atlas-re.svg` (Underwriter → API Gateway → services + DB + cache + queue → dịch vụ ngoài Azure AD/Blob).
 
 ---
 
@@ -197,7 +197,7 @@ gồm nhánh COD, thanh toán fail, nhà hàng từ chối, hết shipper, giao 
 
 **Output:** `docs/{slug}/usecases/{slug}-usecase-diagram.puml` + `.svg`, ảnh + bảng Actors/Relationships nhúng vào `{slug}-usecase-index.md`.
 
-**Ví dụ:** `/usecase-diagram --feature food-delivery` → `example/food-delivery/usecases/food-delivery-usecase-diagram.svg` (5 actor, 9 use case, include/extend).
+**Ví dụ:** `/usecase-diagram --feature atlas-re` → `example/atlas-re/usecases/atlas-re-usecase-diagram.svg` (4 actor, 6 use case, include/extend).
 
 ---
 
@@ -222,8 +222,8 @@ Mặc định vẽ **L1 Context + L2 Container**; L3 Component chỉ vẽ khi c�
 
 **Ví dụ:**
 ```
-/system-design --feature food-delivery
-/system-design --feature food-delivery --component order-service
+/system-design --feature atlas-re
+/system-design --feature atlas-re --component order-service
 ```
 
 ---

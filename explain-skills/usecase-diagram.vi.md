@@ -13,13 +13,12 @@ updated: 2026-07-14
 
 Nếu `/usecase` là bản mô tả chi tiết từng kịch bản, thì `/usecase-diagram` là bức tranh treo trên tường: ai đứng ngoài hệ thống, trong hệ thống có những việc chính nào, và phạm vi feature nằm ở đâu.
 
-Ví dụ đời thường: một nhà hàng có khách, thu ngân và đối tác giao hàng. Sơ đồ tổng quan cho thấy:
+Ví dụ đời thường: một thư viện có độc giả và thủ thư. Sơ đồ tổng quan cho thấy:
 
-- Khách có thể đặt món, theo dõi đơn.
-- Thu ngân có thể xác nhận thanh toán.
-- Đối tác giao hàng có thể nhận thông tin giao đơn.
+- Độc giả có thể mượn và trả sách.
+- Thủ thư có thể đăng ký độc giả mới và theo dõi mượn/trả.
 
-Nó không kể chi tiết từng bước đặt món, cũng không mô tả màn hình nào xuất hiện trước. Mục đích là để mọi người cùng hiểu **phạm vi** trước khi đi sâu.
+Nó không kể chi tiết từng bước mượn sách, cũng không mô tả màn hình nào xuất hiện trước. Mục đích là để mọi người cùng hiểu **phạm vi** trước khi đi sâu.
 
 Bạn nên dùng `/usecase-diagram` khi:
 

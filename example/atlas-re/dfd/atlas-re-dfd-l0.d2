@@ -1,0 +1,14 @@
+# Atlas Re — DFD L0 context. Regenerate: bash skills/d2-activity/render.sh atlas-re-dfd-l0.d2
+direction: right
+vars: { extFill:"#EEF1F4"; procFill:"#E6F4EA"; dbFill:"#F1EAFB" }
+
+Insured: Insured { style.fill:${extFill}; style.stroke-dash: 3 }
+Broker: Broker { style.fill:${extFill}; style.stroke-dash: 3 }
+Finance: Finance team { style.fill:${extFill}; style.stroke-dash: 3 }
+
+System: Atlas Re underwriting platform { shape: rectangle; style.fill:${procFill}; style.bold: true }
+
+Insured -> System: risk details
+Broker -> System: submission
+System -> Finance: premium / claim payments
+System -> Insured: quote / policy

@@ -234,6 +234,7 @@ Need changes? /system-design --feature {feature} (the skill enters update mode)
 - @../../rules/feature-bootstrap.md
 - @../../rules/language.md
 - @../../rules/icon-map.md (insert tech icons; resolver `scripts/icon-path.sh`)
+- @../../rules/node-shapes.md (node type → D2 shape — gateway=hexagon, cache=stored_data, DB=cylinder, …; C4 containers otherwise stay rectangles)
 - @./resources/c4-palette.md (C4 color map → D2)
 - @./resources/c4-export-template.html (HTML presentation skeleton — PNG/PDF export)
 - @./references/example-c4-context.d2 · @./references/example-c4-container.d2 · @./references/example-c4-dynamic.d2 (runtime view — only with `--dynamic`) · @./references/example-system-design.html

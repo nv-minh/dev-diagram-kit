@@ -1,0 +1,30 @@
+# Atlas Re — DFD L1 exploded. Regenerate: bash skills/d2-activity/render.sh atlas-re-dfd-l1.d2
+# processes = rounded rectangle; external = dashed; data store = cylinder. Data labels on edges.
+direction: right
+vars: { extFill:"#EEF1F4"; procFill:"#E6F4EA"; dbFill:"#F1EAFB"; cdn:"https://cdn.jsdelivr.net/gh/devicons/devicon/icons/" }
+
+Insured: Insured { style.fill:${extFill}; style.stroke-dash: 3 }
+Broker: Broker { style.fill:${extFill}; style.stroke-dash: 3 }
+Finance: Finance { style.fill:${extFill}; style.stroke-dash: 3 }
+
+P1: 1. Capture submission { shape: rectangle; style.border-radius: 10; style.fill:${procFill} }
+P2: 2. Price risk { shape: rectangle; style.border-radius: 10; style.fill:${procFill} }
+P3: 3. Bind contract { shape: rectangle; style.border-radius: 10; style.fill:${procFill} }
+P4: 4. Handle claim { shape: rectangle; style.border-radius: 10; style.fill:${procFill} }
+
+S1: Submission store { shape: cylinder; icon:"${cdn}postgresql/postgresql-original.svg"; style.fill:${dbFill} }
+S2: Contract store { shape: cylinder; icon:"${cdn}postgresql/postgresql-original.svg"; style.fill:${dbFill} }
+S3: Claim store { shape: cylinder; icon:"${cdn}postgresql/postgresql-original.svg"; style.fill:${dbFill} }
+
+Broker -> P1: submission data
+Insured -> P1: risk details
+P1 -> S1: write submission
+P1 -> P2: to price
+P2 -> S1: read submission
+P2 -> P3: quote
+P3 -> S2: write contract
+P3 -> Finance: premium schedule
+Insured -> P4: loss notice
+P4 -> S2: read contract
+P4 -> S3: write claim
+P4 -> Finance: claim payment

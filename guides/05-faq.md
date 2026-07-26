@@ -89,6 +89,6 @@ Yes. A diagram skill is an "entry point" — it derives the slug + asks about sc
 
 ## Still stuck?
 
-- Compare your output against `example/food-delivery/` (the correct sample).
+- Compare your output against `example/atlas-re/` (the correct sample).
 - Read `explain-skills/<skill>.md` to understand what the skill does (in business language).
 - Read the original SKILL.md in `skills/<skill>/` (technical detail for the AI).

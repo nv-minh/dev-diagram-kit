@@ -97,4 +97,4 @@ Mọi skill ghi vào `docs/{slug}/` theo quy ước `rules/naming-conventions.md
 
 > ✱ `/scan-project` ghi vào `docs/_shared/architecture/` (kiến trúc là cross-feature, không gắn 1 slug). `/sync-confluence` là ngoại lệ duy nhất **không** sinh file trong `docs/` — nó ghi lên Confluence (side-effect ngoài vault).
 
-Xem `example/food-delivery/` để thấy cấu trúc thật.
+Xem `example/atlas-re/` để thấy cấu trúc thật.

@@ -13,13 +13,12 @@ updated: 2026-07-14
 
 If `/usecase` is the detailed description of each scenario, then `/usecase-diagram` is the picture hung on the wall: who stands outside the system, what the main tasks inside the system are, and where the feature's scope lies.
 
-An everyday example: a restaurant has customers, a cashier, and a delivery partner. The overview diagram shows:
+An everyday example: a library has members and a librarian. The overview diagram shows:
 
-- The customer can order food and track the order.
-- The cashier can confirm payment.
-- The delivery partner can receive delivery information.
+- A member can borrow and return books.
+- The librarian can register new members and track loans.
 
-It does not narrate each step of ordering, nor describe which screen appears first. The purpose is for everyone to understand the **scope** together before diving deep.
+It does not narrate each step of borrowing, nor describe which screen appears first. The purpose is for everyone to understand the **scope** together before diving deep.
 
 You should use `/usecase-diagram` when:
 

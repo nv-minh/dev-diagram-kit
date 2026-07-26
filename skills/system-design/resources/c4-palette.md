@@ -12,13 +12,14 @@ Render via the shared `render.sh` (D2 `--theme 1` neutral). `style.fill`/`style.
 | **Software System — in scope** (L1: the system you build) | rectangle | `"#DCEEFB"` + `style.bold: true` | The central L1 block |
 | **External System** (external systems: Google, Stripe, SendGrid...) | rectangle | `"#EEF1F4"` (light gray) + `style.stroke-dash: 3` | Dashed border = "out of our control" |
 | **Container — Web/Mobile app (frontend)** | rectangle | `"#E6F6FA"` (light cyan) | The app users interact with |
-| **Container — API / Service (backend)** | rectangle | `"#E6F4EA"` (light green) | Handles business logic |
+| **Container — API / Service (backend)** | rectangle | `"#E6F4EA"` (light green) | Handles business logic. An **API Gateway** container uses `hexagon` + `"#E0E7FF"` (see node-shapes.md) |
+| **Container — Cache** | `stored_data` | `"#CCFBF1"` (light teal) | Redis/Memcached cache (distinct from the DB cylinder) |
 | **Container — Data store / Database** | `cylinder` | `"#F1EAFB"` (light purple) | 1 block for the whole business store |
 | **Container — Message bus / Queue** | `queue` | `"#FFF1E6"` (light orange) | Kafka/RabbitMQ/SQS... |
 | **Component (L3)** — a component inside a container | rectangle | `"#E6F4EA"` (lighter) | Highlight the main component with `"#FFF4E5"` |
 | **Highlight the main element** | — | `"#FFF4E5"` (cream yellow) | Only 1-2 elements/diagram, don't over-color |
 
-**Rules:** 1-2 accent colors are enough. QUOTE labels/names with special characters `() / | :`. External systems ALWAYS wrapped with a dashed border (`style.stroke-dash: 3`) + real name + a one-phrase purpose. Do NOT draw infra (port/replica/VPC) — see SKILL.md.
+**Rules:** 1-2 accent colors are enough. QUOTE labels/names with special characters `() / | :`. External systems ALWAYS wrapped with a dashed border (`style.stroke-dash: 3`) + real name + a one-phrase purpose. Do NOT draw infra (port/replica/VPC) — see SKILL.md. For the **full node-type → shape catalog** (gateway=`hexagon`, cache=`stored_data`, queue, pipeline=`parallelogram`, CDN=`cloud`, …), see `@../../../rules/node-shapes.md` — C4 containers stay rectangles by convention, but a gateway/cache/queue/datastore may take its semantic shape for readability.
 
 ## 2. Cocoon semantic color system (reference for the HTML chrome / badge / card-dot)
 

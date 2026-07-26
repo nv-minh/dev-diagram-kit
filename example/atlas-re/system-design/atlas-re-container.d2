@@ -1,0 +1,41 @@
+# Atlas Re — C4 L2 Container. Tech icons on every node. Regenerate: bash skills/d2-activity/render.sh atlas-re-container.d2
+# Redis + Kafka are FABRICATED (proposed) — see ../DOMAIN.md.
+direction: right
+vars: {
+  feFill:"#E6F6FA"; beFill:"#E6F4EA"; gatewayFill:"#E0E7FF"
+  dbFill:"#F1EAFB"; cacheFill:"#CCFBF1"; busFill:"#FFF1E6"; externalFill:"#EEF1F4"
+  cdn: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/"
+}
+
+Atlas: "Atlas Re" {
+  style.fill:"#FFFFFF"
+  Web: "Web app (React)" { icon:"${cdn}react/react-original.svg"; style.fill:${feFill} }
+  API: "API Gateway" { shape: hexagon; icon:"${cdn}nginx/nginx-original.svg"; style.fill:${gatewayFill} }
+
+  svc: "Backend services (NestJS)" {
+    style.fill:"#FBFBFB"
+    sub: "submission-svc" { icon:"${cdn}nestjs/nestjs-original.svg"; style.fill:${beFill} }
+    con: "contract-svc" { icon:"${cdn}nestjs/nestjs-original.svg"; style.fill:${beFill} }
+    clm: "claim-svc" { icon:"${cdn}nestjs/nestjs-original.svg"; style.fill:${beFill} }
+    pri: "pricing-svc" { icon:"${cdn}nestjs/nestjs-original.svg"; style.fill:${beFill} }
+  }
+
+  DB: "PostgreSQL" { shape: cylinder; icon:"${cdn}postgresql/postgresql-original.svg"; style.fill:${dbFill} }
+  Cache: "Redis (proposed)" { shape: stored_data; icon:"${cdn}redis/redis-original.svg"; style.fill:${cacheFill} }
+  Bus: "Kafka (proposed)" { shape: queue; icon:"${cdn}apachekafka/apachekafka-original.svg"; style.fill:${busFill} }
+}
+
+AD: "Azure AD" { icon:"${cdn}azure/azure-original.svg"; style.fill:${externalFill}; style.stroke-dash: 3 }
+Blob: "Azure Blob" { icon:"${cdn}azure/azure-original.svg"; style.fill:${externalFill}; style.stroke-dash: 3 }
+
+Web -> Atlas.API: "REST / WebSocket"
+Atlas.API -> Atlas.svc.sub: "route"
+Atlas.API -> Atlas.svc.con: "route"
+Atlas.API -> Atlas.svc.clm: "route"
+Atlas.svc.sub -> Atlas.DB: "read/write"
+Atlas.svc.con -> Atlas.DB: "read/write"
+Atlas.svc.sub -> Atlas.Cache: "lookup"
+Atlas.svc.con -> Atlas.Bus: "events"
+Atlas.svc.clm -> Atlas.Bus: "events"
+Atlas.API -> AD: "verify token"
+Atlas.svc.sub -> Blob: "upload SoV"

@@ -1,0 +1,32 @@
+@startuml
+' Atlas Re — use case diagram. Anonymized. See ../DOMAIN.md.
+' Render: bash skills/usecase-diagram/render.sh atlas-re-usecase-diagram.puml
+left to right direction
+skinparam packageStyle rectangle
+
+actor Underwriter as UW
+actor Broker as BR
+actor "Claims handler" as CL
+actor Finance as FN
+
+rectangle "Atlas Re" {
+  usecase "Create submission" as UC1
+  usecase "Price risk" as UC2
+  usecase "Bind contract" as UC3
+  usecase "Register claim" as UC4
+  usecase "Approve payment" as UC5
+  usecase "Manage reference data" as UC6
+}
+
+UW --> UC1
+UW --> UC2
+UW --> UC3
+BR --> UC1
+CL --> UC4
+FN --> UC5
+UW --> UC6
+
+UC1 ..> UC2 : <<include>>
+UC3 ..> UC2 : <<include>>
+UC4 ..> UC5 : <<extend>>
+@enduml

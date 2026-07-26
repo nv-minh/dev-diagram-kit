@@ -87,6 +87,6 @@ Có. Skill diagram là "điểm vào" — derive slug + hỏi phạm vi + tạo 
 
 ## Vẫn kẹt?
 
-- Đối chiếu output của bạn với `example/food-delivery/` (bản mẫu đúng).
+- Đối chiếu output của bạn với `example/atlas-re/` (bản mẫu đúng).
 - Đọc `explain-skills/<skill>.md` để hiểu skill làm gì (ngôn ngữ nghiệp vụ).
 - Đọc SKILL.md gốc trong `skills/<skill>/` (chi tiết kỹ thuật cho AI).

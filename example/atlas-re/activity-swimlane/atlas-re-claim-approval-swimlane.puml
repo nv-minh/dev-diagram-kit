@@ -1,0 +1,36 @@
+@startuml
+' Atlas Re — claim approval swimlane (4 roles). Anonymized. See ../DOMAIN.md.
+' Render: bash skills/activity-swimlane/render.sh atlas-re-claim-approval-swimlane.puml
+skinparam style strictuml
+skinparam monochrome false
+skinparam Shadowing false
+
+|Claims handler|
+start
+:Register claim (PRECAUTIONARY);
+|Underwriter|
+:Validate against contract;
+if (Covered?) then (no)
+  |Claims handler|
+  :Decline;
+  stop
+else (yes)
+  |Claims handler|
+  :Move to IN_PROGRESS;
+  :Request payment;
+  |Finance|
+  :Approve payment;
+  if (Approved?) then (no)
+    |Underwriter|
+    :Request more info;
+    |Claims handler|
+    :Update reserve;
+  else (yes)
+    |Finance|
+    :Pay claim;
+    |Claims handler|
+    :Close claim;
+    stop
+  endif
+endif
+@enduml
