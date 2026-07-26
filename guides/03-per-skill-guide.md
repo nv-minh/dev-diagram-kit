@@ -290,6 +290,190 @@ By default draws **L1 Context + L2 Container**; L3 Component is only drawn with 
 
 ---
 
+## 15. `/mindmap` — Scope / idea decomposition tree (Mermaid)
+
+**Syntax:** `/mindmap "<topic>" [--feature <slug>]`
+
+**Use when:** decomposing scope/requirements/ideas into a tree (discovery phase, before the SRS). A pure scope/idea tree — no actors (actors + functions → `/usecase-diagram`).
+
+**What the skill asks:** the main areas/domains · 2-4 items under each (auto-detected from `brainstorms/*.md` if present).
+
+**Output:** `docs/{slug}/srs/{slug}-scope.md` — one `## Scope: {Topic}` section per mindmap, Mermaid `mindmap`. Auto compile-checked.
+
+**Example:**
+```
+/mindmap "Reinsurance submission scope: intake, pricing, binding, reporting" --feature atlas-re
+```
+
+**Tip:** keep the tree ≤3 levels deep — deeper renders messily; collapse deep leaves into one node. Re-running the same topic = update mode.
+
+---
+
+## 16. `/journey` — User journey map (Mermaid)
+
+**Syntax:** `/journey "<experience>" [--feature <slug>]`
+
+**Use when:** mapping the user's experience over time, step by step, each step with a **satisfaction rating 1-5** and the actor(s). Experience + emotion across touchpoints — complements `/usecase-diagram` (function) and `/activity` (process).
+
+**What the skill asks:** persona (whose journey) · phases/touchpoints in order · the step in each phase · satisfaction (1-5) · actors per step.
+
+**Output:** `docs/{slug}/srs/{slug}-journey.md` — one `## Journey: {Name}` section, Mermaid `journey`. Auto compile-checked; the report calls out the pain steps (rating ≤2).
+
+**Example:**
+```
+/journey "First-time broker submitting a risk: search, submit, wait for quote, bind" --feature atlas-re
+```
+
+**Tip:** the rating is the value of this diagram — never put 5 everywhere; the low ratings surface the pain points that link to improvements.
+
+---
+
+## 17. `/timeline` — Roadmap / milestone timeline (Mermaid)
+
+**Syntax:** `/timeline "<subject>" [--feature <slug>] [--shared]`
+
+**Use when:** a roadmap of milestones grouped by period (quarter/year/phase) — PM-light. **Not a Gantt**: no task bars, no dependencies, no critical path (deliberately out of scope).
+
+**What the skill asks:** the periods in order · 1-3 milestones per period + a short note each (it won't invent dates).
+
+**Output:** `docs/{slug}/{slug}-timeline.md` (or `docs/_shared/_shared-timeline.md` with `--shared` for a cross-feature roadmap) — Mermaid `timeline`. Auto compile-checked.
+
+**Example:**
+```
+/timeline "Atlas-RE rollout" --feature atlas-re
+```
+
+**Tip:** keep period labels short (`2026 Q1`, `Phase 1`) — a long label breaks the column layout. `Milestone : note` — colon-space separates milestone from note.
+
+---
+
+## 18. `/orgchart` — Org / reporting-hierarchy chart (D2)
+
+**Syntax:** `/orgchart [--feature <slug>] [--shared] [--stakeholder]`
+
+**Use when:** kickoff or stakeholder analysis — who reports to whom, grouped by team/department. It's the reporting tree, NOT a RACI or a process ("who does which step" → `/activity-swimlane`).
+
+**Needs:** `d2` binary (shares `render.sh` with the `/d2-*` family).
+
+**What the skill asks:** the head (top of the tree) · people/roles + titles · who each reports to · optional team/department grouping.
+
+**Output:** `docs/{slug}/orgchart/{slug}-orgchart.d2` + `.svg` (or `docs/_shared/orgchart/` with `--shared`). With `--stakeholder`: also `{slug}-stakeholder.md` — a power/interest map (Mermaid `quadrantChart`) with an engagement strategy per quadrant.
+
+**Example:**
+```
+/orgchart --feature atlas-re --stakeholder
+```
+
+**Tip:** cross-team (dotted-line) reporting → the edge gets the label `dotted-line` + a dashed stroke. >15 people → split by department.
+
+---
+
+## 19. `/dfd` — Data Flow Diagram L0 + L1 (D2)
+
+**Syntax:** `/dfd [--feature <slug>]` (or `/dfd "<data flow description>"`)
+
+**Use when:** answering "where does the data go, which process touches it, which store holds it" — the DATA view, orthogonal to `/system-design` (structure) and `/sequence` (time). Draws 2 levels: L0 context (1 process = the whole system + external entities) and L1 exploded (2-5 numbered processes + data stores).
+
+**Needs:** `d2` binary. Reads `srs/{slug}-erd.md`/spec/brainstorm as the source if present.
+
+**What the skill asks:** external entities · processes (numbered 1.0, 1.1…) · data stores (D1, D2…) · the data on each arrow.
+
+**Output:** `docs/{slug}/dfd/{slug}-dfd-l0.d2/.svg` + `{slug}-dfd-l1.d2/.svg` + `{slug}-dfd-index.md`.
+
+**Example:**
+```
+/dfd --feature atlas-re
+```
+
+**Tip:** every edge label is the DATA moving ("order", "payment result"), not the action ("send"). A data store is just "D1 Orders" — no columns; columns belong to `/erd`.
+
+---
+
+## 20. `/code-flow` — Trace one function/module in code → flow diagram
+
+**Syntax:** `/code-flow <path-or-symbol> [--as sequence|activity|state] [--feature <slug>]`
+
+**Use when:** you want a flow diagram of ONE specific function/module in EXISTING code — the skill reads the code (via a read-only subagent), traces the call chain/branches/states, and auto-picks the diagram type (sequence by default). The targeted sibling of `/scan-project` (whole-codebase set).
+
+**How it works (2 phases — HARD STOP in the middle):** Phase 1 trace (read-only, returns findings + `file:line` evidence) → L1 preview → you confirm → Phase 2 renders the Mermaid diagram.
+
+**Output:** `docs/{slug}/code-flow/{slug}-flow.md` — the diagram + a **Code provenance** table (element → `file:line` → ✅ read / 🔵 inferred). Auto compile-checked.
+
+**Example:**
+```
+/code-flow src/orders/placeOrder.ts
+/code-flow OrderService.placeOrder --as state
+```
+
+**Tip:** traces 1 level of calls by default (deeper calls noted as "→ name"); what it can't read is marked 🔵 "needs confirmation" — never invented.
+
+---
+
+## 21. `/drawio-aws` · `/drawio-azure` · `/drawio-gcp` · `/drawio-databricks` — Cloud architecture in draw.io (real stencils)
+
+**Syntax:** `/drawio-aws "<architecture>" [--feature <slug>] [--type pipeline|hierarchy|network|hubspoke|mesh|sequence]` (same for `-azure`/`-gcp`/`-databricks`)
+
+**Use when:** the architecture diagram must show the ACTUAL cloud services with their official icons (AWS/Azure/GCP/Databricks stencils) — e.g. an architecture review. Just a generic logical picture → `/system-design`/`/d2-architect`.
+
+**Needs:** the aws + databricks catalogs ship in-repo; **azure/gcp need a one-time download**: `bash scripts/drawio-catalog-ensure.sh azure` (or `gcp`). **PNG/SVG export needs the draw.io desktop app** — without it the `.drawio` is still the deliverable (opens in draw.io web / VS Code drawio extension).
+
+**How it works:** stencils are resolved from a ground-truth catalog (`drawio-build search` — no hallucinated icons); the skill writes a `{slug}.src.ts` build-script (topology only, no coordinates) → the engine lays out + validates (hard gate: stencils exist, nesting order, Well-Architected advice) → emits `{slug}.drawio`.
+
+**Output:** `docs/{slug}/drawio/{slug}.src.ts` + `{slug}.drawio` (+ `.svg` if the desktop app is present).
+
+**Example:**
+```
+/drawio-aws "serverless image pipeline: S3 upload → Lambda → DynamoDB" --feature atlas-re
+```
+→ Compare with: `example/atlas-re/drawio/atlas-re-aws.drawio` (+ the azure/gcp/databricks variants).
+
+**Tip:** validator warnings (e.g. a DB in a public subnet) are Well-Architected advice, not errors — read them.
+
+---
+
+## 22. `/drawio-sequence` — UML sequence diagram in draw.io
+
+**Syntax:** `/drawio-sequence "<flow description>" [--feature <slug>]`
+
+**Use when:** a sequence needs to be a standalone, **editable `.drawio`** with real UML lifelines (design handoff, devs keep editing) — vs `/sequence` (Mermaid, inline in Markdown). Sync calls, returns (`reply`), async signals, self-calls.
+
+**How it works:** you declare participants (left→right in call order; `actor: true` = stick figure) + an ordered message list; `renderSequence` computes every coordinate — straight horizontal arrows, no hand layout.
+
+**Output:** `docs/{slug}/drawio/{slug}.src.ts` + `{slug}.drawio` (+ `.svg` if the draw.io desktop app is present — otherwise open in draw.io web / VS Code).
+
+**Example:**
+```
+/drawio-sequence "Broker submits a risk → API → pricing service rates → async event to reporting;
+API returns the quote" --feature atlas-re
+```
+→ Compare with: `example/atlas-re/drawio/atlas-re-sequence.drawio`.
+
+**Tip:** solid+filled = sync call, dashed+open = reply, solid+open = async. One main scenario per diagram — split alternates into a second `.drawio`. No activation bars yet (v1).
+
+---
+
+## 23. `/diagram` + `/gallery` — The router + the one-file deck
+
+**`/diagram` syntax:** `/diagram "<what you want to show>" [--recommend-only]`
+
+**Use when:** you're unsure which of the ~20 diagram skills fits. Describe the need → the router asks **at most 2** disambiguating questions (source: description or code? · inline vs standalone image?) → prints `→ /<skill> <args> (reason)` and **runs that skill**. `--recommend-only` = stop after the recommendation. Source of truth: `rules/diagram-selection.md`.
+
+**`/gallery` syntax:** `/gallery --feature <slug> [--out path.html]`
+
+**Use when:** handing a stakeholder ONE self-contained HTML that collects every diagram of a feature — one tab per diagram type (Architecture / Data model / Process / …), dark theme, Copy/PNG/PDF export toolbar. Opens by double-click, no server.
+
+**Output:** `/diagram` writes nothing itself (it delegates); `/gallery` → `docs/{slug}/{slug}-gallery.html` (inlines every `.svg`; Mermaid blocks rendered via `mmdc` if installed, else skipped).
+
+**Example:**
+```
+/diagram "where does the order data go, which DB holds it"   # → routes to /dfd
+/gallery --feature atlas-re
+```
+
+**Tip:** rebuild the gallery after adding diagrams (idempotent — re-run overwrites). No `mmdc` → inline Mermaid diagrams are skipped while the D2/PlantUML/BPMN SVGs are still included.
+
+---
+
 ## General notes for every skill
 
 - **Feature doesn't exist yet?** A diagram skill is an "entry point" — it derives the slug + asks about scope + creates the `docs/{slug}/` folder (see `rules/feature-bootstrap.md`). No dead end.

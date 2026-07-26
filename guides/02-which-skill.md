@@ -2,7 +2,7 @@
 
 **English** · [Tiếng Việt](../huong-dan/02-chon-skill-nao.md)
 
-> 14 skills sounds like a lot, but picking the right one is quick if you ask the right question. This is the condensed version; the full version is at `explain-skills/diagram-selection.md`.
+> 27 skills sounds like a lot, but picking the right one is quick if you ask the right question. This is the condensed version; the full version is at `explain-skills/diagram-selection.md`.
 
 ---
 

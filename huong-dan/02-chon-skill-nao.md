@@ -1,6 +1,6 @@
 # 02 — Chọn skill nào? (cây quyết định)
 
-> 14 skill nghe nhiều, nhưng chọn đúng rất nhanh nếu hỏi đúng câu. Bản này là rút gọn; bản đầy đủ ở `explain-skills/diagram-selection.vi.md`.
+> 27 skill nghe nhiều, nhưng chọn đúng rất nhanh nếu hỏi đúng câu. Bản này là rút gọn; bản đầy đủ ở `explain-skills/diagram-selection.vi.md`.
 
 ---
 

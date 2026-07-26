@@ -2,7 +2,7 @@
 
 **English** · [Tiếng Việt](../huong-dan/04-cach-hoat-dong.md)
 
-> Understanding the run flow helps you know when a skill will ask questions, when it waits for your approval, and why it self-corrects. All 14 skills follow this same framework (with 2 extended skills having variants: `/scan-project` runs **2 phases with a HARD STOP** scan→plan→generate; `/sync-confluence` adds a **preview + confirmation** step before writing to Confluence).
+> Understanding the run flow helps you know when a skill will ask questions, when it waits for your approval, and why it self-corrects. All 27 skills follow this same framework (with 2 extended skills having variants: `/scan-project` runs **2 phases with a HARD STOP** scan→plan→generate; `/sync-confluence` adds a **preview + confirmation** step before writing to Confluence).
 
 > **Bilingual EN/VI:** the output language (diagram labels + interview questions + L1 plan + report) **automatically follows the language you type in** — type English → English, Vietnamese → VI; force it with `--lang en|vi` (per `rules/language.md`). Engine syntax keywords + real technical identifiers (table/service/endpoint) always stay in English.
 

@@ -1,6 +1,6 @@
 # 04 — Cách skill hoạt động (luồng chung)
 
-> Hiểu luồng chạy giúp bạn biết khi nào skill sẽ hỏi, khi nào chờ bạn duyệt, và tại sao nó tự sửa lỗi. Cả 14 skill theo cùng khung này (2 skill mở rộng có biến thể: `/scan-project` chạy **2 pha có HARD STOP** scan→plan→sinh; `/sync-confluence` thêm bước **preview + xác nhận** trước khi ghi lên Confluence).
+> Hiểu luồng chạy giúp bạn biết khi nào skill sẽ hỏi, khi nào chờ bạn duyệt, và tại sao nó tự sửa lỗi. Cả 27 skill theo cùng khung này (2 skill mở rộng có biến thể: `/scan-project` chạy **2 pha có HARD STOP** scan→plan→sinh; `/sync-confluence` thêm bước **preview + xác nhận** trước khi ghi lên Confluence).
 
 > **Song ngữ EN/VI:** ngôn ngữ output (nhãn diagram + câu hỏi phỏng vấn + L1 plan + báo cáo) **tự bám ngôn ngữ bạn gõ** — gõ tiếng Anh → English, tiếng Việt → VI; ép bằng `--lang en|vi` (theo `rules/language.md`). Keyword cú pháp engine + tên định danh kỹ thuật thật (table/service/endpoint) luôn giữ English.
 

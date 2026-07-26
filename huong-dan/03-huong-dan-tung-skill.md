@@ -288,6 +288,190 @@ Mặc định vẽ **L1 Context + L2 Container**; L3 Component chỉ vẽ khi c�
 
 ---
 
+## 15. `/mindmap` — Cây phân rã scope / ý tưởng (Mermaid)
+
+**Cú pháp:** `/mindmap "<chủ đề>" [--feature <slug>]`
+
+**Dùng khi:** phân rã scope/yêu cầu/ý tưởng thành cây (giai đoạn discovery, trước SRS). Cây scope/ý tưởng thuần — không có actor (actor + chức năng → `/usecase-diagram`).
+
+**Skill hỏi gì:** các mảng/lĩnh vực chính · 2-4 mục dưới mỗi mảng (tự đọc từ `brainstorms/*.md` nếu có).
+
+**Output:** `docs/{slug}/srs/{slug}-scope.md` — mỗi mindmap một section `## Scope: {Topic}`, mermaid `mindmap`. Compile-check tự động.
+
+**Ví dụ:**
+```
+/mindmap "Scope submission tái bảo hiểm: tiếp nhận, định giá, bind, báo cáo" --feature atlas-re
+```
+
+**Mẹo:** giữ cây ≤3 tầng — sâu hơn render rối; gộp các lá sâu vào một node. Chạy lại cùng chủ đề = update mode.
+
+---
+
+## 16. `/journey` — User journey map (Mermaid)
+
+**Cú pháp:** `/journey "<trải nghiệm>" [--feature <slug>]`
+
+**Dùng khi:** vẽ trải nghiệm người dùng theo thời gian, từng bước, mỗi bước có **điểm hài lòng 1-5** + actor tham gia. Trải nghiệm + cảm xúc qua các touchpoint — bổ trợ `/usecase-diagram` (chức năng) và `/activity` (quy trình).
+
+**Skill hỏi gì:** persona (journey của ai) · các phase/touchpoint theo thứ tự · bước trong mỗi phase · điểm hài lòng (1-5) · actor mỗi bước.
+
+**Output:** `docs/{slug}/srs/{slug}-journey.md` — section `## Journey: {Name}`, mermaid `journey`. Compile-check tự động; report nêu rõ các bước pain (điểm ≤2).
+
+**Ví dụ:**
+```
+/journey "Broker lần đầu submit rủi ro: tìm kiếm, submit, chờ quote, bind" --feature atlas-re
+```
+
+**Mẹo:** điểm số chính là giá trị của diagram này — đừng chấm 5 hết; điểm thấp mới lộ pain point để nối sang cải tiến.
+
+---
+
+## 17. `/timeline` — Timeline roadmap / milestone (Mermaid)
+
+**Cú pháp:** `/timeline "<chủ đề>" [--feature <slug>] [--shared]`
+
+**Dùng khi:** roadmap các milestone gom theo giai đoạn (quý/năm/phase) — PM-light. **Không phải Gantt**: không task bar, không dependency, không critical path (chủ đích ngoài scope).
+
+**Skill hỏi gì:** các giai đoạn theo thứ tự · 1-3 milestone mỗi giai đoạn + note ngắn (không bịa ngày).
+
+**Output:** `docs/{slug}/{slug}-timeline.md` (hoặc `docs/_shared/_shared-timeline.md` với `--shared` cho roadmap cross-feature) — mermaid `timeline`. Compile-check tự động.
+
+**Ví dụ:**
+```
+/timeline "Lộ trình triển khai Atlas-RE" --feature atlas-re
+```
+
+**Mẹo:** giữ nhãn giai đoạn ngắn (`2026 Q1`, `Phase 1`) — nhãn dài làm vỡ layout cột. `Milestone : note` — dấu hai chấm tách milestone và note.
+
+---
+
+## 18. `/orgchart` — Sơ đồ tổ chức / cây báo cáo (D2)
+
+**Cú pháp:** `/orgchart [--feature <slug>] [--shared] [--stakeholder]`
+
+**Dùng khi:** kickoff hoặc phân tích stakeholder — ai báo cáo cho ai, gom theo team/phòng ban. Là cây báo cáo, KHÔNG phải RACI hay quy trình ("ai làm bước nào" → `/activity-swimlane`).
+
+**Cần:** binary `d2` (dùng chung `render.sh` với họ `/d2-*`).
+
+**Skill hỏi gì:** người đứng đầu (đỉnh cây) · người/vai + chức danh · mỗi người báo cáo cho ai · gom team/phòng ban (tuỳ chọn).
+
+**Output:** `docs/{slug}/orgchart/{slug}-orgchart.d2` + `.svg` (hoặc `docs/_shared/orgchart/` với `--shared`). Với `--stakeholder`: thêm `{slug}-stakeholder.md` — bản đồ power/interest (Mermaid `quadrantChart`) kèm chiến lược engagement cho mỗi góc phần tư.
+
+**Ví dụ:**
+```
+/orgchart --feature atlas-re --stakeholder
+```
+
+**Mẹo:** báo cáo chéo team (dotted-line) → edge gắn nhãn `dotted-line` + nét đứt. >15 người → tách theo phòng ban.
+
+---
+
+## 19. `/dfd` — Data Flow Diagram L0 + L1 (D2)
+
+**Cú pháp:** `/dfd [--feature <slug>]` (hoặc `/dfd "<mô tả luồng dữ liệu>"`)
+
+**Dùng khi:** trả lời "dữ liệu đi đâu, process nào chạm vào, store nào giữ" — góc nhìn DATA, trực giao với `/system-design` (cấu trúc) và `/sequence` (thời gian). Vẽ 2 mức: L0 context (1 process = cả hệ thống + external entity) và L1 nổ chi tiết (2-5 process đánh số + data store).
+
+**Cần:** binary `d2`. Có `srs/{slug}-erd.md`/spec/brainstorm thì skill đọc làm nguồn.
+
+**Skill hỏi gì:** external entity · process (đánh số 1.0, 1.1…) · data store (D1, D2…) · dữ liệu trên từng mũi tên.
+
+**Output:** `docs/{slug}/dfd/{slug}-dfd-l0.d2/.svg` + `{slug}-dfd-l1.d2/.svg` + `{slug}-dfd-index.md`.
+
+**Ví dụ:**
+```
+/dfd --feature atlas-re
+```
+
+**Mẹo:** nhãn edge là DỮ LIỆU đang di chuyển ("order", "payment result"), không phải hành động ("send"). Data store chỉ là "D1 Orders" — không có cột; cột là việc của `/erd`.
+
+---
+
+## 20. `/code-flow` — Trace 1 hàm/module trong code → flow diagram
+
+**Cú pháp:** `/code-flow <path-hoặc-symbol> [--as sequence|activity|state] [--feature <slug>]`
+
+**Dùng khi:** muốn flow diagram cho MỘT hàm/module cụ thể trong code sẵn có — skill đọc code (qua subagent read-only), trace call chain/nhánh/state, tự chọn loại diagram (mặc định sequence). Anh em "nhắm 1 mục tiêu" của `/scan-project` (bộ diagram cả codebase).
+
+**Cách hoạt động (2 pha — HARD STOP ở giữa):** Pha 1 trace (read-only, trả findings + bằng chứng `file:line`) → L1 preview → bạn chốt → Pha 2 render diagram Mermaid.
+
+**Output:** `docs/{slug}/code-flow/{slug}-flow.md` — diagram + bảng **Code provenance** (phần tử → `file:line` → ✅ đọc chắc / 🔵 suy luận). Compile-check tự động.
+
+**Ví dụ:**
+```
+/code-flow src/orders/placeOrder.ts
+/code-flow OrderService.placeOrder --as state
+```
+
+**Mẹo:** mặc định trace 1 tầng lời gọi (gọi sâu hơn ghi "→ tên"); chỗ đọc không ra đánh 🔵 "cần xác nhận" — không bao giờ bịa.
+
+---
+
+## 21. `/drawio-aws` · `/drawio-azure` · `/drawio-gcp` · `/drawio-databricks` — Kiến trúc cloud trong draw.io (stencil thật)
+
+**Cú pháp:** `/drawio-aws "<kiến trúc>" [--feature <slug>] [--type pipeline|hierarchy|network|hubspoke|mesh|sequence]` (tương tự cho `-azure`/`-gcp`/`-databricks`)
+
+**Dùng khi:** sơ đồ kiến trúc phải hiện ĐÚNG các dịch vụ cloud với icon chính hãng (stencil AWS/Azure/GCP/Databricks) — vd cho architecture review. Chỉ cần bức tranh logic chung → `/system-design`/`/d2-architect`.
+
+**Cần:** catalog aws + databricks có sẵn trong repo; **azure/gcp cần tải một lần**: `bash scripts/drawio-catalog-ensure.sh azure` (hoặc `gcp`). **Export PNG/SVG cần app draw.io desktop** — không có thì `.drawio` vẫn là deliverable (mở bằng draw.io web / VS Code drawio extension).
+
+**Cách hoạt động:** stencil tra từ catalog ground-truth (`drawio-build search` — không bịa icon); skill viết build-script `{slug}.src.ts` (chỉ khai topology, không toạ độ) → engine tự layout + validate (hard gate: stencil tồn tại, thứ tự nesting, advice Well-Architected) → xuất `{slug}.drawio`.
+
+**Output:** `docs/{slug}/drawio/{slug}.src.ts` + `{slug}.drawio` (+ `.svg` nếu có desktop app).
+
+**Ví dụ:**
+```
+/drawio-aws "Pipeline xử lý ảnh serverless: S3 upload → Lambda → DynamoDB" --feature atlas-re
+```
+→ Đối chiếu: `example/atlas-re/drawio/atlas-re-aws.drawio` (+ các biến thể azure/gcp/databricks).
+
+**Mẹo:** warning của validator (vd DB nằm trong public subnet) là advice Well-Architected, không phải lỗi — nên đọc kỹ.
+
+---
+
+## 22. `/drawio-sequence` — UML sequence diagram trong draw.io
+
+**Cú pháp:** `/drawio-sequence "<mô tả luồng>" [--feature <slug>]`
+
+**Dùng khi:** sequence cần là file **`.drawio` standalone, sửa được** với lifeline UML thật (bàn giao thiết kế, dev sửa tiếp) — khác `/sequence` (Mermaid, inline trong Markdown). Có sync call, return (`reply`), async signal, self-call.
+
+**Cách hoạt động:** bạn khai participant (trái→phải theo thứ tự gọi; `actor: true` = hình người que) + danh sách message theo thứ tự; `renderSequence` tự tính mọi toạ độ — mũi tên ngang thẳng, không layout tay.
+
+**Output:** `docs/{slug}/drawio/{slug}.src.ts` + `{slug}.drawio` (+ `.svg` nếu có app draw.io desktop — không có thì mở draw.io web / VS Code).
+
+**Ví dụ:**
+```
+/drawio-sequence "Broker submit rủi ro → API → pricing service định giá → event async sang reporting;
+API trả quote" --feature atlas-re
+```
+→ Đối chiếu: `example/atlas-re/drawio/atlas-re-sequence.drawio`.
+
+**Mẹo:** liền+đầu đặc = sync call, đứt+đầu mở = reply, liền+đầu mở = async. Mỗi diagram 1 kịch bản chính — nhánh phụ tách sang `.drawio` thứ hai. Chưa có activation bar (v1).
+
+---
+
+## 23. `/diagram` + `/gallery` — Router chọn skill + deck HTML một file
+
+**Cú pháp `/diagram`:** `/diagram "<điều bạn muốn thể hiện>" [--recommend-only]`
+
+**Dùng khi:** không chắc trong ~20 skill vẽ nên dùng cái nào. Mô tả nhu cầu → router hỏi **tối đa 2** câu phân định (nguồn: mô tả hay code? · inline hay hình standalone?) → in `→ /<skill> <args> (lý do)` rồi **chạy luôn skill đó**. `--recommend-only` = dừng sau khi gợi ý. Source of truth: `rules/diagram-selection.md`.
+
+**Cú pháp `/gallery`:** `/gallery --feature <slug> [--out path.html]`
+
+**Dùng khi:** đưa stakeholder MỘT file HTML tự chứa gom mọi diagram của feature — mỗi loại diagram một tab (Architecture / Data model / Process / …), dark theme, toolbar export Copy/PNG/PDF. Double-click là mở, không cần server.
+
+**Output:** `/diagram` không tự ghi gì (chỉ delegate); `/gallery` → `docs/{slug}/{slug}-gallery.html` (inline mọi `.svg`; block Mermaid render qua `mmdc` nếu có, không thì bỏ qua).
+
+**Ví dụ:**
+```
+/diagram "dữ liệu order đi đâu, DB nào giữ"   # → route sang /dfd
+/gallery --feature atlas-re
+```
+
+**Mẹo:** thêm diagram xong thì rebuild gallery (idempotent — chạy lại là ghi đè). Thiếu `mmdc` → diagram Mermaid inline bị bỏ qua, SVG D2/PlantUML/BPMN vẫn có đủ.
+
+---
+
 ## Lưu ý chung cho mọi skill
 
 - **Feature chưa tồn tại?** Skill vẽ diagram là "điểm vào" — tự derive slug + hỏi đúng phạm vi + tạo folder `docs/{slug}/` (xem `rules/feature-bootstrap.md`). Không bế tắc.
