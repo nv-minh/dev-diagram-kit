@@ -90,7 +90,19 @@ Kết quả thực tế (khác plan ở vài điểm, ghi rõ bên dưới):
 
 ---
 
-## Phase 3 — Docs bắt kịp code (P2, ~2 buổi)
+## Phase 3 — Docs bắt kịp code ✅ DONE 2026-07-26
+
+- 3.1 ✅ explain-skills đủ 27/27 skill: 12 doc mới ×2 ngôn ngữ (24 file). 5 skill `/drawio-*` gom vào
+  `drawio-family.md` theo đúng pattern family-doc sẵn có (activity-family, erd-family) thay vì 5 doc gần trùng.
+- 3.2 ✅ guides/03 + huong-dan/03 thêm §15–§23 → đủ 27 skill, giữ parity EN/VI.
+  Ngoài plan: sửa 4 chỗ còn ghi "14 skills" trong guides/02, guides/04 + bản VI.
+- 3.3 ✅ CHANGELOG.md (Keep a Changelog, 1.0.0 + 1.1.0) + CONTRIBUTING.md (gates, convention
+  vendored-vs-kit-native, checklist thêm skill mới, quy tắc cặp song ngữ).
+- 3.4 ⚠️ PNG/SVG cho atlas-re-sequence: KHÔNG làm được ở máy này — cần draw.io desktop app
+  (doctor báo thiếu). Làm khi có app: `drawio-build --dir example/atlas-re/drawio --render`.
+  Example cho scan-project → chuyển xuống backlog Phase 4.
+
+### Chi tiết plan gốc (giữ để tham chiếu)
 
 ### 3.1 `explain-skills/` thiếu 16/27 skills (59%)
 Ưu tiên theo thứ tự:
