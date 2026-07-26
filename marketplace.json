@@ -5,13 +5,13 @@
   },
   "metadata": {
     "description": "Marketplace for dev-diagram-kit — diagrams + brownfield scan + Confluence doc-sync, for developers doing BA work. 1 repo = marketplace + plugin.",
-    "version": "1.0.0"
+    "version": "1.1.0"
   },
   "plugins": [
     {
       "name": "dev-diagram-kit",
       "source": "./",
-      "description": "26 skills for developers doing BA work: diagrams (sequence/activity/BPMN/state/ERD/use case/architecture/C4 + DFD/mindmap/journey/timeline/org chart + draw.io cloud architecture with real AWS/Azure/GCP/Databricks stencils) + code-flow (one function into a flow with provenance) + scan-project (reverse-engineer from code) + diagram (router) + gallery (one-file deck) + sync-confluence (doc sync). Unified diagram-validate gate across all engines. Bilingual EN/VI.",
+      "description": "27 skills for developers doing BA work: diagrams (sequence/activity/BPMN/state/ERD/use case/architecture/C4 + DFD/mindmap/journey/timeline/org chart + draw.io cloud architecture with real AWS/Azure/GCP/Databricks stencils + draw.io UML sequence) + code-flow (one function into a flow with provenance) + scan-project (reverse-engineer from code) + diagram (router) + gallery (one-file deck) + sync-confluence (doc sync). Unified diagram-validate gate across all engines. Bilingual EN/VI.",
       "category": "productivity",
       "keywords": ["diagram", "business-analysis", "mermaid", "d2", "plantuml", "bpmn", "c4", "drawio", "aws", "azure", "gcp", "reverse-engineering", "confluence", "doc-sync", "bilingual"]
     }

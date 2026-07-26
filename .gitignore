@@ -10,3 +10,5 @@ assets/plantuml/
 # The other 10 catalogs (aws/databricks/bpmn/tooling packs, each <1MB) ship in-repo.
 skills/drawio/catalog/azure.json
 skills/drawio/catalog/gcp.json
+# Upstream repo clone (engine already ported to skills/drawio/engine/ — do not vendor here)
+drawio-ai-kit/

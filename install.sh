@@ -28,7 +28,8 @@ cp -R "$SRC/templates/." "$DEST/templates/"
 find "$DEST/skills" -name '*.sh' -exec chmod +x {} \; 2>/dev/null || true
 chmod +x "$DEST"/scripts/*.sh 2>/dev/null || true
 
-echo "  ✅ Copied 22 skills + agents + rules + scripts + templates + assets/icons."
+SKILL_COUNT="$(find "$SRC/skills" -name SKILL.md | wc -l | tr -d ' ')"
+echo "  ✅ Copied $SKILL_COUNT skills + agents + rules + scripts + templates + assets/icons."
 
 # BPMN engine: copy mode → node_modules live right inside the engine dir.
 ENGINE="$DEST/skills/bpmn/engine"
