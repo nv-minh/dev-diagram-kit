@@ -2,7 +2,7 @@
 
 Bộ skill vẽ sơ đồ và làm tài liệu cho **dev làm công việc BA**, đóng gói thành plugin [Claude Code](https://docs.claude.com/en/docs/claude-code). Mô tả hệ thống hoặc quy trình bằng lời — hoặc trỏ vào một codebase — kit sẽ vẽ đúng loại sơ đồ (Mermaid, PlantUML, D2 hoặc BPMN), tự kiểm cú pháp rồi render. Output song ngữ, tự bám theo ngôn ngữ bạn gõ.
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE) &nbsp; 27 skill &nbsp;·&nbsp; Mermaid / PlantUML / D2 / BPMN / draw.io &nbsp;·&nbsp; EN / VI
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE) [![CI](https://github.com/nv-minh/dev-diagram-kit/actions/workflows/ci.yml/badge.svg)](https://github.com/nv-minh/dev-diagram-kit/actions/workflows/ci.yml) &nbsp; 27 skill &nbsp;·&nbsp; Mermaid / PlantUML / D2 / BPMN / draw.io &nbsp;·&nbsp; EN / VI
 
 [English](README.md) · **Tiếng Việt**
 
@@ -238,6 +238,7 @@ Chỉ cài thứ skill bạn dùng cần (`scripts/doctor.sh` báo cái nào thi
 - **Icon công nghệ tự động.** Sơ đồ kiến trúc và `/scan-project` tự chèn logo (Redis, Postgres, Kafka, AWS, nginx, React, …) khi node khớp một công nghệ — Devicon bundle offline + fallback CDN (`rules/icon-map.md`). Tắt bằng `--no-icons`.
 - **Đúng mức chi tiết (altitude).** Audience là dev nên chi tiết kỹ thuật (column, endpoint, schema) được dùng khi hợp; kit chọn mức theo loại sơ đồ và người đọc, không cấm đoán.
 - **Tự bắt lỗi.** Mọi sơ đồ qua một cổng validate thống nhất (`scripts/diagram-validate.ts`) trước khi báo xong — compile-check qua Mermaid / D2 / PlantUML / BPMN / draw.io, cộng audit stencil-catalog + design-principle của draw.io (không icon bịa, không edge đứt, lời khuyên AWS Well-Architected). Mermaid compile-check (`mermaid-verify.ts`); D2/DBML validate qua CLI; BPMN semcheck kiểm phủ; sơ đồ D2/C4 tự soi lại từ ảnh render.
+- **Engine có test, example có gate chống drift.** Engine vẽ sơ đồ có bộ unit test (`npm test`), code TypeScript kit-native được type-check (`npm run typecheck`); CI rebuild toàn bộ example `.src.ts` và fail nếu output engine lệch so với file `.drawio` đã commit.
 - **Router + bộ bàn giao.** `/diagram` chọn đúng skill cho một nhu cầu (hỏi tối đa 2 câu rồi chạy); `/gallery` gom mọi sơ đồ của 1 feature thành một HTML tabbed self-contained (Copy/PNG/PDF) để bàn giao stakeholder.
 - **Human-in-the-loop.** Skill không tự ghi im lặng — mọi thay đổi đều preview và xác nhận trước (`rules/approval-gate.md`). `/sync-confluence` luôn hiện diff và hỏi trước khi đụng trang.
 
@@ -252,17 +253,24 @@ dev-diagram-kit/
 ├── agents/                        diagram-reviewer
 ├── rules/                         Rule dùng chung (approval-gate, diagram-selection, diagram-style, language, icon-map, …)
 ├── scripts/                       mermaid-verify.ts · diagram-validate.ts · doctor.sh · plantuml-ensure.sh · drawio-catalog-ensure.sh · icon-path.sh · tsrun.sh · render helper
+├── tests/                         Unit test cho engine (vitest — `npm test`)
+├── .github/workflows/             CI: typecheck · test · gate chống drift example
 ├── templates/                     Khung file diagram
 ├── hooks/                         SessionStart hook (tự cài BPMN engine)
 ├── assets/icons/                  Icon công nghệ bundle sẵn (Devicon MIT, Simple Icons CC0)
 ├── example/                       Ví dụ đầy đủ: feature atlas-re
-├── explain-skills/                Giải thích từng skill (song ngữ: `*.md` tiếng Anh, `*.vi.md` tiếng Việt)
-└── guides/ · huong-dan/           Hướng dẫn bắt đầu (tiếng Anh / tiếng Việt)
+├── explain-skills/                Giải thích từng skill, đủ 27/27 skill (song ngữ: `*.md` tiếng Anh, `*.vi.md` tiếng Việt)
+├── guides/ · huong-dan/           Hướng dẫn bắt đầu (tiếng Anh / tiếng Việt)
+└── CHANGELOG.md · CONTRIBUTING.md Lịch sử phiên bản · hướng dẫn đóng góp
 ```
 
 ## Triết lý: dev vẫn là người điều khiển
 
 Kit không thay tư duy bằng tự động hoá. Sơ đồ do AI vẽ là **bản nháp chất lượng cao để thẩm định**, không phải chân lý: compile-check và coverage bắt lỗi cú pháp và độ phủ, nhưng *đúng-sai nghiệp vụ* là quyết định của bạn. Bạn cung cấp ngữ cảnh, bạn duyệt mọi lần ghi, bạn chịu trách nhiệm với kết quả. Kit lo phần máy móc — nhớ cú pháp, dàn layout, bắt lỗi — để bạn tập trung vào phần chỉ con người làm được.
+
+## Đóng góp
+
+Xem [CONTRIBUTING.md](CONTRIBUTING.md) — tóm tắt: `npm run typecheck` + `npm test` phải xanh, sửa engine thì phải rebuild example trong cùng commit (CI fail nếu lệch), và mọi tài liệu tiếng Anh sửa cùng lúc với bản tiếng Việt tương ứng. Lịch sử phát hành ở [CHANGELOG.md](CHANGELOG.md).
 
 ## License
 

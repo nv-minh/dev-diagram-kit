@@ -2,7 +2,7 @@
 
 Diagram and documentation skills for developers doing BA work, packaged as a [Claude Code](https://docs.claude.com/en/docs/claude-code) plugin. Describe a system or process in plain language — or point the kit at a codebase — and it produces the right diagram (Mermaid, PlantUML, D2, or BPMN), compile-checks it, and renders it. Output is bilingual and follows the language you write in.
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE) &nbsp; 27 skills &nbsp;·&nbsp; Mermaid / PlantUML / D2 / BPMN / draw.io &nbsp;·&nbsp; EN / VI
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE) [![CI](https://github.com/nv-minh/dev-diagram-kit/actions/workflows/ci.yml/badge.svg)](https://github.com/nv-minh/dev-diagram-kit/actions/workflows/ci.yml) &nbsp; 27 skills &nbsp;·&nbsp; Mermaid / PlantUML / D2 / BPMN / draw.io &nbsp;·&nbsp; EN / VI
 
 **English** · [Tiếng Việt](README.vi.md)
 
@@ -239,6 +239,7 @@ Install only what the skills you use need (`scripts/doctor.sh` reports what's mi
 - **Automatic technology icons.** Architecture diagrams and `/scan-project` add logos (Redis, Postgres, Kafka, AWS, nginx, React, …) when a node maps to a known technology — Devicon bundled offline with a CDN fallback (`rules/icon-map.md`). Disable with `--no-icons`.
 - **The right level of detail.** The audience is developers, so technical detail (columns, endpoints, schema) is welcome where it fits; the kit chooses the altitude from the diagram type and reader, not by forbidding it.
 - **Self-checking.** Every diagram passes a unified validation gate (`scripts/diagram-validate.ts`) before it's reported done — compile check across Mermaid / D2 / PlantUML / BPMN / draw.io, plus the draw.io stencil-catalog + design-principle audits (no hallucinated icons, no dangling refs, AWS Well-Architected advice). Mermaid is compile-checked (`mermaid-verify.ts`), D2/DBML validate through their CLIs, BPMN runs a semantic coverage check, and D2/C4 diagrams are reviewed from the rendered image.
+- **Tested engine, drift-gated examples.** The diagram engine ships with a unit-test suite (`npm test`) and type-checked kit-native TypeScript (`npm run typecheck`); CI rebuilds every example `.src.ts` and fails if engine output drifts from the committed `.drawio` files.
 - **Router + one-file deck.** `/diagram` picks the right skill for a need (asks at most two questions, then runs it); `/gallery` gathers every diagram of a feature into one self-contained tabbed HTML (Copy/PNG/PDF) for stakeholder handoff.
 - **Human in the loop.** Skills never write silently — every change is previewed and confirmed first (`rules/approval-gate.md`). `/sync-confluence` always shows a diff and asks before touching a page.
 
@@ -253,17 +254,24 @@ dev-diagram-kit/
 ├── agents/                        diagram-reviewer
 ├── rules/                         Shared rules (approval-gate, diagram-selection, diagram-style, language, icon-map, …)
 ├── scripts/                       mermaid-verify.ts · diagram-validate.ts · doctor.sh · plantuml-ensure.sh · drawio-catalog-ensure.sh · icon-path.sh · tsrun.sh · render helpers
+├── tests/                         Engine unit tests (vitest — `npm test`)
+├── .github/workflows/             CI: typecheck · tests · example drift gate
 ├── templates/                     Diagram file templates
 ├── hooks/                         SessionStart hook (auto-installs the BPMN engine)
 ├── assets/icons/                  Bundled technology icons (Devicon MIT, Simple Icons CC0)
 ├── example/                       Worked example: the atlas-re feature
-├── explain-skills/                Per-skill deep dives (bilingual: `*.md` English, `*.vi.md` Vietnamese)
-└── guides/ · huong-dan/           Getting-started guide (English / Vietnamese)
+├── explain-skills/                Per-skill deep dives, all 27 skills covered (bilingual: `*.md` English, `*.vi.md` Vietnamese)
+├── guides/ · huong-dan/           Getting-started guide (English / Vietnamese)
+└── CHANGELOG.md · CONTRIBUTING.md Version history · how to contribute
 ```
 
 ## Design principle: keep the developer in control
 
 The kit does not replace judgment with automation. A generated diagram is a high-quality draft to be reviewed, not ground truth: compile and coverage checks catch syntax and completeness, but whether the diagram is *correct for the domain* is your call. You supply context, you approve every write, and you own the result. The kit removes the mechanical work — remembering syntax, laying things out, catching errors — so you can spend attention on the parts only a person can do.
+
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) — the short version: `npm run typecheck` + `npm test` must pass, an engine change must rebuild the examples in the same commit (CI fails on drift), and every English doc changes together with its Vietnamese twin. Release history lives in [CHANGELOG.md](CHANGELOG.md).
 
 ## License
 
