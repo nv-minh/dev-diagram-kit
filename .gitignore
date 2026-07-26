@@ -5,3 +5,8 @@
 node_modules/
 # PlantUML jar (downloaded on demand by scripts/plantuml-ensure.sh for offline rendering)
 assets/plantuml/
+# draw.io cloud catalogs that are too large to ship in-repo (azure.json ~13.5MB, gcp.json ~1.9MB —
+# mostly embedded base64 icon bitmaps). Downloaded on demand by scripts/drawio-catalog-ensure.sh.
+# The other 10 catalogs (aws/databricks/bpmn/tooling packs, each <1MB) ship in-repo.
+skills/drawio/catalog/azure.json
+skills/drawio/catalog/gcp.json

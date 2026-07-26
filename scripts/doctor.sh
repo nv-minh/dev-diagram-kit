@@ -91,6 +91,38 @@ else
 fi
 
 echo ""
+echo "== draw.io (/drawio-aws /drawio-azure /drawio-gcp /drawio-databricks) =="
+DRAWIO_ENG="$ROOT/skills/drawio/engine"
+if [ -f "$DRAWIO_ENG/core.ts" ] && [ -f "$DRAWIO_ENG/drawio-build.ts" ]; then
+  # Real smoke: load the shipped aws catalog + searchIcon("s3") via the ported engine.
+  if command -v node >/dev/null 2>&1; then
+    SMOKE="$(bash "$ROOT/scripts/tsrun.sh" "$DRAWIO_ENG/drawio-build.ts" search s3 --cloud aws 2>/dev/null \
+      | node -e 'let s="";process.stdin.on("data",d=>s+=d).on("end",()=>{try{const o=JSON.parse(s);process.stdout.write(o.s3&&o.s3[0]&&o.s3[0].name==="s3"?"ok":"bad")}catch{process.stdout.write("bad")}})' 2>/dev/null)"
+    if [ "$SMOKE" = "ok" ]; then green "draw.io engine + aws catalog (smoke: searchIcon s3 → ok)"
+    else red "draw.io engine smoke failed (catalog load / searchIcon)" "Re-check skills/drawio/engine + skills/drawio/catalog/aws.json"; fi
+  else
+    yellow "node missing — cannot smoke the draw.io engine (it needs node/tsx)"
+  fi
+else
+  red "draw.io engine not found at $DRAWIO_ENG" "Ignore if you don't use /drawio-*"
+fi
+# Catalogs: aws/databricks ship in-repo; azure/gcp are large + gitignored (download on demand).
+for c in aws databricks; do
+  [ -f "$ROOT/skills/drawio/catalog/$c.json" ] && green "$c.json catalog (shipped)" || yellow "$c.json missing (should ship in-repo)"
+done
+for c in azure gcp; do
+  if [ -f "$ROOT/skills/drawio/catalog/$c.json" ]; then green "$c.json catalog (downloaded)"
+  else yellow "$c.json not downloaded — run: bash \"$ROOT/scripts/drawio-catalog-ensure.sh\" $c"; fi
+done
+# draw.io desktop app = OPTIONAL (only for PNG/SVG export; .drawio opens everywhere without it).
+DRAWIO_CLI="${DRAWIO_CLI:-}"
+if [ -n "$DRAWIO_CLI" ] && [ -x "$DRAWIO_CLI" ]; then green "draw.io desktop (\$DRAWIO_CLI) — PNG/SVG export"
+elif command -v drawio >/dev/null 2>&1; then green "draw.io desktop ($(command -v drawio)) — PNG/SVG export"
+elif [ -x "/Applications/draw.io.app/Contents/MacOS/draw.io" ]; then green "draw.io desktop (/Applications) — PNG/SVG export"
+else yellow "draw.io desktop not found — .drawio files still open in draw.io web/VS Code; only PNG/SVG export is skipped"
+fi
+
+echo ""
 echo "──────────────────────────────────────────"
 printf "Total: ✅ %d OK · ⚠️  %d warnings · ❌ %d missing\n" "$ok" "$warn" "$miss"
 [ "$miss" -eq 0 ] && echo "Ready to draw. (⚠️ warnings only affect the corresponding skill.)" || echo "Install the ❌ items using the hints above, then run doctor again."
