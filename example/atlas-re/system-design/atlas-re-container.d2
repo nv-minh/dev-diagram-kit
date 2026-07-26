@@ -32,10 +32,24 @@ Web -> Atlas.API: "REST / WebSocket"
 Atlas.API -> Atlas.svc.sub: "route"
 Atlas.API -> Atlas.svc.con: "route"
 Atlas.API -> Atlas.svc.clm: "route"
+
+# service ↔ service — sync REST (see ../DOMAIN.md "Service interactions")
+Atlas.svc.sub -> Atlas.svc.pri: "rate (sync)"
+Atlas.svc.con -> Atlas.svc.sub: "fetch submission (sync)"
+Atlas.svc.con -> Atlas.svc.pri: "final rate (sync)"
+Atlas.svc.clm -> Atlas.svc.con: "coverage lookup (sync)"
+
+# data stores
 Atlas.svc.sub -> Atlas.DB: "read/write"
 Atlas.svc.con -> Atlas.DB: "read/write"
 Atlas.svc.sub -> Atlas.Cache: "lookup"
-Atlas.svc.con -> Atlas.Bus: "events"
-Atlas.svc.clm -> Atlas.Bus: "events"
+
+# event bus (proposed) — publish AND subscribe: a backbone, not a sink
+Atlas.svc.sub -> Atlas.Bus: "submission.* events"
+Atlas.svc.con -> Atlas.Bus: "contract.* events"
+Atlas.svc.clm -> Atlas.Bus: "claim.* events"
+Atlas.Bus -> Atlas.svc.con: "submission.quoted (subscribe)"
+Atlas.Bus -> Atlas.svc.clm: "contract.bound (subscribe)"
+
 Atlas.API -> AD: "verify token"
 Atlas.svc.sub -> Blob: "upload SoV"

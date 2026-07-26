@@ -43,6 +43,8 @@ export class Diagram {
     this.eid = 0;
     this.edgeSpecs = [];        // edges recorded first, built later (to bundle fan-out 1→N)
     this._edgesBuilt = false;
+    this.seqParticipants = [];  // UML sequence lifelines (consumed by engine/sequence.ts renderSequence)
+    this.seqMessages = [];      // UML sequence messages (time-ordered)
     if (title) this.text("__title", [0, 24], page[0], title, { fs: 14 });
   }
   _put(id, parent, x, y, w, h, style, label) {
@@ -156,6 +158,12 @@ export class Diagram {
     this.edgeSpecs.push({ src, tgt, label, opts });
     return this;
   }
+
+  /** UML sequence: declare a participant (lifeline). `actor:true` → stick-figure header. */
+  participant(id, label, opts = {}) { this.seqParticipants.push({ id, label, ...opts }); return this; }
+  /** UML sequence: a time-ordered message. `reply:true` → dashed open arrow (return);
+   *  `async:true` → solid open arrow (signal); default → solid filled block (synchronous call). */
+  message(from, to, label = "", opts = {}) { this.seqMessages.push({ from, to, label, ...opts }); return this; }
 
   /** Build all edges — deterministic ORTHOGONAL router with HARD obstacle avoidance.
    *  Same three-stage shape as libavoid: (1) orthogonal visibility graph, (2) A* shortest path,
@@ -471,7 +479,10 @@ export class Diagram {
     //    tracks. Global + deterministic, so routing no longer depends on link() order. Terminal
     //    segments (touching a port) stay pinned; any nudge that would clip an icon or hug a border is
     //    reverted — so this never makes routing worse, only tidier.
-    const SEP = 16;
+    // SEP = track separation for parallel overlapping segments. Tier it up on dense diagrams so co-flowing
+    // edges spread onto wider tracks (less "đè"); the revert guard below means a larger SEP can only help.
+    const edgeCount = specs.filter((e) => !e.opts.style && !e.opts.route).length;
+    const SEP = edgeCount > 24 ? 22 : edgeCount > 12 ? 18 : 16;
     // fresh mutable absolute point-paths; only auto-routed edges participate (skip raw / user-pinned)
     const paths = routes.map((r, i) =>
       (!r || r.raw || specs[i].opts.route || specs[i].opts.style) ? null
@@ -553,7 +564,7 @@ export class Diagram {
 
   _emitEdge({ src, tgt, label = "", opts = {} }, r, fr, geom) {
     const { dash = false, flow = false, rounded = false, stroke = THEME.edge.stroke, style = "" } = opts;
-    let st = `edgeStyle=orthogonalEdgeStyle;html=1;rounded=${rounded ? 1 : 0};jettySize=auto;orthogonalLoop=1;fontSize=10;fontColor=${THEME.edge.fontColor};strokeColor=${stroke};strokeWidth=${THEME.edge.strokeWidth};`;
+    let st = `edgeStyle=orthogonalEdgeStyle;html=1;rounded=${rounded ? 1 : 0};jettySize=auto;orthogonalLoop=1;fontSize=9;fontColor=${THEME.edge.fontColor};strokeColor=${stroke};strokeWidth=${THEME.edge.strokeWidth};`;
     if (dash) st += "dashed=1;";
     if (flow) st += "flowAnimation=1;";          // animated moving dashes in draw.io / SVG (not PNG)
     if (label) st += `labelBackgroundColor=${THEME.edge.labelBg};`;

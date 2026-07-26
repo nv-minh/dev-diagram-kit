@@ -66,6 +66,14 @@ export const DIAGRAM_TYPES = {
     grouping: "components",
     notes: "Number the steps along the request flow (1→N) on the architecture diagram; each arrow carries a sequence number; read by number, edges need not all point the same way.",
   },
+  uml_sequence: {
+    label: "UML sequence (lifelines × time-ordered messages)",
+    orientation: "TB",            // time flows top → bottom
+    edgeCorner: "rounded",
+    laneStrategy: "lifelines",    // one vertical lane per participant; messages pinned at a step's Y
+    grouping: "participants",
+    notes: "N vertical lifelines (dashed) under each participant header; messages are horizontal arrows at increasing Y (time). Laid out by engine/sequence.ts renderSequence() — NOT the orthogonal A* router — so each message is a straight horizontal between two spines.",
+  },
   bpmn: {
     label: "BPMN swimlane process (roles × phases)",
     orientation: "LR",            // flow left → right across horizontal lanes

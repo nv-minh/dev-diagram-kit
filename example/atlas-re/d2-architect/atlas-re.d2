@@ -38,16 +38,32 @@ External: External {
   Blob: Azure Blob (files) { icon:"${cdn}azure/azure-original.svg" }
 }
 
+# ingress
 UW -> Web: HTTPS
 Web -> Platform.API: REST / WebSocket
 Platform.API -> Platform.svc.sub: route
 Platform.API -> Platform.svc.con: route
 Platform.API -> Platform.svc.clm: route
+
+# service ↔ service — sync REST (see ../DOMAIN.md "Service interactions")
+Platform.svc.sub -> Platform.svc.pri: rate (sync)
+Platform.svc.con -> Platform.svc.sub: fetch submission (sync)
+Platform.svc.con -> Platform.svc.pri: final rate (sync)
+Platform.svc.clm -> Platform.svc.con: coverage lookup (sync)
+
+# data stores
 Platform.svc.sub -> Platform.DB: read/write
 Platform.svc.con -> Platform.DB: read/write
 Platform.svc.pri -> Platform.DB: load rates
 Platform.svc.sub -> Platform.Cache: lookup (proposed)
-Platform.svc.con -> Platform.Bus: contract.* events (proposed)
-Platform.svc.clm -> Platform.Bus: claim.* events (proposed)
+
+# event bus (proposed) — publish AND subscribe: a backbone, not a sink
+Platform.svc.sub -> Platform.Bus: submission.* events
+Platform.svc.con -> Platform.Bus: contract.* events
+Platform.svc.clm -> Platform.Bus: claim.* events
+Platform.Bus -> Platform.svc.con: submission.quoted (subscribe)
+Platform.Bus -> Platform.svc.clm: contract.bound (subscribe)
+
+# external
 Platform.API -> External.AD: verify token
 Platform.svc.sub -> External.Blob: upload SoV

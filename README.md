@@ -2,7 +2,7 @@
 
 Diagram and documentation skills for developers doing BA work, packaged as a [Claude Code](https://docs.claude.com/en/docs/claude-code) plugin. Describe a system or process in plain language — or point the kit at a codebase — and it produces the right diagram (Mermaid, PlantUML, D2, or BPMN), compile-checks it, and renders it. Output is bilingual and follows the language you write in.
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE) &nbsp; 26 skills &nbsp;·&nbsp; Mermaid / PlantUML / D2 / BPMN / draw.io &nbsp;·&nbsp; EN / VI
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE) &nbsp; 27 skills &nbsp;·&nbsp; Mermaid / PlantUML / D2 / BPMN / draw.io &nbsp;·&nbsp; EN / VI
 
 **English** · [Tiếng Việt](README.vi.md)
 
@@ -10,7 +10,7 @@ Diagram and documentation skills for developers doing BA work, packaged as a [Cl
 
 ## Skills
 
-Twenty-six skills. Twenty-one draw diagrams (including four **draw.io** cloud-architecture skills with real AWS/Azure/GCP/Databricks stencils); `/scan-project` and `/code-flow` read your code; `/diagram` routes you to the right type; `/gallery` builds a one-file handoff deck; `/sync-confluence` syncs to Confluence. Every diagram passes a unified validation gate (`diagram-validate`) before it's reported done.
+Twenty-seven skills. Twenty-two draw diagrams (including four **draw.io** cloud-architecture skills with real AWS/Azure/GCP/Databricks stencils + a **draw.io** UML sequence skill); `/scan-project` and `/code-flow` read your code; `/diagram` routes you to the right type; `/gallery` builds a one-file handoff deck; `/sync-confluence` syncs to Confluence. Every diagram passes a unified validation gate (`diagram-validate`) before it's reported done.
 
 | Skill | Output | Engine | Use for |
 |---|---|---|---|
@@ -33,6 +33,7 @@ Twenty-six skills. Twenty-one draw diagrams (including four **draw.io** cloud-ar
 | `/usecase-diagram` | Use case diagram (actors + use cases) | PlantUML | Kickoff, system scope, include/extend |
 | `/orgchart` | Org / reporting hierarchy (+ optional power/interest map) | D2 (+ Mermaid) | Kickoff — who reports to whom, stakeholder analysis |
 | `/drawio-aws` · `/drawio-azure` · `/drawio-gcp` · `/drawio-databricks` | **Cloud architecture with real cloud stencils** (official service icons, validated) | draw.io | Arch review / Well-Architected — brand-accurate, not generic boxes |
+| `/drawio-sequence` | **UML sequence diagram** (lifelines × time-ordered messages: sync / return / async) | draw.io | Request/response + integration flows as an editable `.drawio` |
 | `/scan-project` | **Scan a codebase** → a full architecture set (C4 + module map + ERD + sequences) | D2 + Mermaid | Reverse-engineering an existing (brownfield) project |
 | `/diagram` | **Router** — describe a need, it picks + runs the right diagram skill | — | "Which of these should I use?" |
 | `/gallery` | **One-file deck** — every diagram of a feature, tabbed, with export toolbar | HTML | Stakeholder handoff (Copy/PNG/PDF) |
@@ -187,6 +188,8 @@ A *fictional, anonymized* reinsurance underwriting platform (modelled on a real 
 <a href="example/atlas-re/drawio/atlas-re-gcp.drawio"><img src="example/atlas-re/drawio/atlas-re-gcp.png" alt="Atlas Re — GCP" width="360"></a>
 <a href="example/atlas-re/drawio/atlas-re-databricks.drawio"><img src="example/atlas-re/drawio/atlas-re-databricks.png" alt="Atlas Re — Databricks lakehouse" width="360"></a>
 
+**UML sequence (draw.io)** — `/drawio-sequence` — the bind flow as lifelines × time-ordered messages (services call each other; the bus fans events out to consumers). <a href="example/atlas-re/drawio/atlas-re-sequence.drawio">Open `atlas-re-sequence.drawio`</a> in [draw.io](https://app.diagrams.net) (PNG export needs the desktop app).
+
 Also in the example: `/dfd`, `/journey`, `/mindmap`, `/timeline`, `/orgchart`, `/bpmn`, `/code-flow`. Regenerate any with the commands in [`example/atlas-re/README.md`](example/atlas-re/README.md).
 
 ## Getting started
@@ -200,7 +203,7 @@ The kit targets Claude Code. There are two ways to install it.
 /plugin install dev-diagram-kit
 ```
 
-All 26 commands become available immediately. The BPMN engine installs its Node dependencies on first session via a hook — nothing to run by hand.
+All 27 commands become available immediately. The BPMN engine installs its Node dependencies on first session via a hook — nothing to run by hand.
 
 ### By copy (any setup, or other tools)
 
@@ -246,7 +249,7 @@ dev-diagram-kit/
 ├── .claude-plugin/plugin.json     Plugin manifest (/plugin install)
 ├── marketplace.json               Marketplace catalog (/plugin marketplace add)
 ├── install.sh                     Copy-mode installer (no plugin needed)
-├── skills/                        26 skills
+├── skills/                        27 skills
 ├── agents/                        diagram-reviewer
 ├── rules/                         Shared rules (approval-gate, diagram-selection, diagram-style, language, icon-map, …)
 ├── scripts/                       mermaid-verify.ts · diagram-validate.ts · doctor.sh · plantuml-ensure.sh · drawio-catalog-ensure.sh · icon-path.sh · tsrun.sh · render helpers

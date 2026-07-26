@@ -22,6 +22,7 @@ import { dirname, join, isAbsolute, basename } from 'node:path';
 import { loadCatalog, searchIcon, validateDiagram } from './core.ts';
 import { Diagram } from './builder.ts';
 import { icon, box, group, grid, frame, phantom, pool, renderTree } from './layout-engine.ts';
+import { renderSequence } from './sequence.ts';
 import { THEME } from './theme.ts';
 import { findDrawioCli, buildRenderArgs } from './cli-lib.ts';
 
@@ -75,7 +76,7 @@ if (POSITIONAL[0] === 'search') {
 }
 
 // ── Engine DSL injected into every build-script (the script needs no imports) ──
-const ENGINE = { Diagram, icon, box, group, grid, frame, phantom, pool, renderTree, THEME };
+const ENGINE = { Diagram, icon, box, group, grid, frame, phantom, pool, renderTree, renderSequence, THEME };
 
 type ValidateResult = { ok: boolean; errors: string[]; warnings: string[]; audit: { advice: string[] } };
 
@@ -110,6 +111,9 @@ if (!VERIFY) {
     writeFileSync(join(WORK, `${slug}.drawio`), (d as any).mxfile(slug));
     const tag = warns || advice ? ` ⚠️ ${warns} warn · ${advice} advice` : '';
     console.log(`✓ ${slug}.drawio${tag}`);
+    const dd = d as any;   // router self-report (set by _buildEdges during validate) — density/overlap without rendering
+    if (typeof dd._cross === "number" || typeof dd._overlaps === "number")
+      console.log(`  · router: ${dd._cross ?? 0} crossings, ${dd._overlaps ?? 0} overlaps`);
 
     // Optional PNG/SVG export via the draw.io desktop app (not a blocker).
     if (RENDER) {

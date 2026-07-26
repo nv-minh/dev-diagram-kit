@@ -4,16 +4,16 @@
 export function build({ Diagram, icon, group, frame, phantom, box, renderTree }) {
   const d = new Diagram("pipeline");
 
-  const tree = phantom("root", "", { dir: "row", gap: 130, routeGap: 90, align: "center", header: 0, pad: 24 }, [
+  const tree = phantom("root", "", { dir: "row", gap: 180, routeGap: 130, align: "center", header: 0, pad: 36 }, [
     box("uw", "Underwriter", { w: 120, h: 64, fill: "#DAE8FC", stroke: "#6C8EBF", bold: true }),
     icon("agw", "azure_application_gateway_containers", "Application Gateway"),
-    group("aks", "group_availability_zone", "AKS cluster", { dir: "col", gap: 48, routeGap: 60, fill: "#FFFFFF", stroke: "#999999" }, [
+    group("aks", "group_availability_zone", "AKS cluster", { dir: "col", gap: 110, routeGap: 120, fill: "#FFFFFF", stroke: "#999999" }, [
       icon("sub", "azure_aks_automatic", "submission-svc"),
+      icon("pri", "azure_aks_automatic", "pricing-svc"),
       icon("con", "azure_aks_automatic", "contract-svc"),
       icon("clm", "azure_aks_automatic", "claim-svc"),
-      icon("pri", "azure_aks_automatic", "pricing-svc"),
     ]),
-    phantom("data", "", { dir: "col", gap: 48, routeGap: 60, header: 0 }, [
+    phantom("data", "", { dir: "col", gap: 72, routeGap: 100, header: 0 }, [
       icon("db", "azure_azure_database_postgresql_server_group", "PostgreSQL"),
       icon("cache", "azure_cache_redis", "Redis (proposed)"),
       icon("bus", "azure_azure_service_bus", "Service Bus"),
@@ -35,5 +35,12 @@ export function build({ Diagram, icon, group, frame, phantom, box, renderTree })
   d.link("clm", "bus", "9 · events");
   d.link("sub", "blob", "10 · SoV upload");
   d.link("agw", "ad", "11 · verify token");
+  // service ↔ service (sync REST) + a bus consumer — see ../DOMAIN.md "Service interactions".
+  // (Services call each other; the Service Bus is a backbone with subscribers, not a sink.)
+  d.link("sub", "pri", "rate");
+  d.link("con", "pri", "final rate");
+  d.link("con", "sub", "fetch");
+  d.link("clm", "con", "coverage");
+  d.link("bus", "clm", "subscribe");
   return d;
 }

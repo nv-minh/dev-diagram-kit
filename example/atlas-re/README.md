@@ -37,6 +37,7 @@
 | `/drawio-aws` | fabricated AWS migration | [`drawio/atlas-re-aws.drawio`](./drawio/atlas-re-aws.drawio) |
 | `/drawio-gcp` | fabricated GCP migration | [`drawio/atlas-re-gcp.drawio`](./drawio/atlas-re-gcp.drawio) |
 | `/drawio-databricks` | fabricated analytics lakehouse | [`drawio/atlas-re-databricks.drawio`](./drawio/atlas-re-databricks.drawio) |
+| `/drawio-sequence` | bind flow as UML sequence (service-to-service + event fan-out) | [`drawio/atlas-re-sequence.drawio`](./drawio/atlas-re-sequence.drawio) |
 
 ## Regenerate
 

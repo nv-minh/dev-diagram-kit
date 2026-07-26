@@ -42,6 +42,30 @@ Contract 1—N Claim; Claim 1—N ClaimPayment; Contract 1—N PremiumSchedule.
 `auth` (Azure AD) · `submission-svc` · `contract-svc` · `claim-svc` · `pricing-svc` (fire/cat/professional
 engines + WebSocket) · `receipt-svc` (premium receipts) · `reference-svc` (lookups).
 
+## Service interactions — how the services actually talk
+
+The services are **not** isolated silos behind a fan-out gateway; they call each other. This is the canonical
+interaction map every architecture + sequence diagram draws from (the hybrid sync+async pattern typical of
+NestJS microservices — `send()` for request/response, `emit()` for events).
+
+**Synchronous (REST / service→service — needs an immediate answer):**
+- `submission-svc → pricing-svc` — request a rating/quote (fire / cat / professional engines).
+- `contract-svc → submission-svc` — fetch + validate the submission being bound (must be `QUOTED`).
+- `contract-svc → pricing-svc` — final rate at bind.
+- `claim-svc → contract-svc` — fetch coverage / layers to validate a reported loss is covered.
+- `claim-svc → reference-svc` — loss-reference / industry-code lookups.
+- `contract-svc → receipt-svc` — schedule premium installments (`PremiumSchedule`).
+
+**Asynchronous (Kafka / Service Bus — publish + fan-out consumers; the bus is a backbone, not a sink):**
+- `submission-svc` publishes `submission.quoted` → `contract-svc` (pre-stage a draft contract).
+- `contract-svc` publishes `contract.bound` → `claim-svc` (contract now in force → future claims admissible)
+  **and** → `receipt-svc` (generate the premium schedule).
+- `claim-svc` publishes `claim.registered` → `receipt-svc` / finance (open a claim reserve + payment workflow).
+
+> Diagrams abbreviate where it aids clarity (e.g. the cloud `drawio` views show the key sync calls + one bus
+> consumer rather than the full fan-out), but every diagram that depicts the runtime must show **at least one
+> service→service call and at least one bus consumer** — never a gateway fan-out of independent stores only.
+
 ## Fabricated additions (the real project lacks these — added to exercise the full shape/icon catalog)
 
 Marked **(proposed)** wherever they appear:

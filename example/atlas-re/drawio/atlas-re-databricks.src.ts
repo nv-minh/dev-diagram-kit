@@ -1,7 +1,7 @@
 // Atlas Re — FABRICATED Databricks analytics lakehouse. For the /drawio-databricks example.
 export function build({ Diagram, icon, phantom, box, renderTree }) {
   const d = new Diagram("pipeline");
-  const tree = phantom("root", "", { dir: "row", gap: 130, routeGap: 90, align: "center", header: 0, pad: 24 }, [
+  const tree = phantom("root", "", { dir: "row", gap: 180, routeGap: 130, align: "center", header: 0, pad: 36 }, [
     box("src", "Submissions / Claims (OLTP)", { w: 160, h: 64, fill: "#DAE8FC", stroke: "#6C8EBF", bold: true }),
     icon("ws", "azure_workspace_gateway", "Databricks Workspace"),
     icon("delta", "delta", "Delta Lake"),

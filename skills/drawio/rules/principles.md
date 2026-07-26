@@ -40,7 +40,13 @@ The builder applies the edge style, corner rounding by role, connection-point pi
 
 - **Solid** = primary data/control flow; **dashed** = sync/dependency/policy enforcement/lineage. Color edges by source layer to trace them.
 - Double-headed arrows for bidirectional links (Direct Connect, metadata sync).
-- In **dense / error-handling diagrams add deliberate waypoints** to avoid line crossings and overlaps — don't rely purely on auto-route there.
+- **Spacing scales with density automatically** — the engine grows each container's `routeGap` by its
+  leaf-descendant count (`effGap`) and tiers the parallel-track separation by edge count (nudge `SEP`), so
+  complex diagrams spread out without manual tuning. Set `routeGap` only to override the default. The router
+  guarantees **0 edges clip an icon** and **0 parallel overlaps** — so a few edge-*crossings* in a dense service
+  mesh are topological (unavoidable) and still read cleanly. For a very dense mesh, push the call-by-call detail
+  to `/drawio-sequence` and keep the architecture diagram to tiers + the event bus; add deliberate waypoints
+  only for a stubborn tangle.
 
 ## 7. Managed vs self-managed
 

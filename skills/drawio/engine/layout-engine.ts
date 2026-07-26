@@ -18,6 +18,21 @@ import { THEME, stageFill, stageStroke } from "./theme.ts";
 
 const ICON = 48;
 
+// Density-adaptive sibling gap. The author's `routeGap` wins if set; otherwise a default scaled by the
+// container's leaf-descendant count gives the A* router more clearance in dense containers (so complex
+// diagrams spread automatically — no manual per-diagram tuning). Bounded: ≤4 leaves → 0 (simple containers
+// stay exactly as today), then +6 px/leaf, capped at 96. See effGap() call sites in measureContainer/pGroup.
+function countLeaves(n) {
+  if (n.kind === "icon" || n.kind === "box") return 1;
+  if (!n.children || !n.children.length) return 1;
+  return n.children.reduce((s, c) => s + countLeaves(c), 0);
+}
+function effGap(n) {
+  const leaves = countLeaves(n);
+  const adaptive = leaves <= 4 ? 0 : Math.min(96, (leaves - 4) * 6);   // 0 = unchanged for simple containers
+  return Math.max(n.gap, n.routeGap ?? adaptive);                       // explicit routeGap still wins
+}
+
 // ---- node creators ----
 export const icon = (id, name, label = "", opts = {}) => ({ kind: "icon", id, name, label, ...opts });
 // A text box AUTO-SIZES to its label (longest wrapped line → width, line count → height), so you
@@ -44,7 +59,7 @@ export const group = (id, gname, label = "", opts = {}, children = []) => ({
   cornerIcon: opts.cornerIcon ?? null,
   // routeGap: minimum gap enforced between children when routing lanes need to pass between them.
   // Set to ≥ 2×BM (48px) so the A* router has clearance. Overrides gap only when larger.
-  routeGap: opts.routeGap ?? 0,
+  routeGap: opts.routeGap ?? null,
 });
 /** A group with no AWS stencil = a plain square frame (for logical layers/bands). */
 export const frame = (id, label, opts = {}, children = []) => group(id, null, label, opts, children);
@@ -57,7 +72,7 @@ export const phantom = (id, label = "", opts = {}, children = []) => ({
   dir: opts.dir ?? "row", gap: opts.gap ?? 30, pad: opts.pad ?? 24,
   header: label ? (opts.header ?? 36) : (opts.header ?? 14),
   align: opts.align ?? "center", fill: opts.fill, stroke: opts.stroke,
-  cornerIcon: opts.cornerIcon ?? null, routeGap: opts.routeGap ?? 0,
+  cornerIcon: opts.cornerIcon ?? null, routeGap: opts.routeGap ?? null,
 });
 /** Grid of `cols` columns: children laid out evenly into rows, each cell = the largest cell size (centered).
  *  Use when the element count doesn't match another row's column count (e.g. 4 icons under 3 columns). */
@@ -139,7 +154,7 @@ function mPool(n) {
 function measureContainer(n) {
   n.children.forEach(measure);
   const ch = n.children, p = n.pad, head = n.header;
-  const eg = Math.max(n.gap, n.routeGap ?? 0); // effective gap: routeGap wins when larger
+  const eg = effGap(n); // effective gap: density-adaptive routeGap (see effGap)
   const sum = (f) => ch.reduce((s, c) => s + f(c), 0);
   const max = (f) => ch.reduce((m, c) => Math.max(m, f(c)), 0);
   if (n.kind === "grid") {
@@ -186,7 +201,7 @@ function pPool(n) {
 function pGroup(n) {
   const innerX = n.x + n.pad, innerTop = n.y + n.header + n.pad;
   const innerW = n.w - n.pad * 2, innerH = n.h - n.header - n.pad * 2;
-  const eg = Math.max(n.gap, n.routeGap ?? 0);
+  const eg = effGap(n);
   if (n.dir === "row") {
     // centre the whole row within innerW so content stays centred when the frame is widened
     // by a long label or a wider sibling row; collapses to left-align when it fills the width.

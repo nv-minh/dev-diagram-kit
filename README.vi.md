@@ -2,7 +2,7 @@
 
 Bộ skill vẽ sơ đồ và làm tài liệu cho **dev làm công việc BA**, đóng gói thành plugin [Claude Code](https://docs.claude.com/en/docs/claude-code). Mô tả hệ thống hoặc quy trình bằng lời — hoặc trỏ vào một codebase — kit sẽ vẽ đúng loại sơ đồ (Mermaid, PlantUML, D2 hoặc BPMN), tự kiểm cú pháp rồi render. Output song ngữ, tự bám theo ngôn ngữ bạn gõ.
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE) &nbsp; 26 skill &nbsp;·&nbsp; Mermaid / PlantUML / D2 / BPMN / draw.io &nbsp;·&nbsp; EN / VI
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE) &nbsp; 27 skill &nbsp;·&nbsp; Mermaid / PlantUML / D2 / BPMN / draw.io &nbsp;·&nbsp; EN / VI
 
 [English](README.md) · **Tiếng Việt**
 
@@ -10,7 +10,7 @@ Bộ skill vẽ sơ đồ và làm tài liệu cho **dev làm công việc BA**,
 
 ## Danh sách skill
 
-Hai mươi sáu skill. Hai mươi mốt skill vẽ sơ đồ (gồm bốn skill **draw.io** vẽ kiến trúc cloud với stencil AWS/Azure/GCP/Databricks thật); `/scan-project` và `/code-flow` đọc code; `/diagram` chọn đúng loại; `/gallery` gom thành một file bàn giao; `/sync-confluence` sync sang Confluence. Mọi sơ đồ đều qua cổng validate thống nhất (`diagram-validate`) trước khi báo xong.
+Hai mươi bảy skill. Hai mươi hai skill vẽ sơ đồ (gồm bốn skill **draw.io** vẽ kiến trúc cloud với stencil AWS/Azure/GCP/Databricks thật + một skill **draw.io** vẽ sequence UML); `/scan-project` và `/code-flow` đọc code; `/diagram` chọn đúng loại; `/gallery` gom thành một file bàn giao; `/sync-confluence` sync sang Confluence. Mọi sơ đồ đều qua cổng validate thống nhất (`diagram-validate`) trước khi báo xong.
 
 | Skill | Vẽ gì | Engine | Khi nào dùng |
 |---|---|---|---|
@@ -33,6 +33,7 @@ Hai mươi sáu skill. Hai mươi mốt skill vẽ sơ đồ (gồm bốn skill 
 | `/usecase-diagram` | Use case diagram (actor + use case) | PlantUML | Kickoff, phạm vi hệ thống, include/extend |
 | `/orgchart` | Sơ đồ tổ chức / reporting (+ tuỳ chọn bản power/interest) | D2 (+ Mermaid) | Kickoff — ai báo cáo ai, phân tích stakeholder |
 | `/drawio-aws` · `/drawio-azure` · `/drawio-gcp` · `/drawio-databricks` | **Kiến trúc cloud với stencil cloud thật** (icon dịch vụ chính chủ, đã validate) | draw.io | Review kiến trúc / Well-Architected — đúng thương hiệu, không phải hộp chung chung |
+| `/drawio-sequence` | **Sơ đồ sequence UML** (lifeline × message theo thời gian: sync / return / async) | draw.io | Flow request/response + tích hợp, dạng `.drawio` sửa được |
 | `/scan-project` | **Scan codebase** → bộ sơ đồ kiến trúc (C4 + module + ERD + sequence) | D2 + Mermaid | Reverse-engineer project có sẵn (brownfield) |
 | `/diagram` | **Router** — mô tả nhu cầu, tự chọn + chạy đúng skill | — | "Nên dùng cái nào trong đám này?" |
 | `/gallery` | **Bộ bàn giao 1 file** — mọi sơ đồ của 1 feature, tab, có toolbar export | HTML | Bàn giao stakeholder (Copy/PNG/PDF) |
@@ -187,6 +188,8 @@ Một nền tảng underwriting tái bảo hiểm *giả định, ẩn danh* (m�
 <a href="example/atlas-re/drawio/atlas-re-gcp.drawio"><img src="example/atlas-re/drawio/atlas-re-gcp.png" alt="Atlas Re — GCP" width="360"></a>
 <a href="example/atlas-re/drawio/atlas-re-databricks.drawio"><img src="example/atlas-re/drawio/atlas-re-databricks.png" alt="Atlas Re — Databricks lakehouse" width="360"></a>
 
+**Sequence UML (draw.io)** — `/drawio-sequence` — luồng bind dạng lifeline × message theo thời gian (các service gọi nhau; bus phát event ra nhiều consumer). <a href="example/atlas-re/drawio/atlas-re-sequence.drawio">Mở `atlas-re-sequence.drawio`</a> bằng [draw.io](https://app.diagrams.net) (xuất PNG cần app desktop).
+
 Trong example còn: `/dfd`, `/journey`, `/mindmap`, `/timeline`, `/orgchart`, `/bpmn`, `/code-flow`. Sinh lại bằng lệnh trong [`example/atlas-re/README.md`](example/atlas-re/README.md).
 
 ## Bắt đầu
@@ -200,7 +203,7 @@ Kit viết cho Claude Code. Có hai cách cài.
 /plugin install dev-diagram-kit
 ```
 
-Cả 26 lệnh có sẵn ngay. BPMN engine tự cài dependency Node ở phiên đầu qua hook — không phải làm tay.
+Cả 27 lệnh có sẵn ngay. BPMN engine tự cài dependency Node ở phiên đầu qua hook — không phải làm tay.
 
 ### Cài kiểu copy (mọi trường hợp / tool khác)
 
@@ -245,7 +248,7 @@ dev-diagram-kit/
 ├── .claude-plugin/plugin.json     Manifest plugin (/plugin install)
 ├── marketplace.json               Catalog marketplace (/plugin marketplace add)
 ├── install.sh                     Installer kiểu copy (không cần plugin)
-├── skills/                        26 skill
+├── skills/                        27 skill
 ├── agents/                        diagram-reviewer
 ├── rules/                         Rule dùng chung (approval-gate, diagram-selection, diagram-style, language, icon-map, …)
 ├── scripts/                       mermaid-verify.ts · diagram-validate.ts · doctor.sh · plantuml-ensure.sh · drawio-catalog-ensure.sh · icon-path.sh · tsrun.sh · render helper
