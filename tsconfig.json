@@ -14,6 +14,6 @@
     "isolatedModules": true,
     "allowImportingTsExtensions": true
   },
-  "include": ["scripts/**/*.ts", "skills/**/*.ts"],
+  "include": ["scripts/**/*.ts", "skills/**/*.ts", "tests/**/*.ts"],
   "exclude": ["node_modules", "**/node_modules"]
 }

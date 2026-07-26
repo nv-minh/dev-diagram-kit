@@ -1,0 +1,52 @@
+# CI gate: typecheck (kit-native .ts files), unit tests (engine), and an "engine drift" check —
+# rebuild every example .src.ts and fail if the committed .drawio files no longer match. That last
+# step is the strongest regression net for the vendored router: any change to routing/layout output
+# shows up as a diff in the examples.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Unit tests
+        run: npm test
+
+      # azure.json (~13.5MB) + gcp.json (~1.9MB) are gitignored, downloaded on demand — cache them.
+      - name: Cache large draw.io catalogs
+        uses: actions/cache@v4
+        with:
+          path: |
+            skills/drawio/catalog/azure.json
+            skills/drawio/catalog/gcp.json
+          key: drawio-catalogs-${{ hashFiles('scripts/drawio-catalog-ensure.sh') }}
+
+      - name: Ensure draw.io catalogs (azure + gcp)
+        run: bash scripts/drawio-catalog-ensure.sh
+
+      - name: Rebuild example diagrams (engine drift check)
+        run: bash scripts/tsrun.sh skills/drawio/engine/drawio-build.ts --dir example/atlas-re/drawio
+
+      - name: Fail on drift between engine output and committed .drawio
+        run: |
+          git diff --exit-code -- example/atlas-re/drawio || {
+            echo "::error::Engine output no longer matches the committed example .drawio files."
+            echo "::error::Rebuild locally (drawio-build --dir example/atlas-re/drawio) and commit the result."
+            exit 1
+          }

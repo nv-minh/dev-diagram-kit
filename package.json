@@ -4,9 +4,14 @@
   "private": true,
   "type": "module",
   "description": "Diagram + documentation skills for developers doing BA work (Claude Code plugin). Scripts run as TypeScript via tsx (see scripts/tsrun.sh).",
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
   "devDependencies": {
     "tsx": "^4.19.2",
     "typescript": "^5.6.0",
-    "@types/node": "^22.0.0"
+    "@types/node": "^22.0.0",
+    "vitest": "^3.0.0"
   }
 }
