@@ -21,7 +21,7 @@
 // Report: "✅ compile · ✅/⚠️/❌ principles" per file; exit 0 clean / 2 warn-only / 1 error.
 
 import { spawnSync } from 'node:child_process';
-import { readFileSync, readdirSync, existsSync, mkdtempSync, rmSync, statSync } from 'node:fs';
+import { readFileSync, writeFileSync, readdirSync, existsSync, mkdtempSync, rmSync, statSync } from 'node:fs';
 import { tmpdir, homedir } from 'node:os';
 import { join, dirname, basename, extname, isAbsolute } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -48,10 +48,10 @@ function detectEngine(file: string): string {
   const ext = extname(file);
   if (ext === '.drawio' || ext === '.xml') return 'drawio';
   if (ext === '.d2') return 'd2';
-  if (ext === '.puml' || ext === '.plantuml') return 'plantuml';
+  if (ext === '.puml' || ext === '.plantuml' || ext === '.pu' || ext === '.uml') return 'plantuml';
   if (ext === '.bpmn') return 'bpmn';
   if (file.endsWith('.ir.json')) return 'bpmn';
-  if (ext === '.md') return 'mermaid';
+  if (ext === '.md' || ext === '.mmd' || ext === '.mermaid') return 'mermaid';
   // sniff content for extensionless drawio/xml
   try { const c = readFileSync(file, 'utf8'); if (/<mxfile|<mxGraphModel/.test(c)) return 'drawio'; } catch {}
   return 'unknown';
@@ -116,7 +116,16 @@ async function validateBpmn(file: string): Promise<Result> {
 // ── mermaid: delegate compile to mermaid-verify + label lint ──
 function validateMermaid(file: string): Result {
   const findings: Finding[] = []; let compile: 'ok' | 'fail' | 'skip' = 'ok';
-  const r = spawnSync('bash', [TSRUN, 'scripts/mermaid-verify.ts', '--file', file], { encoding: 'utf8' });
+  // mermaid-verify only understands ```mermaid fences in .md — wrap raw .mmd/.mermaid sources in one.
+  let target = file;
+  let tmp: string | null = null;
+  if (/\.(mmd|mermaid)$/.test(file)) {
+    tmp = mkdtempSync(join(tmpdir(), 'dv-mmd-'));
+    target = join(tmp, basename(file) + '.md');
+    writeFileSync(target, '```mermaid\n' + readFileSync(file, 'utf8').trimEnd() + '\n```\n');
+  }
+  const r = spawnSync('bash', [TSRUN, 'scripts/mermaid-verify.ts', '--file', target], { encoding: 'utf8' });
+  if (tmp) rmSync(tmp, { recursive: true, force: true });
   if (r.status === 2 && /not found|Chrome/i.test(r.stderr || '')) {
     compile = 'skip'; findings.push({ level: 'warn', msg: 'compile check skipped — Chrome/mmdc unavailable (syntax not verified).' });
   } else {
@@ -153,7 +162,7 @@ function validatePlantuml(file: string): Result {
     const tmp = mkdtempSync(join(tmpdir(), 'dv-puml-'));
     try {
       const r = spawnSync('java', ['-jar', jar, '-tsvg', '-o', tmp, file], { encoding: 'utf8' });
-      const ok = r.status === 0 && existsSync(join(tmp, basename(file).replace(/\.pu(ml)?$/, '.svg')));
+      const ok = r.status === 0 && existsSync(join(tmp, basename(file).replace(/\.(pu|puml|plantuml|uml)$/, '.svg')));
       compile = ok ? 'ok' : 'fail';
       if (!ok) findings.push({ level: 'error', msg: `plantuml compile failed: ${(r.stderr || '').split('\n').filter(Boolean).slice(0, 3).join(' · ')}` });
     } catch { compile = 'skip'; findings.push({ level: 'warn', msg: 'java unavailable — plantuml not verified.' }); }
@@ -164,7 +173,7 @@ function validatePlantuml(file: string): Result {
 }
 
 // ── expand target(s) to a file list (RECURSIVE: a dir validates every nested diagram) ──
-const DIAGRAM_EXT = /\.(md|d2|puml|plantuml|bpmn|drawio|xml)$|\.ir\.json$/;
+const DIAGRAM_EXT = /\.(md|mmd|mermaid|d2|pu|uml|puml|plantuml|bpmn|drawio|xml)$|\.ir\.json$/;
 const files: string[] = [];
 // Walk a directory recursively, collecting files whose basename matches the diagram regex.
 function walkDiagramFiles(dir: string): string[] {
