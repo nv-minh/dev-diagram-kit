@@ -25,6 +25,7 @@ paths:
   - ".claude/skills/drawio-azure/**"
   - ".claude/skills/drawio-gcp/**"
   - ".claude/skills/drawio-databricks/**"
+  - ".claude/skills/drawio-sequence/**"
   - "docs/**/srs/*.md"
 ---
 
@@ -55,6 +56,7 @@ paths:
 | **Who reports to whom** (org / reporting hierarchy, grouped by team — kickoff, stakeholder analysis) | **Org chart (D2)** | `/orgchart` | `docs/{feature}/orgchart/{slug}-orgchart.svg` (or `_shared/`) | Reporting tree with `shape: person`; NOT a RACI or power/interest map |
 | **Trace ONE function/module in code → a flow** (sequence/activity/state) with `file:line` provenance | **Code-flow** | `/code-flow` | `docs/{feature}/code-flow/{slug}-flow.md` | Reads code for a SINGLE target's behavior; the targeted sibling of `/scan-project` (whole codebase) |
 | **Cloud architecture with REAL cloud stencils** (AWS/Azure/GCP/Databricks services shown with their official icons, validated against a ground-truth stencil catalog — for an arch review / Well-Architected discussion) | **Cloud architecture (draw.io)** | `/drawio-aws` `/drawio-azure` `/drawio-gcp` `/drawio-databricks` | `docs/{feature}/drawio/{slug}.drawio` (+ optional `.svg`) | Cloud-brand-accurate icons (mxgraph.*), not generic boxes; `.drawio` opens in draw.io app/web/VS Code. Differs from `/system-design`/`/d2-architect` (C4 logical, D2, generic shapes). |
+| **UML sequence as a standalone, editable draw.io file** (lifelines × time-ordered messages: sync / return / async / self-call — a design-handoff artifact devs keep editing) | **UML Sequence (draw.io)** | `/drawio-sequence` | `docs/{feature}/drawio/{slug}.drawio` (+ optional `.svg`) | Same time-ordered story as `/sequence`, but standalone + editable in draw.io app/web/VS Code; brand-neutral UML. Sequence that lives inline in the SRS stays `/sequence` (Mermaid). |
 
 ## Abstraction level — DON'T mix diagrams with UC
 
@@ -260,6 +262,12 @@ paths:
 
 → Need a logical "what blocks + who calls whom" story → `/system-design`. Need stakeholders to recognize each cloud service by its real icon → `/drawio-*`.
 
+### UML sequence (draw.io) — `/drawio-sequence`
+
+**Use when:** you want the time-ordered call story (who calls whom, in order — sync calls, returns, async signals, self-calls) as a **standalone `.drawio` artifact** the team can open and keep editing in draw.io app/web/VS Code — e.g. a design-handoff diagram.
+
+**Don't use when:** the sequence should live inline in the SRS/flows doc → `/sequence` (Mermaid renders directly on GitHub/Obsidian). For architecture (structure, not call order) → `/d2-architect`, `/system-design`, or the cloud `/drawio-*` skills.
+
 ## Combining multiple diagrams for one feature
 
 A complex feature often needs **multiple complementary diagrams**:
@@ -316,4 +324,4 @@ The Mermaid parser is strict about certain characters in a node label. A violati
 
 ## One-line summary
 
-> **Time-based → Sequence. State-based → State. Multi-role process → Activity-swimlane (PlantUML). Compact process needing inline embed → Activity (Mermaid). Scope-based → Use Case. Data-based → ERD. OMG-standard/BPM-import → BPMN. Data-flow (where data moves) → DFD. Decompose scope → Mindmap. Experience + emotion → Journey. Milestones (PM-light) → Timeline. Reporting hierarchy → Org chart. One function in code → Code-flow. Whole codebase → Scan-project. Cloud architecture with real cloud icons → /drawio-aws|azure|gcp|databricks. Not sure which → `/diagram`.**
+> **Time-based → Sequence. State-based → State. Multi-role process → Activity-swimlane (PlantUML). Compact process needing inline embed → Activity (Mermaid). Scope-based → Use Case. Data-based → ERD. OMG-standard/BPM-import → BPMN. Data-flow (where data moves) → DFD. Decompose scope → Mindmap. Experience + emotion → Journey. Milestones (PM-light) → Timeline. Reporting hierarchy → Org chart. One function in code → Code-flow. Whole codebase → Scan-project. Cloud architecture with real cloud icons → /drawio-aws|azure|gcp|databricks. Sequence as an editable .drawio → /drawio-sequence. Not sure which → `/diagram`.**

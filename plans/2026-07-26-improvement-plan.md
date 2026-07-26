@@ -25,20 +25,22 @@ Kết quả scan toàn bộ repo (4 mảng: packaging/config, nội dung 27 skil
 
 ---
 
-## Phase 1 — Nhất quán skills & script (P1, ~1 buổi)
+## Phase 1 — Nhất quán skills & script (P1) ✅ DONE 2026-07-26
 
-### 1.1 `/scan-project` thiếu `Task` trong `allowed-tools`
-- `skills/scan-project/SKILL.md:4` — body dùng subagent (Task) nhưng frontmatter không khai báo.
+### 1.1 ~~`/scan-project` thiếu `Task`~~ — FALSE POSITIVE
+- Kiểm tra lại: `skills/scan-project/SKILL.md:4` ĐÃ có `Task` trong allowed-tools. Không sửa gì.
 
-### 1.2 Router `/diagram` thiếu skill mới
-- `skills/diagram/SKILL.md` (bảng routing dòng 26–45): chưa route `/drawio-sequence`; cân nhắc thêm `/gallery` (ghi chú là presentation tool, không phải diagram type).
+### 1.2 Router `/diagram` thiếu skill mới ✅
+- Thực tế thiếu nhiều hơn báo cáo: bảng routing thiếu cả `/orgchart`, `/drawio-*` cloud lẫn `/drawio-sequence`.
+- Đã thêm 3 dòng vào bảng + cập nhật "19 → 22 diagram skills" + câu hỏi output-shape.
+- Đã sync `rules/diagram-selection.md` (source of truth): glob frontmatter, dòng matrix, section chi tiết, câu tóm tắt cuối.
+- `/gallery`: quyết định KHÔNG đưa vào router — không phải diagram type (presentation tool).
 
-### 1.3 Description `/d2-activity` thiếu trigger phrase
-- Bổ sung "Use when…" vào frontmatter description để router/model chọn đúng skill.
+### 1.3 ~~Description `/d2-activity` thiếu trigger phrase~~ — FALSE POSITIVE
+- Description đã bắt đầu bằng "Use when you need a PRETTY standalone…". Không sửa gì.
 
-### 1.4 `doctor.sh` giả định macOS
-- `scripts/doctor.sh:121` hardcode `/Applications/draw.io.app/...`; dòng 26–27 ghi "macOS: preinstalled".
-- Việc: bọc guard `[[ "$OSTYPE" == darwin* ]]`, message generic cho Linux.
+### 1.4 `doctor.sh` giả định macOS ✅
+- Thêm `IS_MAC` + hint theo platform cho python3/curl; guard `/Applications/...` chỉ check trên macOS; header section draw.io bổ sung `/drawio-sequence`.
 
 ---
 

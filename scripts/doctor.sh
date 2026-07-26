@@ -20,11 +20,21 @@ if [ -z "$ROOT" ]; then
   ROOT="$(cd "$SELF_DIR/.." && pwd)"
 fi
 
+# Platform-aware install hints (the kit is developed macOS-first but must not confuse Linux users).
+IS_MAC=false; [ "$(uname -s)" = "Darwin" ] && IS_MAC=true
+if $IS_MAC; then
+  PY_HINT="macOS: preinstalled; or brew install python"
+  CURL_HINT="macOS: preinstalled"
+else
+  PY_HINT="Install via your package manager, e.g. apt/dnf install python3"
+  CURL_HINT="Install via your package manager, e.g. apt/dnf install curl"
+fi
+
 echo "== General =="
 if command -v node >/dev/null 2>&1; then green "node $(node --version)"; else red "node — NOT found (needed for Mermaid + BPMN + DBML)" "Install Node LTS: https://nodejs.org (or nvm)"; fi
 if command -v npm  >/dev/null 2>&1; then green "npm $(npm --version)"; else red "npm — NOT found" "Bundled with Node LTS"; fi
-if command -v python3 >/dev/null 2>&1; then green "python3 $(python3 --version 2>&1 | awk '{print $2}')"; else red "python3 — NOT found (needed for PlantUML encode)" "macOS: preinstalled; or brew install python"; fi
-if command -v curl >/dev/null 2>&1; then green "curl"; else red "curl — NOT found (needed for PlantUML render via plantuml.com)" "macOS: preinstalled"; fi
+if command -v python3 >/dev/null 2>&1; then green "python3 $(python3 --version 2>&1 | awk '{print $2}')"; else red "python3 — NOT found (needed for PlantUML encode)" "$PY_HINT"; fi
+if command -v curl >/dev/null 2>&1; then green "curl"; else red "curl — NOT found (needed for PlantUML render via plantuml.com)" "$CURL_HINT"; fi
 
 echo ""
 echo "== Mermaid (/sequence /activity /state /erd) =="
@@ -91,7 +101,7 @@ else
 fi
 
 echo ""
-echo "== draw.io (/drawio-aws /drawio-azure /drawio-gcp /drawio-databricks) =="
+echo "== draw.io (/drawio-aws /drawio-azure /drawio-gcp /drawio-databricks /drawio-sequence) =="
 DRAWIO_ENG="$ROOT/skills/drawio/engine"
 if [ -f "$DRAWIO_ENG/core.ts" ] && [ -f "$DRAWIO_ENG/drawio-build.ts" ]; then
   # Real smoke: load the shipped aws catalog + searchIcon("s3") via the ported engine.
@@ -118,7 +128,7 @@ done
 DRAWIO_CLI="${DRAWIO_CLI:-}"
 if [ -n "$DRAWIO_CLI" ] && [ -x "$DRAWIO_CLI" ]; then green "draw.io desktop (\$DRAWIO_CLI) — PNG/SVG export"
 elif command -v drawio >/dev/null 2>&1; then green "draw.io desktop ($(command -v drawio)) — PNG/SVG export"
-elif [ -x "/Applications/draw.io.app/Contents/MacOS/draw.io" ]; then green "draw.io desktop (/Applications) — PNG/SVG export"
+elif $IS_MAC && [ -x "/Applications/draw.io.app/Contents/MacOS/draw.io" ]; then green "draw.io desktop (/Applications) — PNG/SVG export"
 else yellow "draw.io desktop not found — .drawio files still open in draw.io web/VS Code; only PNG/SVG export is skipped"
 fi
 

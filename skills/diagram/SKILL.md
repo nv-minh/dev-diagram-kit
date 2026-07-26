@@ -8,7 +8,7 @@ argument-hint: "\"<what you want to show>\" [--recommend-only]"
 
 # /diagram — Which diagram should I use? (router)
 
-> You describe a need → this skill asks **at most 2** disambiguating questions → picks the right diagram skill → **runs it** with the inferred args. Solves "there are 19 diagram skills, which one?". The decision matrix that backs this lives in `@../../rules/diagram-selection.md` (source of truth — keep them in sync when a skill is added/removed).
+> You describe a need → this skill asks **at most 2** disambiguating questions → picks the right diagram skill → **runs it** with the inferred args. Solves "there are 22 diagram skills, which one?". The decision matrix that backs this lives in `@../../rules/diagram-selection.md` (source of truth — keep them in sync when a skill is added/removed).
 
 ## Goal
 
@@ -26,6 +26,7 @@ Map a natural-language need → exactly ONE diagram skill, then delegate to it. 
 | The user wants to show… | Skill | Key disambiguator |
 |---|---|---|
 | Who calls whom, **over time** (login, checkout, webhook, error path) | `/sequence` | a time-ordered call chain |
+| Same call chain, but as a standalone **editable `.drawio`** (UML lifelines, design handoff) | `/drawio-sequence` | not inline — a draw.io artifact devs keep editing |
 | An entity's **states + transitions** (Order: pending→paid→cancelled) | `/state` | a status lifecycle |
 | **Multi-role business process** (who does which step, many decisions) | `/activity-swimlane` ⭐ default | ≥2 roles/lanes |
 | Compact 1-2 role flow, **inline** in a doc | `/activity` | needs GitHub/Obsidian inline render |
@@ -36,18 +37,20 @@ Map a natural-language need → exactly ONE diagram skill, then delegate to it. 
 | **Decompose scope/ideas** into a tree (discovery) | `/mindmap` | a scope tree, no actors |
 | **User experience** over touchpoints + emotion | `/journey` | steps + satisfaction |
 | **Roadmap / milestones** over time (PM-light, no Gantt) | `/timeline` | milestones by period |
+| **Who reports to whom** (org / reporting hierarchy) | `/orgchart` | reporting tree; NOT a RACI |
 | **Data model** — inline in a doc | `/erd` | Mermaid, BA-readable |
 | **Data model** — nice standalone image | `/d2-erd` | D2, pretty |
 | **Data model** — dev handoff / SQL export | `/dbdiagram` | DBML, real types |
 | **Architecture** — 1 quick context image | `/d2-architect` | single level |
 | **Architecture** — multi-level C4 + presentation | `/system-design` | Context→Container→Component + HTML |
+| **Architecture with REAL cloud icons** (official AWS/Azure/GCP/Databricks stencils) | `/drawio-aws` `/drawio-azure` `/drawio-gcp` `/drawio-databricks` | brand-accurate arch review, not generic boxes |
 | **One function/module's behavior** read from CODE | `/code-flow` | single target, with `file:line` |
 | **Whole-codebase** architecture set read from CODE | `/scan-project` | whole project |
 
 ## The 2 questions you may ask (pick only the relevant ones)
 
 1. **Source — description/spec, or existing code?** → code + one target = `/code-flow`; code + whole project = `/scan-project`; else the matching diagram skill.
-2. **Output shape — inline in a doc, or a standalone image for stakeholders?** → inline = Mermaid family (`/activity`,`/erd`,`/sequence`,`/state`,`/mindmap`,`/journey`,`/timeline`); standalone/export = D2 family (`/d2-activity`,`/d2-erd`,`/dfd`,`/d2-architect`,`/system-design`).
+2. **Output shape — inline in a doc, or a standalone image for stakeholders?** → inline = Mermaid family (`/activity`,`/erd`,`/sequence`,`/state`,`/mindmap`,`/journey`,`/timeline`); standalone/export = D2 family (`/d2-activity`,`/d2-erd`,`/dfd`,`/d2-architect`,`/system-design`,`/orgchart`); editable `.drawio` handoff = `/drawio-sequence` + the cloud `/drawio-*` skills.
 3. *(only if still tied)* **View — control-flow (who does what), data-flow (where data moves), or structure (how blocks nest)?** → control-flow = activity/sequence/state; data-flow = `/dfd`; structure = `/system-design`/`/d2-architect`.
 
 ## Approach
