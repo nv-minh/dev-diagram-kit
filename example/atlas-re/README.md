@@ -6,6 +6,20 @@
 > cylinders, queues `queue`, CDNs `cloud`, pipelines `parallelogram`. Every artifact below is generated
 > by the skill's real render pipeline and passes `diagram-validate`.
 
+## Documents (wave 1 — the requirements chain)
+
+The full discovery chain for one feature slice, **claim approval**, cross-linked with the diagrams below (the swimlane, BPMN process, and state machines cover the same domain). Every doc passes `doc-validate` in CI.
+
+| Skill | What it shows | File |
+|---|---|---|
+| `/brainstorm` | The idea, decisions, and Open Questions that seed the chain | [`brainstorms/claim-approval-idea.md`](./brainstorms/claim-approval-idea.md) |
+| `/urd` | Personas + user needs (mints `UN-atlas-re-001…006`) | [`atlas-re-urd.md`](./atlas-re-urd.md) |
+| `/brd` | Business objectives covering those needs (`BO-` ← `UN-`) | [`atlas-re-brd.md`](./atlas-re-brd.md) |
+| `/prd-epic` | Capabilities P0/P1/P2 covering the objectives (`CAP-` ← `BO-`) | [`atlas-re-prd.md`](./atlas-re-prd.md) |
+| `/srs` | Testable FRs, NFRs, rules, error matrix (`FR-/NFR-/BR-/E-` ← `CAP-`) | [`srs/atlas-re-spec.md`](./srs/atlas-re-spec.md) |
+
+Follow one thread to see the spine: `UN-atlas-re-005` (approvals without the Head of Claims) → `BO-atlas-re-03` (remove the bottleneck) → `CAP-atlas-re-04` (tier routing) → `FR-atlas-re-006` + `BR-atlas-re-001` + `E-atlas-re-002`. Note how the one unresolved OQ (committee quorum) cascades from the brainstorm all the way into the SRS instead of being silently answered.
+
 ## Diagrams
 
 ### Batch 1 — core

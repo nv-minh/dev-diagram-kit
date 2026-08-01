@@ -1,10 +1,27 @@
 # 02 — Chọn skill nào? (cây quyết định)
 
-> 27 skill nghe nhiều, nhưng chọn đúng rất nhanh nếu hỏi đúng câu. Bản này là rút gọn; bản đầy đủ ở `explain-skills/diagram-selection.vi.md`.
+> 35 skill nghe nhiều, nhưng chọn đúng rất nhanh nếu hỏi đúng câu. Bản này là rút gọn; bản đầy đủ ở `explain-skills/diagram-selection.vi.md` (sơ đồ) và `rules/doc-selection.md` (tài liệu).
 
 ---
 
-## Cây quyết định 30 giây
+## Ngã rẽ đầu tiên: tài liệu hay sơ đồ?
+
+- **Tài liệu** — văn bản, bảng, spec, test, sync (brainstorm, URD, BRD, PRD, SRS, roadmap…) → cây tài liệu bên dưới, hoặc chạy luôn **`/ba "<bạn cần gì>"`**.
+- **Hình vẽ** — flow, state, data model, kiến trúc → cây sơ đồ bên dưới, hoặc chạy **`/diagram "<muốn thể hiện gì>"`**.
+
+## Cây tài liệu 30 giây
+
+**Bạn đang ở giai đoạn nào?**
+
+- **Ý tưởng thô, chưa có gì** → **`/brainstorm "<ý tưởng>"`**
+- **Người dùng là ai + cần gì** → **`/urd <feature>`**
+- **Bài toán kinh doanh (mục tiêu, ROI, rủi ro)** → **`/brd <feature>`**
+- **Xây GÌ cho MỘT feature (P0/P1/P2)** → **`/prd-epic <feature>`**
+- **Hành vi hệ thống chính xác (FR, luật, lỗi)** → **`/srs <feature>`**
+- **TOÀN BỘ sản phẩm, một lần** → **`/prd`** · **ưu tiên hoá** → **`/roadmap`**
+- Wave sau (use case, story, wireframe, API, test, Jira/Confluence) — xem cột status trong `rules/doc-selection.md`.
+
+## Cây sơ đồ 30 giây
 
 **Bạn muốn thể hiện điều gì?**
 

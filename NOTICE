@@ -59,3 +59,36 @@ These licenses cover the icon FILES. The underlying brand logos remain
 trademarks of their respective owners; they are used here only to identify the
 corresponding technology within diagrams. Icons not bundled are fetched from the
 Devicon / Simple Icons CDNs at render time and embedded into the output.
+
+--------------------------------------------------------------------------------
+
+The BA document skills and templates (`skills/{brainstorm,urd,brd,prd-epic,
+prd,srs,roadmap}/`, `templates/doc-*.md`) adapt workflow and template
+structures — not verbatim text — from the following MIT-licensed projects:
+
+    BMAD-METHOD
+    Copyright (c) BMad Code, LLC
+    Licensed under the MIT License.
+    Source: https://github.com/bmad-code-org/BMAD-METHOD
+    Adapted: elicitation-technique menu (skills/brainstorm), project-brief /
+    PRD template section structures (templates/doc-brd.md, doc-prd.md,
+    doc-prd-product.md).
+
+    ccpm
+    Copyright (c) Automaze
+    Licensed under the MIT License.
+    Source: https://github.com/automazeio/ccpm
+    Adapted: the PRD discovery question set (problem / users / success
+    criteria / constraints / scope boundaries) used by skills/brainstorm
+    and skills/prd-epic.
+
+    spec-kit
+    Copyright (c) GitHub, Inc.
+    Licensed under the MIT License.
+    Source: https://github.com/github/spec-kit
+    Adapted: testable-requirement phrasing discipline ("the system shall …
+    when …", observable-outcome rejection of vague verbs) used by
+    skills/srs and templates/doc-srs.md.
+
+The MIT License text above (Cocoon AI block) applies identically to these
+adapted portions.

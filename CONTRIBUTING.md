@@ -33,12 +33,18 @@ example output, or the rebuilt `.drawio` files must be committed together with t
   logic verbatim-style (surgical fixes only, no restructuring). Kit-native files (`sequence.ts`,
   `drawio-build.ts`, `scripts/*.ts`, tests) are fully type-checked — keep them that way.
 - **Adding/renaming a skill** touches more than `skills/<name>/`:
-  1. `rules/diagram-selection.md` (decision matrix — the source of truth) **and** the condensed
-     routing table in `skills/diagram/SKILL.md` — always both, in the same PR.
+  1. The class matrix (source of truth) **and** its router's condensed table — always both, in the
+     same PR. Diagram skill → `rules/diagram-selection.md` + `skills/diagram/SKILL.md`;
+     document skill → `rules/doc-selection.md` + `skills/ba/SKILL.md` (flip the matrix row
+     `planned (wave N)` → `✓` in the PR that lands the skill).
   2. `README.md` + `README.vi.md` (skill table + count).
-  3. `guides/03-per-skill-guide.md` + `huong-dan/03-huong-dan-tung-skill.md` (a §-section each).
+  3. A guide §-section: diagram skills in `guides/03-per-skill-guide.md` +
+     `huong-dan/03-huong-dan-tung-skill.md`; document skills in `guides/06-ba-documents.md` +
+     `huong-dan/06-tai-lieu-ba.md`.
   4. An `explain-skills/<name>.md` + `<name>.vi.md` pair (or extend the relevant family doc).
   5. Ideally an example under `example/atlas-re/`.
+  6. Run `bash scripts/tsrun.sh scripts/kit-lint.ts` — CI fails on any index-surface drift
+     (README tables, matrices, router tables, explain-skills mentions, EN/VI parity, counts).
 - **Bilingual docs are pairs.** Every EN doc (`guides/`, `explain-skills/*.md`, `README.md`) has a VI
   twin (`huong-dan/`, `*.vi.md`, `README.vi.md`). Change one → change the other in the same PR.
 - **Large assets stay out of git.** `assets/plantuml/plantuml.jar`, `skills/drawio/catalog/azure.json`,

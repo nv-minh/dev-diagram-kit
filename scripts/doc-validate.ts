@@ -141,7 +141,10 @@ export function checkIds(body: string): Finding[] {
 const META_MARKERS = [/how to fill/i, /hướng dẫn điền/i, /run `\/[a-z-]+` to fill/i, /điền theo công thức/i];
 
 export function validateDoc(file: string, vaultRoot: string): Result | null {
-  const rel = relative(vaultRoot, file);
+  let rel = relative(vaultRoot, file);
+  // Example-corpus layout: example/atlas-re/ acts as docs/{feature}/ directly (no docs/ dir).
+  // Map "{feature}/..." → "docs/{feature}/..." so the naming table applies unchanged.
+  if (!rel.split(sep)[0].startsWith('docs')) rel = join('docs', rel);
   const spec = inferSpec(rel);
   if (!spec) return null;
   const src = readFileSync(file, 'utf8');
@@ -174,10 +177,11 @@ export function validateDoc(file: string, vaultRoot: string): Result | null {
       for (const k of REMOVED_KEYS) {
         if (fm.keys.has(k)) findings.push({ level: 'error', msg: `frontmatter key "${k}:" was removed by convention — drop it` });
       }
-      // links: targets exist
+      // links: targets exist (docs/-prefixed by convention; also try the example layout without it)
+      const targetExists = (t: string) => existsSync(join(vaultRoot, t)) || existsSync(join(vaultRoot, t.replace(/^docs\//, '')));
       for (const l of fm.links) {
         const target = l.split('#')[0];
-        if (target && !existsSync(join(vaultRoot, target))) findings.push({ level: 'error', msg: `links: target not found: ${target}` });
+        if (target && !targetExists(target)) findings.push({ level: 'error', msg: `links: target not found: ${target}` });
       }
     }
   }
@@ -185,7 +189,8 @@ export function validateDoc(file: string, vaultRoot: string): Result | null {
   // body wikilinks
   for (const m of body.matchAll(/\[\[([^\]|#]+)(?:#[^\]|]*)?(?:\|[^\]]*)?\]\]/g)) {
     const target = m[1].trim();
-    if (target && !existsSync(join(vaultRoot, target))) findings.push({ level: 'error', msg: `wikilink target not found: ${target}` });
+    const found = existsSync(join(vaultRoot, target)) || existsSync(join(vaultRoot, target.replace(/^docs\//, '')));
+    if (target && !found) findings.push({ level: 'error', msg: `wikilink target not found: ${target}` });
   }
 
   // ID formats
@@ -219,7 +224,9 @@ if (isMain) {
         if (existsSync(join(cur, 'docs')) && statSync(join(cur, 'docs')).isDirectory()) return cur;
         cur = dirname(cur);
       }
-      return statSync(p).isDirectory() ? p : dirname(p);
+      // No docs/ ancestor → the target dir itself acts as one feature folder
+      // (the example-corpus layout: example/atlas-re/ = docs/atlas-re/); its parent is the vault.
+      return dirname(statSync(p).isDirectory() ? p : dirname(p));
     };
     const vault = vaultFlag !== -1 ? argv[vaultFlag + 1] : findVault(abs);
     const files: string[] = [];

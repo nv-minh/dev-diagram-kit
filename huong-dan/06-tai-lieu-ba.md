@@ -1,0 +1,118 @@
+# 06 — Hướng dẫn skill tài liệu BA
+
+[English](../guides/06-ba-documents.md) · **Tiếng Việt**
+
+> Mỗi skill tài liệu: cú pháp gọi, cần chuẩn bị gì, hỏi gì, output ở đâu, ví dụ (đối chiếu `example/atlas-re/`). Tất cả tuân **approval gate** (xem trước rồi mới ghi) và mọi tài liệu sinh ra đều qua **`doc-validate`** (frontmatter, ID, link) trước khi skill báo xong. Skill sơ đồ nằm ở [03 — Hướng dẫn từng skill](03-huong-dan-tung-skill.md). Các wave sau (spec, wireframe, API, testing, bàn giao) sẽ nối tiếp guide này khi lên sóng — xem cột status trong `rules/doc-selection.md`.
+
+Ký hiệu: `<slug>` = tên feature dạng kebab-case (vd `atlas-re`). `"..."` = mô tả nghiệp vụ bằng lời.
+
+---
+
+## 1. `/ba` — router tài liệu
+
+**Cú pháp:** `/ba "<bạn cần gì>"` (hoặc chỉ cần mô tả nhu cầu)
+
+**Dùng khi:** biết mình cần một tài liệu nhưng không rõ skill nào — nó hỏi tối đa 2 câu (giai đoạn vòng đời · phạm vi/nguồn) rồi chạy đúng skill. Skill thuộc wave chưa lên sóng sẽ nhận câu trả lời "wave N sắp có" kèm lựa chọn gần nhất hôm nay.
+
+---
+
+## 2. `/brainstorm` — khai phá ý tưởng
+
+**Cú pháp:** `/brainstorm "<ý tưởng>" [--feature <slug>]`
+
+**Dùng khi:** có ý tưởng thô, chưa có gì cấu trúc. Đây là gốc của chuỗi discovery — Open Questions của nó cascade vào mọi tài liệu sau.
+
+**Chuẩn bị:** không cần. Feature hoàn toàn mới cũng được — skill tự suy slug và tạo thư mục sau khi bạn duyệt L1.
+
+**Skill hỏi gì:** vòng 1 — bài toán, ai bị ảnh hưởng, thành công trông ra sao; vòng 2 (tuỳ chọn) — một góc khai phá bạn chọn (what-if, nhập vai persona, stress khi scale).
+
+**Output:** `docs/{slug}/brainstorms/{idea-slug}.md` — bài toán, người dùng, phác thảo, quyết định, ngoài phạm vi, Open Questions.
+
+**Ví dụ:** `/brainstorm "cho cedent tự theo dõi trạng thái duyệt bồi thường"` → tạo `docs/claim-tracking/brainstorms/self-service-status.md`, rồi gợi ý `/urd claim-tracking`.
+
+---
+
+## 3. `/urd` — User Requirements Document
+
+**Cú pháp:** `/urd <feature>`
+
+**Dùng khi:** cần chốt persona, bối cảnh sử dụng và nhu cầu người dùng trước khi tranh luận về giá trị kinh doanh hay hành vi hệ thống.
+
+**Chuẩn bị:** có brainstorm thì tốt (được đọc tự động) nhưng không bắt buộc.
+
+**Skill hỏi gì:** persona là ai, mục tiêu và nỗi bực của họ, dùng ở đâu/khi nào, nhu cầu theo từng persona.
+
+**Output:** `docs/{slug}/{slug}-urd.md` — sinh `UN-{slug}-001…`, mỗi nhu cầu kèm nguồn. Các ID này là thứ mục tiêu trong BRD phải cover.
+
+---
+
+## 4. `/brd` — Business Requirements Document
+
+**Cú pháp:** `/brd <feature>`
+
+**Dùng khi:** cần bài toán kinh doanh — mục tiêu kèm thước đo, phạm vi, chi phí-lợi ích, rủi ro.
+
+**Chuẩn bị:** URD (đọc tự động). Không có vẫn chạy; cột coverage để trống đến khi `/urd` xong.
+
+**Skill hỏi gì:** vì sao làm bây giờ, mục tiêu + đo bằng gì, trong/ngoài phạm vi, các khoản chi phí/lợi ích **kèm căn cứ** (không căn cứ → thành OQ, không bao giờ bịa số), rủi ro.
+
+**Output:** `docs/{slug}/{slug}-brd.md` — sinh `BO-{slug}-01…`. Tên section cố định (cơ chế cascade OQ grep theo tên).
+
+---
+
+## 5. `/prd-epic` — PRD một feature
+
+**Cú pháp:** `/prd-epic <feature>`
+
+**Dùng khi:** bài toán kinh doanh đã chốt, cần quyết định xây GÌ — capability ưu tiên P0/P1/P2.
+
+**Chuẩn bị:** BRD (đọc tự động).
+
+**Skill hỏi gì:** launch thiếu gì thì vô nghĩa (dò P0), nice-to-have, non-goal tường minh, ràng buộc thứ tự.
+
+**Output:** `docs/{slug}/{slug}-prd.md` — sinh `CAP-{slug}-01…` cover các BO. P0 nghĩa là "thiếu nó feature vô nghĩa" — skill sẽ chất vấn lạm phát P0.
+
+---
+
+## 6. `/srs` — Software Requirements Specification
+
+**Cú pháp:** `/srs <feature> [--section <n>]`
+
+**Dùng khi:** cần hành vi hệ thống chính xác, kiểm thử được — nguồn mà mọi skill hạ nguồn (story, test, sơ đồ) tiêu thụ.
+
+**Chuẩn bị:** PRD (đọc tự động). Cả chuỗi thượng nguồn giúp giảm số câu phải hỏi.
+
+**Skill hỏi gì:** actor + ranh giới hệ thống, rồi theo từng capability: trigger, kết quả quan sát được, các kiểu lỗi, luật, dữ liệu chạm tới.
+
+**Output:** `docs/{slug}/srs/{slug}-spec.md` — Section 2 FR ("the system shall … when …"), Section 3 NFR (kèm thước đo), Section 4 Business Rules, Section 5 Ma trận lỗi. Sinh `FR-/NFR-/BR-/E-{slug}-NNN`. Xong thì mở menu sơ đồ (`/sequence`, `/state`, `/erd`, …).
+
+**Mẹo:** Ma trận lỗi là chỗ spec chứng minh giá trị — spec 12 FR mà 1 dòng lỗi là đặc tả thiếu.
+
+---
+
+## 7. `/prd` — PRD sản phẩm (singleton)
+
+**Cú pháp:** `/prd [--update]`
+
+**Dùng khi:** định nghĩa TOÀN BỘ sản phẩm — pitch, bài toán, người dùng, theme, Feature Map, metrics. Một lần cho cả sản phẩm, cập nhật tại chỗ. "PRD cho feature checkout" → dùng `/prd-epic checkout`.
+
+**Output:** `docs/_product/prd.md`. Feature Map là nơi sinh ra slug feature.
+
+---
+
+## 8. `/roadmap` — kế hoạch ưu tiên (singleton)
+
+**Cú pháp:** `/roadmap [--format now-next-later|quarter]`
+
+**Dùng khi:** sắp thứ tự Feature Map — điểm RICE-lite (mỗi điểm cần căn cứ), kế hoạch Now/Next/Later kèm ghi chú lệch điểm, bản đồ phụ thuộc có phân loại.
+
+**Output:** `docs/_product/roadmap.md`. Đọc PRD sản phẩm một chiều; Feature Map đổi thì chạy lại để sync. Cần hình mốc thời gian cho stakeholder → `/timeline` (skill sơ đồ).
+
+---
+
+## Ghi chú chung
+
+- **Thứ tự chuỗi quan trọng nhưng không bắt buộc** — skill nào cũng chạy độc lập được (nhóm A tự tạo feature; thiếu tài liệu thượng nguồn = ghi chú mềm, không fail). Chuỗi là nơi các ID có nghĩa: UN → BO → CAP → FR.
+- **Open Questions cascade** — OQ chưa giải sẽ xuất hiện lại ở hạ nguồn đến khi có đáp án (`rules/resolve-oqs.md`). Không skill nào bịa đáp án để lấp chỗ trống.
+- **Chế độ update** — chạy lại skill trên tài liệu có sẵn sẽ hiện L2 diff; ID không bao giờ bị đánh số lại.
+- **Tài liệu lớn có reviewer** — vượt ngưỡng phức tạp (vd SRS ≥15 FR), `@doc-reviewer` kiểm độ phủ, bịa đặt và độ cao trước khi skill báo xong.

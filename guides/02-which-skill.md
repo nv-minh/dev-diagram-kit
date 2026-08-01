@@ -2,11 +2,28 @@
 
 **English** · [Tiếng Việt](../huong-dan/02-chon-skill-nao.md)
 
-> 27 skills sounds like a lot, but picking the right one is quick if you ask the right question. This is the condensed version; the full version is at `explain-skills/diagram-selection.md`.
+> 35 skills sounds like a lot, but picking the right one is quick if you ask the right question. This is the condensed version; the full versions are `explain-skills/diagram-selection.md` (diagrams) and `rules/doc-selection.md` (documents).
 
 ---
 
-## The 30-second decision tree
+## First fork: document or diagram?
+
+- **A document** — prose, tables, specs, tests, sync (brainstorm, URD, BRD, PRD, SRS, roadmap…) → the document tree below, or just run **`/ba "<what you need>"`**.
+- **A picture** — flows, states, data models, architecture → the diagram tree below, or run **`/diagram "<what you want to show>"`**.
+
+## The 30-second document tree
+
+**Where are you in the lifecycle?**
+
+- **A raw idea, nothing structured** → **`/brainstorm "<idea>"`**
+- **Who the users are + what they need** → **`/urd <feature>`**
+- **The business case (objectives, ROI, risks)** → **`/brd <feature>`**
+- **What we'll build for ONE feature (P0/P1/P2)** → **`/prd-epic <feature>`**
+- **Precise system behavior (FRs, rules, errors)** → **`/srs <feature>`**
+- **The WHOLE product, once** → **`/prd`** · **prioritize it** → **`/roadmap`**
+- Later waves (use cases, stories, wireframes, API, tests, Jira/Confluence) — see the status column in `rules/doc-selection.md`.
+
+## The 30-second diagram tree
 
 **What do you want to show?**
 

@@ -1,4 +1,6 @@
-# 03 — Hướng dẫn chi tiết từng skill
+# 03 — Hướng dẫn chi tiết từng skill (sơ đồ)
+
+> Skill tài liệu (chuỗi `/brainstorm → /srs` và các wave sau) nằm ở [06 — Tài liệu BA](06-tai-lieu-ba.md).
 
 > Mỗi skill: cú pháp gọi, cần chuẩn bị gì, hỏi gì, output ở đâu, ví dụ thật (đối chiếu `example/atlas-re/`). Skill đều tuân **approval gate** — xem trước rồi mới ghi.
 
