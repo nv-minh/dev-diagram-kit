@@ -4,7 +4,7 @@ All notable changes to **dev-ba-kit** are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); versions follow [SemVer](https://semver.org).
 (`rules/changelog.md` is a different thing — it defines the activity-log convention for the BA artifacts the kit generates.)
 
-## [2.5.0] — Unreleased
+## [2.5.0] — 2026-08-01
 
 ### Added
 - **Wave 6 — delivery & sync (8 skills) — completes the v2.0 document expansion (63 skills total):**
@@ -31,7 +31,7 @@ full lifecycle (discovery → spec → UI design → API integration → testing
 `doc-validate`; `kit-lint` enforces index-surface sync across all of them; the traceability spine
 (`UN→BO→CAP→FR→UC/US→AC→CHK→TC`) is provable end to end via `/gap`.
 
-## [2.4.0] — Unreleased
+## [2.4.0] — 2026-08-01
 
 ### Added
 - **Wave 5 — API integration family (7 skills):** the 7-step chain `/api-assess → /api-doc →
@@ -50,7 +50,7 @@ full lifecycle (discovery → spec → UI design → API integration → testing
 - atlas-re: the CatModel provider integration — `api-summary-catmodel.md` (digest) + `api-design.md`
   (blueprint with webhook⇄reconciliation pairing) + `api-map.md` (3-layer field map with owners).
 
-## [2.3.0] — Unreleased
+## [2.3.0] — 2026-08-01
 
 ### Added
 - **Wave 4 — verification, traceability & change (5 skills):** `/test-checklist` (categorized coverage
@@ -70,7 +70,7 @@ full lifecycle (discovery → spec → UI design → API integration → testing
   `traceability.md` from a real `/gap` run (spine intact, 3 deliberate unsliced-FR gaps surfaced) +
   `CR-20260801-001` (50k→60k threshold change with full impact + rollback).
 
-## [2.2.0] — Unreleased
+## [2.2.0] — 2026-08-01
 
 ### Added
 - **Wave 3 — UI design (4 skills):** `/wireframe-ascii` (ASCII frames + 5-column description tables,
@@ -85,7 +85,7 @@ full lifecycle (discovery → spec → UI design → API integration → testing
 - atlas-re: `ascii-wireframe/approve-claim.md` (screens `[1]…[4]` ASCII + 5-column tables citing the
   SRS FR/BR/E-) + `atlas-re-wireframe-index.md` (6 screens across 2 flows).
 
-## [2.1.0] — Unreleased
+## [2.1.0] — 2026-08-01
 
 ### Added
 - **Wave 2 — behavioral specification (4 skills):** `/usecase` (fully-dressed Cockburn text UCs,
@@ -102,7 +102,7 @@ full lifecycle (discovery → spec → UI design → API integration → testing
   `us-001…003` + story index with FR coverage map, the two-flow userflow with screens `[1]…[6]`.
 - kit-lint: zero-frontmatter template convention (`<!-- zero-frontmatter` marker on line 1).
 
-## [2.0.0] — Unreleased
+## [2.0.0] — 2026-08-01
 
 ### Changed (BREAKING)
 - **Plugin renamed `dev-diagram-kit` → `dev-ba-kit`.** The plugin name is the install identity, so
