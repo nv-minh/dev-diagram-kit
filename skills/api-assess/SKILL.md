@@ -69,6 +69,10 @@ Next: /api-doc {feature} --provider {winner} (digest their contract).
 - **Sunset/deprecation is a criterion** — a provider EOL-ing in 6 months scoring high on coverage is a trap; weight it.
 - **Skip honestly** — if the provider is fixed, say so and route to `/api-doc`; a faux-assessment of one candidate is theater.
 
+## Simulated session
+
+Worked example — user prompts, approval gates, and output excerpts: /example-session.md. Full artifacts: `example/atlas-re/`.
+
 ## References
 
 - @../../rules/ba-conventions.md

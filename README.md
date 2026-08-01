@@ -113,6 +113,18 @@ The chain: `/brainstorm → /urd → /brd → /prd-epic → /srs` per feature, t
 
 Not sure which to use? Run **`/diagram`** — describe what you want to show and it picks (and runs) the right skill. `rules/diagram-selection.md` is the decision matrix behind it.
 
+### Simulated sessions (document skills)
+
+All **36 document skills** (including the `/ba` router) ship a **simulated session** — a realistic chat transcript (commands you type, interview questions, L1/L2 approval gates, output excerpts). Each file lives at `skills/<skill>/references/example-session.md`; every `SKILL.md` links it under **Simulated session**.
+
+| Where to start | What you get |
+|---|---|
+| [06 — BA documents](guides/06-ba-documents.md) · [07 — API & delivery](guides/07-api-and-delivery.md) | Per-skill syntax + full session index (EN) |
+| [06 — Tài liệu BA](huong-dan/06-tai-lieu-ba.md) · [07 — API & bàn giao](huong-dan/07-api-va-ban-giao.md) | Same guides in Vietnamese |
+| [`example/atlas-re/`](example/atlas-re/) | Committed artifacts sessions are grounded in (diagram + doc spine) |
+
+Diagram skills do not use chat transcripts — compare your output against the rendered files in [`example/atlas-re/`](example/atlas-re/) ([03 — Per-skill guide](guides/03-per-skill-guide.md)).
+
 ## Examples
 
 Sample output for a small *payment* domain. D2, PlantUML, and BPMN diagrams are pre-rendered; Mermaid renders natively on GitHub. Architecture diagrams add technology icons automatically when a component maps to a known stack.

@@ -71,6 +71,10 @@ A decision that changes scope? /cr "<change>" to record + apply it.
 - **Don't fork files** — one note holds everything; a "decisions.md" + "actions.md" split drifts the moment one updates.
 - **Link, don't duplicate** — a decision about `FR-atlas-re-006` links the spec; it doesn't restate the FR.
 
+## Simulated session
+
+Worked example — user prompts, approval gates, and output excerpts: /example-session.md. Full artifacts: `example/atlas-re/`.
+
 ## References
 
 - @../../rules/ba-conventions.md

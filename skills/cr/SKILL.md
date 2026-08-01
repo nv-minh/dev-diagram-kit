@@ -80,6 +80,10 @@ When approved: /cr --apply CR-{date}-{NNN} (walks the Apply order, L2 per doc).
 - **Rollback or don't ship** — an irreversible change with no rollback path must be called out at record time, not discovered at apply.
 - **CR is cross-cutting** — it touches the spine anywhere; let `@change-tracker` compute the order so dependencies (SRS→stories→tests) aren't violated.
 
+## Simulated session
+
+Worked example — user prompts, approval gates, and output excerpts: /example-session.md. Full artifacts: `example/atlas-re/`.
+
 ## References
 
 - @../../rules/ba-conventions.md

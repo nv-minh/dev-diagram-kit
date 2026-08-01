@@ -70,6 +70,10 @@ Next: /api-design {feature} — the Integration Blueprint (orchestration/webhook
 - **Version matters** — record the spec version; a v2→v3 bump can break the design silently.
 - **Don't design here** — orchestration/retry/degraded-UX belong to `/api-design`; this skill is the faithful digest.
 
+## Simulated session
+
+Worked example — user prompts, approval gates, and output excerpts: /example-session.md. Full artifacts: `example/atlas-re/`.
+
 ## References
 
 - @../../rules/ba-conventions.md

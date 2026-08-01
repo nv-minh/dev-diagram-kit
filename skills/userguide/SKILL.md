@@ -72,6 +72,10 @@ Screenshot gaps (pages marked TBD): {list | none}.
 - **The entry is the contract** — `docs/userguide/` top level shows only `*.html`; the bundle keeps it tidy (and Obsidian/IDE quick-switcher sane).
 - **Don't skip the outline HARD STOP** — generating 20 pages from a guessed outline wastes a full run; confirm the shape first.
 
+## Simulated session
+
+Worked example — user prompts, approval gates, and output excerpts: /example-session.md. Full artifacts: `example/atlas-re/`.
+
 ## References
 
 - @../../rules/ba-conventions.md

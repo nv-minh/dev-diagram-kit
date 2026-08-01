@@ -73,6 +73,10 @@ Formalize? /srs {feature} (promote the ✅/🔵 into the official spec). /scan-p
 - **Don't promote silently** — moving reverse content into the official urd/brd/srs is a `/cr` (it changes the source of truth); keep them separate until then.
 - **Images need OCR/vision** — if neither is available, the section stays 🟡 with an OQ rather than skipped.
 
+## Simulated session
+
+Worked example — user prompts, approval gates, and output excerpts: /example-session.md. Full artifacts: `example/atlas-re/`.
+
 ## References
 
 - @../../rules/ba-conventions.md

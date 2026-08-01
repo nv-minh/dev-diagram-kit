@@ -72,6 +72,10 @@ Next: /api-test {feature} — Bruno collection + per-row expected responses.
 - **Don't merge with the feature checklist** — different folder, different scope; `/gap` joins both via the CHK/TC spine.
 - **Degraded-UX is `own`-testable** — that's the point of testing it: our fallback works without the provider.
 
+## Simulated session
+
+Worked example — user prompts, approval gates, and output excerpts: /example-session.md. Full artifacts: `example/atlas-re/`.
+
 ## References
 
 - @../../rules/ba-conventions.md

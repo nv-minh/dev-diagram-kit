@@ -77,6 +77,10 @@ Next: /prd-epic {feature} — capabilities (CAP-) that deliver these objectives.
 - **Business Rules here are business-level** — policy ("refunds over $500 need manager approval"), not system behavior; system-level `BR-` IDs are minted later by `/srs`.
 - **Do not rename sections** — the OQ cascade greps them.
 
+## Simulated session
+
+Worked example — user prompts, approval gates, and output excerpts: /example-session.md. Full artifacts: `example/atlas-re/`.
+
 ## References
 
 - @../../rules/ba-conventions.md

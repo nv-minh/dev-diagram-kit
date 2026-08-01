@@ -76,6 +76,10 @@ Pull status next time: /jira {feature} --pull.
 - **Status map ambiguity** — Jira's "In Progress" could be our `draft` or `in-review`; ask once, record the mapping, don't guess per run.
 - **One issue per story** — don't bundle stories into an epic issue; the `jira-key` column is 1:1 (epics are a Jira-side grouping, not a story-side one).
 
+## Simulated session
+
+Worked example — user prompts, approval gates, and output excerpts: /example-session.md. Full artifacts: `example/atlas-re/`.
+
 ## References
 
 - @../../rules/ba-conventions.md

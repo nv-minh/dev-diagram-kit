@@ -74,6 +74,10 @@ Clickable demo? /prototype-html {feature}.  Push frames to Figma? /figma {featur
 - **`id="s{n}"` is the deep-link contract** — `/prototype-html` and `/export` anchor to it; don't renumber.
 - **B&W is deliberate** — color/branding is a design decision, not a wireframe one; `/figma` or the real frontend owns that.
 
+## Simulated session
+
+Worked example — user prompts, approval gates, and output excerpts: /example-session.md. Full artifacts: `example/atlas-re/`.
+
 ## References
 
 - @../../rules/ba-conventions.md

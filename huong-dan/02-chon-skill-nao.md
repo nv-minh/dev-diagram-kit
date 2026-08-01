@@ -19,7 +19,7 @@
 - **Xây GÌ cho MỘT feature (P0/P1/P2)** → **`/prd-epic <feature>`**
 - **Hành vi hệ thống chính xác (FR, luật, lỗi)** → **`/srs <feature>`**
 - **TOÀN BỘ sản phẩm, một lần** → **`/prd`** · **ưu tiên hoá** → **`/roadmap`**
-- **Spec / UI / API / test / bàn giao** (use case, story, AC, wireframe, chuỗi API, test, Jira/Confluence, export…) — chạy **`/ba "<bạn cần gì>"`**, hoặc xem matrix trong `rules/doc-selection.md`.
+- **Spec / UI / API / test / bàn giao** (use case, story, AC, wireframe, chuỗi API, test, Jira/Confluence, export…) — chạy **`/ba "<bạn cần gì>"`**, hoặc xem matrix trong `rules/doc-selection.md`. Mỗi skill tài liệu có **phiên mô phỏng** tại `skills/<skill>/references/example-session.md` — bảng đầy đủ ở [06 — Tài liệu BA](06-tai-lieu-ba.md) · [07 — API & bàn giao](07-api-va-ban-giao.md).
 
 ## Cây sơ đồ 30 giây
 

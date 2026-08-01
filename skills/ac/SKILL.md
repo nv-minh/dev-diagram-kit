@@ -80,6 +80,10 @@ Next (wave 4): /test-checklist {feature} derives the QA outline from these ACs.
 - **AC ≠ test case** — no test data tables, no step-by-step clicks; that detail is `/test-cases`' job (wave 4).
 - **Respect story scope** — an AC that needs behavior from another story belongs there; note it, don't absorb it.
 
+## Simulated session
+
+Worked example — user prompts, approval gates, and output excerpts: /example-session.md. Full artifacts: `example/atlas-re/`.
+
 ## References
 
 - @../../rules/ba-conventions.md

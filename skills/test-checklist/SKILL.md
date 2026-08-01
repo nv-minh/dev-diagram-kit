@@ -74,6 +74,10 @@ Next: /test-cases {feature} — expand each CHK- into steps/data/expected.
 - **E- coverage is mandatory** — an error code with no CHK- is a documented error nobody tests; surface it in the report.
 - **AC is the richest source** — if stories have ACs, derive from them first (they're already Given-When-Then); FRs are the fallback.
 
+## Simulated session
+
+Worked example — user prompts, approval gates, and output excerpts: /example-session.md. Full artifacts: `example/atlas-re/`.
+
 ## References
 
 - @../../rules/ba-conventions.md

@@ -85,6 +85,10 @@ Downstream (wave 2): /usecase, /userstory slice these FRs.
 - **BR here is system-enforceable** — BRD-level policy became `BR-` rows only when the system enforces them.
 - **Do not embed diagrams** — link `srs/{feature}-flows.md` etc.; the merged-file convention keeps the spec reviewable.
 
+## Simulated session
+
+Worked example — user prompts, approval gates, and output excerpts: /example-session.md. Full artifacts: `example/atlas-re/`.
+
 ## References
 
 - @../../rules/ba-conventions.md

@@ -70,6 +70,10 @@ Features: !`ls -d docs/*/ 2>/dev/null | xargs -I{} basename {} | grep -v "^_" | 
 - **Dedupe or drown** — three agents flagging the same vague FR is one finding, not three; merge to the most actionable version.
 - **The rename is load-bearing** — `/review` would shadow the user's pre-landing PR review skill for exactly the devs this kit serves; `/doc-review` avoids it.
 
+## Simulated session
+
+Worked example — user prompts, approval gates, and output excerpts: /example-session.md. Full artifacts: `example/atlas-re/`.
+
 ## References
 
 - @../../rules/ba-conventions.md

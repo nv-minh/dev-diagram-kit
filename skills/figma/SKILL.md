@@ -72,6 +72,10 @@ Local clickable demo? /prototype-html {feature} (no external dependency).
 - **One source of screen truth** — the ASCII wireframe + its `[n]`; Figma frames follow those numbers, never the reverse.
 - **MCP availability varies** — in headless/CI contexts the Figma MCP may be absent; this skill is interactive-only by nature.
 
+## Simulated session
+
+Worked example — user prompts, approval gates, and output excerpts: /example-session.md. Full artifacts: `example/atlas-re/`.
+
 ## References
 
 - @../../rules/ba-conventions.md

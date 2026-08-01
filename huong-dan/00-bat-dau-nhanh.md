@@ -84,6 +84,8 @@ Skill sẽ:
 
 Mở thư mục `example/atlas-re/` trong gói này — ví dụ làm sẵn cho **mọi skill diagram** (kiến trúc, hành vi, dữ liệu, con người, cloud), sinh bằng pipeline thật của từng skill. Đối chiếu output của bạn với bản mẫu để biết "đúng thì trông thế nào".
 
+Với **skill tài liệu**, mỗi skill có **phiên mô phỏng** (transcript chat với cổng L1/L2) tại `skills/<skill>/references/example-session.md`. Bảng đầy đủ: [06 — Tài liệu BA](06-tai-lieu-ba.md) và [07 — API & bàn giao](07-api-va-ban-giao.md).
+
 Đọc `example/README.md` để có bản đồ file → skill.
 
 ---

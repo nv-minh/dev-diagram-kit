@@ -71,6 +71,10 @@ Push screens to Figma next? /figma {feature}.
 - **State screens count** — if the spec has an error state for a form, it's a screen in the prototype, not a hidden assumption.
 - **Reuse wireframe content** — drifting from the ASCII/HTML wireframes here means three sources of truth; re-sync instead.
 
+## Simulated session
+
+Worked example — user prompts, approval gates, and output excerpts: /example-session.md. Full artifacts: `example/atlas-re/`.
+
 ## References
 
 - @../../rules/ba-conventions.md

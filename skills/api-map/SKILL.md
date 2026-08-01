@@ -72,6 +72,10 @@ Next: /api-checklist {feature} (the test outline over these endpoints + the map)
 - **Skip honestly** — a webhook-only integration with no payload to persist has no map; say so and move to `/api-checklist`.
 - **Enums map, not rename** — their `status: 'A'|'I'` → our `active|inactive` is a transform row, not a data-model change.
 
+## Simulated session
+
+Worked example — user prompts, approval gates, and output excerpts: /example-session.md. Full artifacts: `example/atlas-re/`.
+
 ## References
 
 - @../../rules/ba-conventions.md

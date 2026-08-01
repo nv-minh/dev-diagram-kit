@@ -91,6 +91,10 @@ Changed flows later → re-run /user-flow; the hash tells wireframes they're sta
 - **Error paths deserve screens** — "show an error" is not a destination; decide whether it's a state of the same screen or its own screen.
 - **The hash is not decoration** — wave-3 skills compare `flow_hash` to detect a stale division; skipping the stamp breaks their gate.
 
+## Simulated session
+
+Worked example — user prompts, approval gates, and output excerpts: /example-session.md. Full artifacts: `example/atlas-re/`.
+
 ## References
 
 - @../../rules/ba-conventions.md

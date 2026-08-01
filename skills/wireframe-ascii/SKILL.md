@@ -96,6 +96,10 @@ Clickable demo of all flows? /prototype-html {feature}.
 - **Numbers must be sourced** — "max 50k" came from BR-atlas-re-001; cite it, never retype it as a guess.
 - **One state per screen** — the error state of a form is its own screen (or a clearly split frame), not a busy combo.
 
+## Simulated session
+
+Worked example — user prompts, approval gates, and output excerpts: /example-session.md. Full artifacts: `example/atlas-re/`.
+
 ## References
 
 - @../../rules/ba-conventions.md

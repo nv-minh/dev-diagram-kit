@@ -76,6 +76,10 @@ Per feature: /prd-epic {slug} → /srs {slug}.
 - **Metrics without a basis** — a target pulled from air becomes the team's OKR; make the basis explicit or file an OQ.
 - **Roadmap sync is one-way** — editing the Feature Map does not auto-update `roadmap.md`; re-run `/roadmap` (per `resolve-oqs.md`).
 
+## Simulated session
+
+Worked example — user prompts, approval gates, and output excerpts: /example-session.md. Full artifacts: `example/atlas-re/`.
+
 ## References
 
 - @../../rules/ba-conventions.md

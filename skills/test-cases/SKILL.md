@@ -75,6 +75,10 @@ Prove the coverage? /gap (AC→CHK→TC is part of the traceability spine).
 - **Expected wording must match the spec** — the `E-` message in the test case is the exact string the user sees; paraphrasing it breaks the tester.
 - **Don't renumber** — a `TC-` retired by a changed requirement keeps its number; new cases take max+1.
 
+## Simulated session
+
+Worked example — user prompts, approval gates, and output excerpts: /example-session.md. Full artifacts: `example/atlas-re/`.
+
 ## References
 
 - @../../rules/ba-conventions.md

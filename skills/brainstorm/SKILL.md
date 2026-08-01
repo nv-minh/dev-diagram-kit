@@ -77,6 +77,10 @@ Unanswered OQs cascade forward — resolve them any time with the OQ workflow (r
 - **One idea per file** — a second idea mid-interview → offer to split into its own file.
 - **OQ format matters** — `resolve-oqs.md` parses the checkbox list; freeform prose OQs won't cascade.
 
+## Simulated session
+
+Worked example — user prompts, approval gates, and output excerpts: /example-session.md. Full artifacts: `example/atlas-re/`.
+
 ## References
 
 - @../../rules/ba-conventions.md

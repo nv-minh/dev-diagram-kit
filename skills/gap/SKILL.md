@@ -73,6 +73,10 @@ Fix a gap by running its owning skill (/srs, /usecase, /userstory, /ac, /test-ch
 - **E-uncited is the sneaky one** — error codes defined in the SRS but referenced nowhere are the most common real gap; they're why this skill exists.
 - **The index tables are the cheap join** — prefer them over re-parsing every zero-frontmatter content file; body wikilinks are the fallback.
 
+## Simulated session
+
+Worked example — user prompts, approval gates, and output excerpts: /example-session.md. Full artifacts: `example/atlas-re/`.
+
 ## References
 
 - @../../rules/ba-conventions.md

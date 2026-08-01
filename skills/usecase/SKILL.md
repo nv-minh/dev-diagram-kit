@@ -104,6 +104,10 @@ Success Guarantee: claim is APPROVED with actor + timestamp recorded.
 - **Don't re-dress the spec** — a UC that reads like the FR table adds nothing; the value is the actor's intent and the failure story.
 - **CRUD matrix honesty** — only mark entities the UC actually touches; cross-check the ERD names (CamelCase, matching `srs/{feature}-erd.md`).
 
+## Simulated session
+
+Worked example — user prompts, approval gates, and output excerpts: /example-session.md. Full artifacts: `example/atlas-re/`.
+
 ## References
 
 - @../../rules/ba-conventions.md

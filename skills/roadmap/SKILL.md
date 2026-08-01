@@ -75,6 +75,10 @@ Want a visual for stakeholders? /timeline (Mermaid milestones) — link it from 
 - **Don't cascade OQs here** — this file is derived; questions belong in the PRD/feature docs, and the fix is a re-run.
 - **Decisions log is append-only across runs** — it's the "why did we demote X in July" memory; never rewrite old rows.
 
+## Simulated session
+
+Worked example — user prompts, approval gates, and output excerpts: /example-session.md. Full artifacts: `example/atlas-re/`.
+
 ## References
 
 - @../../rules/ba-conventions.md

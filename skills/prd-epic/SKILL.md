@@ -77,6 +77,10 @@ Next: /srs {feature} — precise system behavior (FR-/NFR-/BR-/E-) per capabilit
 - **Release plan references CAP IDs** — phases with prose-only content can't be traced by `/gap`.
 - **Do not rename sections** — the OQ cascade greps them.
 
+## Simulated session
+
+Worked example — user prompts, approval gates, and output excerpts: /example-session.md. Full artifacts: `example/atlas-re/`.
+
 ## References
 
 - @../../rules/ba-conventions.md

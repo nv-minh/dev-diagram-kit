@@ -21,7 +21,7 @@
 - **What we'll build for ONE feature (P0/P1/P2)** → **`/prd-epic <feature>`**
 - **Precise system behavior (FRs, rules, errors)** → **`/srs <feature>`**
 - **The WHOLE product, once** → **`/prd`** · **prioritize it** → **`/roadmap`**
-- **Spec / UI / API / test / delivery** (use cases, stories, ACs, wireframes, API chain, tests, Jira/Confluence, export…) — run **`/ba "<what you need>"`**, or see the matrix in `rules/doc-selection.md`.
+- **Spec / UI / API / test / delivery** (use cases, stories, ACs, wireframes, API chain, tests, Jira/Confluence, export…) — run **`/ba "<what you need>"`**, or see the matrix in `rules/doc-selection.md`. Each document skill has a **simulated session** at `skills/<skill>/references/example-session.md` — full index in [06 — BA documents](06-ba-documents.md) · [07 — API & delivery](07-api-and-delivery.md).
 
 ## The 30-second diagram tree
 

@@ -6,6 +6,34 @@
 
 Ký hiệu: `<slug>` = tên feature dạng kebab-case (vd `atlas-re`). `"..."` = mô tả nghiệp vụ bằng lời.
 
+Mỗi skill có **phiên mô phỏng** (`skills/<skill>/references/example-session.md`) — transcript chat thật: lệnh bạn gõ, câu skill hỏi, cổng L1/L2, và đoạn output. Nội dung bám [`example/atlas-re/`](example/atlas-re/) khi có artifact commit.
+
+| Skill | Phiên mô phỏng | Ví dụ commit (nếu có) |
+|---|---|---|
+| `/ba` | [`skills/ba/references/example-session.md`](../skills/ba/references/example-session.md) | chỉ router |
+| `/brainstorm` | [`skills/brainstorm/references/example-session.md`](../skills/brainstorm/references/example-session.md) | [`claim-approval-idea.md`](example/atlas-re/brainstorms/claim-approval-idea.md) |
+| `/urd` | [`skills/urd/references/example-session.md`](../skills/urd/references/example-session.md) | [`atlas-re-urd.md`](example/atlas-re/atlas-re-urd.md) |
+| `/brd` | [`skills/brd/references/example-session.md`](../skills/brd/references/example-session.md) | [`atlas-re-brd.md`](example/atlas-re/atlas-re-brd.md) |
+| `/prd-epic` | [`skills/prd-epic/references/example-session.md`](../skills/prd-epic/references/example-session.md) | [`atlas-re-prd.md`](example/atlas-re/atlas-re-prd.md) |
+| `/srs` | [`skills/srs/references/example-session.md`](../skills/srs/references/example-session.md) | [`atlas-re-spec.md`](example/atlas-re/srs/atlas-re-spec.md) |
+| `/prd` | [`skills/prd/references/example-session.md`](../skills/prd/references/example-session.md) | singleton (`docs/_product/`) |
+| `/roadmap` | [`skills/roadmap/references/example-session.md`](../skills/roadmap/references/example-session.md) | singleton (`docs/_product/`) |
+| `/usecase` | [`skills/usecase/references/example-session.md`](../skills/usecase/references/example-session.md) | [`example/atlas-re/README.md`](example/atlas-re/README.md) |
+| `/userstory` | [`skills/userstory/references/example-session.md`](../skills/userstory/references/example-session.md) | cùng bảng trên |
+| `/ac` | [`skills/ac/references/example-session.md`](../skills/ac/references/example-session.md) | cùng bảng trên |
+| `/user-flow` | [`skills/user-flow/references/example-session.md`](../skills/user-flow/references/example-session.md) | cùng bảng trên |
+| `/wireframe-ascii` | [`skills/wireframe-ascii/references/example-session.md`](../skills/wireframe-ascii/references/example-session.md) | cùng bảng trên |
+| `/wireframe-html` | [`skills/wireframe-html/references/example-session.md`](../skills/wireframe-html/references/example-session.md) | cùng bảng trên |
+| `/prototype-html` | [`skills/prototype-html/references/example-session.md`](../skills/prototype-html/references/example-session.md) | cùng bảng trên |
+| `/figma` | [`skills/figma/references/example-session.md`](../skills/figma/references/example-session.md) | external-write (không artifact local) |
+| `/test-checklist` | [`skills/test-checklist/references/example-session.md`](../skills/test-checklist/references/example-session.md) | cùng bảng trên |
+| `/test-cases` | [`skills/test-cases/references/example-session.md`](../skills/test-cases/references/example-session.md) | cùng bảng trên |
+| `/gap` | [`skills/gap/references/example-session.md`](../skills/gap/references/example-session.md) | cùng bảng trên |
+| `/cr` | [`skills/cr/references/example-session.md`](../skills/cr/references/example-session.md) | cùng bảng trên |
+| `/reverse-doc` | [`skills/reverse-doc/references/example-session.md`](../skills/reverse-doc/references/example-session.md) | tái dựng brownfield |
+
+Tích hợp API + bàn giao (15 skill): [07 — API và bàn giao](07-api-va-ban-giao.md).
+
 ---
 
 ## 1. `/ba` — router tài liệu
@@ -13,6 +41,8 @@ Ký hiệu: `<slug>` = tên feature dạng kebab-case (vd `atlas-re`). `"..."` =
 **Cú pháp:** `/ba "<bạn cần gì>"` (hoặc chỉ cần mô tả nhu cầu)
 
 **Dùng khi:** biết mình cần một tài liệu nhưng không rõ skill nào — nó hỏi tối đa 2 câu (giai đoạn vòng đời · phạm vi/nguồn) rồi chạy đúng skill. Skill thuộc wave chưa lên sóng sẽ nhận câu trả lời "wave N sắp có" kèm lựa chọn gần nhất hôm nay.
+
+**Phiên mô phỏng:** [`example-session.md`](../skills/ba/references/example-session.md)
 
 ---
 
@@ -30,6 +60,8 @@ Ký hiệu: `<slug>` = tên feature dạng kebab-case (vd `atlas-re`). `"..."` =
 
 **Ví dụ:** `/brainstorm "cho cedent tự theo dõi trạng thái duyệt bồi thường"` → tạo `docs/claim-tracking/brainstorms/self-service-status.md`, rồi gợi ý `/urd claim-tracking`.
 
+**Phiên mô phỏng:** [`example-session.md`](../skills/brainstorm/references/example-session.md)
+
 ---
 
 ## 3. `/urd` — User Requirements Document
@@ -43,6 +75,8 @@ Ký hiệu: `<slug>` = tên feature dạng kebab-case (vd `atlas-re`). `"..."` =
 **Skill hỏi gì:** persona là ai, mục tiêu và nỗi bực của họ, dùng ở đâu/khi nào, nhu cầu theo từng persona.
 
 **Output:** `docs/{slug}/{slug}-urd.md` — sinh `UN-{slug}-001…`, mỗi nhu cầu kèm nguồn. Các ID này là thứ mục tiêu trong BRD phải cover.
+
+**Phiên mô phỏng:** [`example-session.md`](../skills/urd/references/example-session.md)
 
 ---
 
@@ -58,6 +92,8 @@ Ký hiệu: `<slug>` = tên feature dạng kebab-case (vd `atlas-re`). `"..."` =
 
 **Output:** `docs/{slug}/{slug}-brd.md` — sinh `BO-{slug}-01…`. Tên section cố định (cơ chế cascade OQ grep theo tên).
 
+**Phiên mô phỏng:** [`example-session.md`](../skills/brd/references/example-session.md)
+
 ---
 
 ## 5. `/prd-epic` — PRD một feature
@@ -71,6 +107,8 @@ Ký hiệu: `<slug>` = tên feature dạng kebab-case (vd `atlas-re`). `"..."` =
 **Skill hỏi gì:** launch thiếu gì thì vô nghĩa (dò P0), nice-to-have, non-goal tường minh, ràng buộc thứ tự.
 
 **Output:** `docs/{slug}/{slug}-prd.md` — sinh `CAP-{slug}-01…` cover các BO. P0 nghĩa là "thiếu nó feature vô nghĩa" — skill sẽ chất vấn lạm phát P0.
+
+**Phiên mô phỏng:** [`example-session.md`](../skills/prd-epic/references/example-session.md)
 
 ---
 
@@ -88,6 +126,8 @@ Ký hiệu: `<slug>` = tên feature dạng kebab-case (vd `atlas-re`). `"..."` =
 
 **Mẹo:** Ma trận lỗi là chỗ spec chứng minh giá trị — spec 12 FR mà 1 dòng lỗi là đặc tả thiếu.
 
+**Phiên mô phỏng:** [`example-session.md`](../skills/srs/references/example-session.md)
+
 ---
 
 ## 7. `/prd` — PRD sản phẩm (singleton)
@@ -98,6 +138,8 @@ Ký hiệu: `<slug>` = tên feature dạng kebab-case (vd `atlas-re`). `"..."` =
 
 **Output:** `docs/_product/prd.md`. Feature Map là nơi sinh ra slug feature.
 
+**Phiên mô phỏng:** [`example-session.md`](../skills/prd/references/example-session.md)
+
 ---
 
 ## 8. `/roadmap` — kế hoạch ưu tiên (singleton)
@@ -107,6 +149,8 @@ Ký hiệu: `<slug>` = tên feature dạng kebab-case (vd `atlas-re`). `"..."` =
 **Dùng khi:** sắp thứ tự Feature Map — điểm RICE-lite (mỗi điểm cần căn cứ), kế hoạch Now/Next/Later kèm ghi chú lệch điểm, bản đồ phụ thuộc có phân loại.
 
 **Output:** `docs/_product/roadmap.md`. Đọc PRD sản phẩm một chiều; Feature Map đổi thì chạy lại để sync. Cần hình mốc thời gian cho stakeholder → `/timeline` (skill sơ đồ).
+
+**Phiên mô phỏng:** [`example-session.md`](../skills/roadmap/references/example-session.md)
 
 ---
 
@@ -120,6 +164,8 @@ Ký hiệu: `<slug>` = tên feature dạng kebab-case (vd `atlas-re`). `"..."` =
 
 **Mẹo:** extension là điều kiện tại một bước (`3a`), không phải bước "rồi thì"; mỗi extension dẫn `E-` code hoặc OQ.
 
+**Phiên mô phỏng:** [`example-session.md`](../skills/usecase/references/example-session.md)
+
 ---
 
 ## 10. `/userstory` — story INVEST cho backlog
@@ -131,6 +177,8 @@ Ký hiệu: `<slug>` = tên feature dạng kebab-case (vd `atlas-re`). `"..."` =
 **Output:** `docs/{slug}/userstories/us-{NNN}.md` mỗi story (zero frontmatter) + `{slug}-story-index.md` — nguồn duy nhất của status, priority, jira-key. Mỗi story link ≥1 FR; index map coverage hai chiều.
 
 **Mẹo:** story đọc y hệt FR là cắt sai — story phải thêm ý định persona và lý do cắt.
+
+**Phiên mô phỏng:** [`example-session.md`](../skills/userstory/references/example-session.md)
 
 ---
 
@@ -144,6 +192,8 @@ Ký hiệu: `<slug>` = tên feature dạng kebab-case (vd `atlas-re`). `"..."` =
 
 **Mẹo:** một When mỗi AC. "Khi user đăng nhập và duyệt và…" là kịch bản — tách ra.
 
+**Phiên mô phỏng:** [`example-session.md`](../skills/ac/references/example-session.md)
+
 ---
 
 ## 12. `/user-flow` — bản đồ điều hướng màn hình
@@ -155,6 +205,8 @@ Ký hiệu: `<slug>` = tên feature dạng kebab-case (vd `atlas-re`). `"..."` =
 **Output:** `docs/{slug}/srs/{slug}-userflow.md` — Mermaid flowchart theo flow, màn hình đánh số `[n]` (ổn định qua các lần chạy), mọi đường lỗi phải có đích. Khi duyệt xong nó đóng dấu `stage: approved` + hash — skill wave 3 gate trên đó.
 
 **Mẹo:** điều hướng, không phải quy trình — lane/vai trò thuộc `/activity-swimlane`; đây là thứ NGƯỜI DÙNG thấy, màn hình qua màn hình.
+
+**Phiên mô phỏng:** [`example-session.md`](../skills/user-flow/references/example-session.md)
 
 ---
 
@@ -168,6 +220,8 @@ Ký hiệu: `<slug>` = tên feature dạng kebab-case (vd `atlas-re`). `"..."` =
 
 **Mẹo:** bảng mô tả mới là sản phẩm thật; 6 lớp mỗi phần tử, lấy từ SRS/UC (dẫn FR/BR/E-), không bịa — chỗ thiếu hỏi từng cái.
 
+**Phiên mô phỏng:** [`example-session.md`](../skills/wireframe-ascii/references/example-session.md)
+
 ---
 
 ## 14. `/wireframe-html` — wireframe HTML tĩnh đen-trắng
@@ -177,6 +231,8 @@ Ký hiệu: `<slug>` = tên feature dạng kebab-case (vd `atlas-re`). `"..."` =
 **Dùng khi:** ASCII trong chat chưa đủ, cần khung đúng độ rộng device trên trình duyệt. Cùng gate với ASCII; dùng lại nội dung ASCII 1:1 — tăng trung thực, không thiết kế lại.
 
 **Output:** `docs/{slug}/html-wireframe/{flow}.html` mỗi flow (đen-trắng, không JS/màu, màn hình `id="s{n}"`) + entry `{slug}-wireframe.html` (TOC + flow map + iframe) + `{slug}-wireframe-html-index.md`. Double-click entry để duyệt mọi flow.
+
+**Phiên mô phỏng:** [`example-session.md`](../skills/wireframe-html/references/example-session.md)
 
 ---
 
@@ -188,6 +244,8 @@ Ký hiệu: `<slug>` = tên feature dạng kebab-case (vd `atlas-re`). `"..."` =
 
 **Output:** một file tự chứa `docs/{slug}/html-design/{slug}-prototype.html` — mọi cạnh `Nav →` thành link chạy tới `#s{n}`. Link hỏng là BLOCKING. Ghi cột `HTML prototype` trong wireframe index.
 
+**Phiên mô phỏng:** [`example-session.md`](../skills/prototype-html/references/example-session.md)
+
 ---
 
 ## 16. `/figma` — đẩy wireframe lên Figma
@@ -197,6 +255,8 @@ Ký hiệu: `<slug>` = tên feature dạng kebab-case (vd `atlas-re`). `"..."` =
 **Dùng khi:** team dùng Figma và muốn có wireframe ở đó thành frame. **Cổng external-write cứng** — preview từng frame + đích, cần Y tường minh; dừng nếu Figma MCP chưa xác thực.
 
 **Output:** không file local — frame Figma; URL ghi vào cột `Figma` của `{slug}-wireframe-index.md`. Nội dung bám wireframe (cùng `[n]`); không bao giờ bịa URL.
+
+**Phiên mô phỏng:** [`example-session.md`](../skills/figma/references/example-session.md)
 
 ---
 
@@ -210,6 +270,8 @@ Ký hiệu: `<slug>` = tên feature dạng kebab-case (vd `atlas-re`). `"..."` =
 
 **Mẹo:** một `CHK-` biên mỗi ngưỡng (tách tại/dưới/trên ở mức case); mỗi mã `E-` có ít nhất một dòng.
 
+**Phiên mô phỏng:** [`example-session.md`](../skills/test-checklist/references/example-session.md)
+
 ---
 
 ## 18. `/test-cases` — test case đầy đủ
@@ -219,6 +281,8 @@ Ký hiệu: `<slug>` = tên feature dạng kebab-case (vd `atlas-re`). `"..."` =
 **Dùng khi:** đã có checklist và cần case chạy được. **Từ chối khi không có checklist** — ví dụ canonical nhóm B (chuyển `/test-checklist`).
 
 **Output:** `docs/{slug}/test/testcases/{slug}-testcase-index.md` — cột `TC-{NNN}` (steps / data / expected), mỗi `Expands CHK` ngược. Điền ngược cột `TC` của checklist. Dòng biên nở thành bộ ba tại/dưới/trên; dòng lỗi thành một TC mỗi `E-`.
+
+**Phiên mô phỏng:** [`example-session.md`](../skills/test-cases/references/example-session.md)
 
 ---
 
@@ -232,6 +296,8 @@ Ký hiệu: `<slug>` = tên feature dạng kebab-case (vd `atlas-re`). `"..."` =
 
 **Mẹo:** E-uncited là finding giấu mặt nhưng giá trị cao — lỗi tài liệu hoá mà không ai xử lý.
 
+**Phiên mô phỏng:** [`example-session.md`](../skills/gap/references/example-session.md)
+
 ---
 
 ## 20. `/cr` — change request (ghi + áp dụng)
@@ -244,6 +310,8 @@ Ký hiệu: `<slug>` = tên feature dạng kebab-case (vd `atlas-re`). `"..."` =
 
 **Mẹo:** apply ≠ record — CR đã log-chưa-apply là trạng thái chờ bình thường; không tự apply.
 
+**Phiên mô phỏng:** [`example-session.md`](../skills/cr/references/example-session.md)
+
 ---
 
 ## 21. `/reverse-doc` — tái dựng từ nguồn cũ
@@ -255,6 +323,8 @@ Ký hiệu: `<slug>` = tên feature dạng kebab-case (vd `atlas-re`). `"..."` =
 **Output:** `docs/{slug}/reverse-{slug}.md` (12 section + Section 0 provenance) + `docs/.reverse-plan.md` (HARD STOP trước khi sinh). Mọi claim đánh ✅/🔵/🟡; 🟡 → OQ.
 
 **Mẹo:** trung thực confidence là cả skill — khi do dự, hạ một mức; bản dựng trông chắc hơn nguồn thì nguy hiểm.
+
+**Phiên mô phỏng:** [`example-session.md`](../skills/reverse-doc/references/example-session.md)
 
 ---
 

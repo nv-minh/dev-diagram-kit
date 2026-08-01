@@ -74,6 +74,10 @@ Keeping a page current with code changes? /sync-confluence (in-place, from a dif
 - **`/confluence` vs `/sync-confluence`** — pushing docs out = this; a known page ← code diff = `/sync-confluence`. The disambiguation is mandatory in both descriptions.
 - **Version the versionMessage** — record the sync source so the Confluence history is readable.
 
+## Simulated session
+
+Worked example — user prompts, approval gates, and output excerpts: /example-session.md. Full artifacts: `example/atlas-re/`.
+
 ## References
 
 - @../../rules/ba-conventions.md

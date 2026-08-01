@@ -71,6 +71,10 @@ On GO: execute the cutover sequence; the kill switch ({flag}) stays in {owner}'s
 - **Their SLA is our dependency** — if the provider's SLA is worse than our NFR availability, that's a `blocked` row, not a hope.
 - **Sunset dates bite** — a provider EOL in the cutover window is a hard block; record the date.
 
+## Simulated session
+
+Worked example — user prompts, approval gates, and output excerpts: /example-session.md. Full artifacts: `example/atlas-re/`.
+
 ## References
 
 - @../../rules/ba-conventions.md

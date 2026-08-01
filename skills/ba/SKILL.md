@@ -84,6 +84,10 @@ Map a natural-language need → exactly ONE document skill, then delegate to it.
 - **Keep in sync** — when a document skill is added/removed, update this table AND `doc-selection.md` together (flip `planned` → `✓` in the landing PR).
 - **You are not a writer** — never draft a document yourself; always delegate.
 
+## Simulated session
+
+Worked example — user prompts, approval gates, and output excerpts: /example-session.md. Full artifacts: `example/atlas-re/`.
+
 ## References
 
 - @../../rules/doc-selection.md (source of truth — full decision matrix + status column + disambiguation)

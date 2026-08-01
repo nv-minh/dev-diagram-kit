@@ -97,6 +97,10 @@ Wave 6: /jira {feature} pushes these via the index's jira-key column.
 - **Cross-story dependencies are a warning sign** — a chain of `Depends:` usually means the slicing follows architecture, not user value; re-slice by scenario.
 - **Don't pad ACs here** — `/ac` interviews properly; two obvious seeds beat six guessed ones.
 
+## Simulated session
+
+Worked example — user prompts, approval gates, and output excerpts: /example-session.md. Full artifacts: `example/atlas-re/`.
+
 ## References
 
 - @../../rules/ba-conventions.md

@@ -70,6 +70,10 @@ Existing exports: !`ls docs/exports/* 2>/dev/null | tail -5`
 - **PDF/DOCX need pandoc** — degrade gracefully (md+html) and say so; a silent pdf-missing is confusing.
 - **Scope order matters** — stakeholders read top-down (why → what → system → tests); don't dump files alphabetically.
 
+## Simulated session
+
+Worked example — user prompts, approval gates, and output excerpts: /example-session.md. Full artifacts: `example/atlas-re/`.
+
 ## References
 
 - @../../rules/ba-conventions.md

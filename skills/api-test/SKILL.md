@@ -71,6 +71,10 @@ Next: /api-readiness {feature} — the go-live gate (needs these results present
 - **Don't run against prod** — the skill generates requests; running them against prod from the doc is the user's explicit, careful choice.
 - **Assertion economy** — assert the one field that proves success; asserting the whole brittle body makes the test fail on every cosmetic provider change.
 
+## Simulated session
+
+Worked example — user prompts, approval gates, and output excerpts: /example-session.md. Full artifacts: `example/atlas-re/`.
+
 ## References
 
 - @../../rules/ba-conventions.md

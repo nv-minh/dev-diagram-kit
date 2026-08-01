@@ -113,6 +113,18 @@ Chuỗi: `/brainstorm → /urd → /brd → /prd-epic → /srs` theo feature, r�
 
 Không biết chọn skill nào? Chạy **`/diagram`** — mô tả muốn thể hiện gì, nó tự chọn (và chạy) đúng skill. `rules/diagram-selection.md` là ma trận quyết định phía sau.
 
+### Phiên mô phỏng (skill tài liệu)
+
+**36 skill tài liệu** (kể cả router `/ba`) đều có **phiên mô phỏng** — transcript chat thật (lệnh bạn gõ, câu hỏi phỏng vấn, cổng L1/L2, đoạn output). Mỗi file ở `skills/<skill>/references/example-session.md`; mỗi `SKILL.md` link ở mục **Simulated session**.
+
+| Bắt đầu từ | Nội dung |
+|---|---|
+| [06 — Tài liệu BA](huong-dan/06-tai-lieu-ba.md) · [07 — API & bàn giao](huong-dan/07-api-va-ban-giao.md) | Cú pháp từng skill + bảng phiên mô phỏng đầy đủ (VI) |
+| [06 — BA documents](guides/06-ba-documents.md) · [07 — API & delivery](guides/07-api-and-delivery.md) | Cùng nội dung bản tiếng Anh |
+| [`example/atlas-re/`](example/atlas-re/) | Artifact đã commit mà phiên mô phỏng bám theo (spine tài liệu + sơ đồ) |
+
+Skill sơ đồ không dùng transcript — đối chiếu output với file render trong [`example/atlas-re/`](example/atlas-re/) ([03 — Hướng dẫn từng skill](huong-dan/03-huong-dan-tung-skill.md)).
+
 ## Ví dụ output
 
 Sơ đồ mẫu cho domain *payment* nhỏ. Ảnh D2, PlantUML, BPMN được render sẵn; Mermaid GitHub tự render. Sơ đồ kiến trúc tự chèn icon công nghệ khi nhận ra tech.

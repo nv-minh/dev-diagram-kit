@@ -2,9 +2,31 @@
 
 **English** · [Tiếng Việt](../huong-dan/07-api-va-ban-giao.md)
 
-> The API integration chain (wave 5) and, later, the delivery & sync family (wave 6). Each skill: call syntax, what to prepare, what it asks, where the output goes. Everything follows the **approval gate** and passes **`doc-validate`** before reporting done.
+> The API integration chain (wave 5) and the delivery & sync family (wave 6). Each skill: call syntax, what to prepare, what it asks, where the output goes. Everything follows the **approval gate** and passes **`doc-validate`** before reporting done.
 
 Notation: `<slug>` = feature name in kebab-case. The 7-step chain order is mandatory (with two skip points); see `rules/api-integration.md`.
+
+Simulated sessions for API + delivery skills (atlas-re / CatModel where committed). API steps 1–3: [`example/atlas-re/integration/`](example/atlas-re/integration/).
+
+| Skill | Simulated session | Committed example (if any) |
+|---|---|---|
+| `/api-assess` | [`skills/api-assess/references/example-session.md`](../skills/api-assess/references/example-session.md) | [`api-assess.md`](example/atlas-re/integration/api-assess.md) |
+| `/api-doc` | [`skills/api-doc/references/example-session.md`](../skills/api-doc/references/example-session.md) | [`api-summary-catmodel.md`](example/atlas-re/integration/api-summary-catmodel.md) |
+| `/api-design` | [`skills/api-design/references/example-session.md`](../skills/api-design/references/example-session.md) | [`api-design.md`](example/atlas-re/integration/api-design.md) |
+| `/api-map` | [`skills/api-map/references/example-session.md`](../skills/api-map/references/example-session.md) | [`api-map.md`](example/atlas-re/integration/api-map.md) |
+| `/api-checklist` | [`skills/api-checklist/references/example-session.md`](../skills/api-checklist/references/example-session.md) | guide-only |
+| `/api-test` | [`skills/api-test/references/example-session.md`](../skills/api-test/references/example-session.md) | guide-only |
+| `/api-readiness` | [`skills/api-readiness/references/example-session.md`](../skills/api-readiness/references/example-session.md) | guide-only |
+| `/jira` | [`skills/jira/references/example-session.md`](../skills/jira/references/example-session.md) | external-write |
+| `/confluence` | [`skills/confluence/references/example-session.md`](../skills/confluence/references/example-session.md) | external-write |
+| `/export` | [`skills/export/references/example-session.md`](../skills/export/references/example-session.md) | guide-only |
+| `/userguide` | [`skills/userguide/references/example-session.md`](../skills/userguide/references/example-session.md) | guide-only |
+| `/meeting` | [`skills/meeting/references/example-session.md`](../skills/meeting/references/example-session.md) | guide-only |
+| `/inbox` | [`skills/inbox/references/example-session.md`](../skills/inbox/references/example-session.md) | guide-only |
+| `/doc-review` | [`skills/doc-review/references/example-session.md`](../skills/doc-review/references/example-session.md) | guide-only |
+| `/dashboard` | [`skills/dashboard/references/example-session.md`](../skills/dashboard/references/example-session.md) | guide-only |
+
+Discovery → spec skills (21): [06 — BA documents](06-ba-documents.md).
 
 ---
 
@@ -20,6 +42,8 @@ Notation: `<slug>` = feature name in kebab-case. The 7-step chain order is manda
 
 **Tip:** every score cell needs a basis (provider docs, a quote); unknowns → OQ, never a guessed SLA.
 
+**Simulated session:** [`example-session.md`](../skills/api-assess/references/example-session.md)
+
 ---
 
 ### 2. `/api-doc` — digest the 3rd-party contract [1]
@@ -31,6 +55,8 @@ Notation: `<slug>` = feature name in kebab-case. The 7-step chain order is manda
 **Output:** `docs/{slug}/integration/api-summary.md` (or `api-summary-{provider}.md`) — endpoints/auth/webhooks/rate-limits/errors, every row provenance-tagged to the spec page.
 
 **Tip:** version the spec; a v2→v3 bump breaks the design silently.
+
+**Simulated session:** [`example-session.md`](../skills/api-doc/references/example-session.md)
 
 ---
 
@@ -44,6 +70,8 @@ Notation: `<slug>` = feature name in kebab-case. The 7-step chain order is manda
 
 **Tip:** a webhook with no reconciliation path is a silent data-loss bug — the self-check exists for it.
 
+**Simulated session:** [`example-session.md`](../skills/api-design/references/example-session.md)
+
 ---
 
 ### 4. `/api-map` — 3-layer field mapping [3]
@@ -54,6 +82,8 @@ Notation: `<slug>` = feature name in kebab-case. The 7-step chain order is manda
 
 **Output:** `docs/{slug}/integration/api-map.md` — one row per field with owner (ours/theirs/derived) + direction + transform. Flags ownerless fields + ERD name mismatches.
 
+**Simulated session:** [`example-session.md`](../skills/api-map/references/example-session.md)
+
 ---
 
 ### 5. `/api-checklist` — integration test outline [4]
@@ -63,6 +93,8 @@ Notation: `<slug>` = feature name in kebab-case. The 7-step chain order is manda
 **Use when:** outline what to test across the integration. Needs the design (+ map).
 
 **Output:** `docs/{slug}/test/api/api-checklist.md` — `CHK-` rows with `test_layer` (own/3rd/mixed) + `direction` (out/in). Path-scoped CHK (independent of the feature-wide checklist).
+
+**Simulated session:** [`example-session.md`](../skills/api-checklist/references/example-session.md)
 
 ---
 
@@ -76,6 +108,8 @@ Notation: `<slug>` = feature name in kebab-case. The 7-step chain order is manda
 
 **Tip:** sandbox only — never run against production from the doc; secrets never in `.bru`.
 
+**Simulated session:** [`example-session.md`](../skills/api-test/references/example-session.md)
+
 ---
 
 ### 7. `/api-readiness` — go-live gate [6]
@@ -85,6 +119,8 @@ Notation: `<slug>` = feature name in kebab-case. The 7-step chain order is manda
 **Use when:** the integration is built and tested; gate the go-live. Reads the whole chain. **Hard-refuses "go" if `/api-test` results are absent.**
 
 **Output:** `docs/{slug}/integration/api-readiness.md` — cutover sequence + feature flags (kill switch) + monitoring + rollback + SLA/deprecation + a go/no-go table (each gate item ready/blocked with evidence).
+
+**Simulated session:** [`example-session.md`](../skills/api-readiness/references/example-session.md)
 
 ---
 
@@ -98,6 +134,8 @@ Notation: `<slug>` = feature name in kebab-case. The 7-step chain order is manda
 
 **Output:** no local doc — Jira issues + the story-index `jira-key`/`status` columns + `sync-state.yaml` `mappings.jira`. One issue per story; re-pushes only changed stories (hash watermark).
 
+**Simulated session:** [`example-session.md`](../skills/jira/references/example-session.md)
+
 ---
 
 ### 9. `/confluence` — publish docs to Confluence
@@ -107,6 +145,8 @@ Notation: `<slug>` = feature name in kebab-case. The 7-step chain order is manda
 **Use when:** you want the BA docs out as a Confluence page tree. **External-write hard HITL**; reuses the `/sync-confluence` mechanics (cloudId, markdown-read/html-write, drift detection). For keeping an existing page current with a code diff → `/sync-confluence`.
 
 **Output:** Confluence pages + `sync-state.yaml` `mappings.confluence`. Drift (page changed outside the kit) → warn, review before overwrite.
+
+**Simulated session:** [`example-session.md`](../skills/confluence/references/example-session.md)
 
 ---
 
@@ -118,6 +158,8 @@ Notation: `<slug>` = feature name in kebab-case. The 7-step chain order is manda
 
 **Output:** `docs/exports/{date}-{scope}-package.{ext}` — a snapshot; the source docs remain the truth.
 
+**Simulated session:** [`example-session.md`](../skills/export/references/example-session.md)
+
 ---
 
 ### 11. `/userguide` — end-user manual
@@ -127,6 +169,8 @@ Notation: `<slug>` = feature name in kebab-case. The 7-step chain order is manda
 **Use when:** end users need task-oriented guidance (how to do X, not how the system works). Phased — outline HARD STOP before generating. **Light mode only.**
 
 **Output:** `docs/userguide/{name}.html` (entry, double-click) + a same-name bundle (`index.md`/`data.js`/`pages/*.md`/`images/`). Compact structure — only `.html` visible at top level.
+
+**Simulated session:** [`example-session.md`](../skills/userguide/references/example-session.md)
 
 ---
 
@@ -138,6 +182,8 @@ Notation: `<slug>` = feature name in kebab-case. The 7-step chain order is manda
 
 **Output:** `docs/meetings/YYYY-MM-DD-{type}-{slug}.md`. A decision touching a doc links it (so `/gap`/`/dashboard` see it).
 
+**Simulated session:** [`example-session.md`](../skills/meeting/references/example-session.md)
+
 ---
 
 ### 13. `/inbox` — capture + triage
@@ -147,6 +193,8 @@ Notation: `<slug>` = feature name in kebab-case. The 7-step chain order is manda
 **Use when:** you need to dump a raw note fast (capture), or sort the pile into the right skill (triage routes via the `/ba` table). Excluded from the activity log (raw capture isn't a business event).
 
 **Output:** `docs/inbox/YYYY-MM-DD-{slug}.md` (capture); triage invokes the destination skill with the note carried through and marks the note routed.
+
+**Simulated session:** [`example-session.md`](../skills/inbox/references/example-session.md)
 
 ---
 
@@ -158,6 +206,8 @@ Notation: `<slug>` = feature name in kebab-case. The 7-step chain order is manda
 
 **Output:** edits to the target docs + status transition. Agents return findings, never edit (the orchestrator applies).
 
+**Simulated session:** [`example-session.md`](../skills/doc-review/references/example-session.md)
+
 ---
 
 ### 15. `/dashboard` — vault status
@@ -167,3 +217,5 @@ Notation: `<slug>` = feature name in kebab-case. The 7-step chain order is manda
 **Use when:** you want the internal pulse — feature statuses, staleness, activity, Open-Question debt. Read-only scan; writes only the HTML + `feature-list.md`.
 
 **Output:** `docs/_shared/dashboard.html` (one-file, self-contained) + regenerates `docs/feature-list.md`. OQ debt is the leading indicator — a feature with growing unresolved OQs is drifting from its sources.
+
+**Simulated session:** [`example-session.md`](../skills/dashboard/references/example-session.md)

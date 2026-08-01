@@ -69,6 +69,10 @@ Activity log: !`ls docs/_shared/activity.log 2>/dev/null || echo "none"`
 - **feature-list.md is auto-gen** — never hand-edit it; it's regenerated from the docs' statuses. (Excluded from the activity log like other auto-gen files.)
 - **Self-contained matters** — a dashboard that fetches a CDN breaks offline/on intranet; inline everything.
 
+## Simulated session
+
+Worked example — user prompts, approval gates, and output excerpts: /example-session.md. Full artifacts: `example/atlas-re/`.
+
 ## References
 
 - @../../rules/ba-conventions.md

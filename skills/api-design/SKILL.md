@@ -74,6 +74,10 @@ Next: /api-map {feature} (field-level provider↔model↔UI mapping) → /api-ch
 - **Retry budget vs NFR** — a 5-retry exponential backoff can blow a 2s latency NFR; check the budget against the SRS.
 - **Don't restate the summary** — the design adds orchestration decisions, not a second copy of their endpoints.
 
+## Simulated session
+
+Worked example — user prompts, approval gates, and output excerpts: /example-session.md. Full artifacts: `example/atlas-re/`.
+
 ## References
 
 - @../../rules/ba-conventions.md

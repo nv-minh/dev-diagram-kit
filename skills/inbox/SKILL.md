@@ -72,6 +72,10 @@ Inbox: !`ls docs/inbox/*.md 2>/dev/null | tail -10`
 - **Inbox is not storage** — it's a parking lot; triage it regularly or it becomes a graveyard. The report nudges triage when the pile grows.
 - **Excluded from the log by design** — a captured half-thought isn't a business event; don't work around the exclusion.
 
+## Simulated session
+
+Worked example — user prompts, approval gates, and output excerpts: /example-session.md. Full artifacts: `example/atlas-re/`.
+
 ## References
 
 - @../../rules/ba-conventions.md
