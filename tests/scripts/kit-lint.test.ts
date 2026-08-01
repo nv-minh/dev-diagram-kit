@@ -88,7 +88,7 @@ describe('lintKit on a synthetic tree', () => {
     w('guides/01-a.md', 'x'); w('huong-dan/01-a.md', 'x');
     w('package.json', JSON.stringify({ version: '2.0.0' }));
     w('.claude-plugin/plugin.json', JSON.stringify({ version: '2.0.0' }));
-    w('marketplace.json', JSON.stringify({ metadata: { version: '1.0.0' } }));
+    w('.claude-plugin/marketplace.json', JSON.stringify({ metadata: { version: '1.0.0' } }));
     w('templates/doc-brd.md', '---\ntype: brd\n---\n{{name}}');
     w('templates/doc-bogus.md', '---\ntype: nope\n---\n{{a}} }}');
   });
@@ -124,7 +124,7 @@ describe('lintKit on a synthetic tree', () => {
     writeFileSync(join(root, 'README.vi.md'), 'có 2 skill · `/good` và `/bad-name` · đủ 1/2 skill');
     writeFileSync(join(root, 'package.json'), JSON.stringify({ version: '1.0.0' }));
     writeFileSync(join(root, '.claude-plugin/plugin.json'), JSON.stringify({ version: '1.0.0' }));
-    writeFileSync(join(root, 'marketplace.json'), JSON.stringify({ metadata: { version: '1.0.0' } }));
+    writeFileSync(join(root, '.claude-plugin/marketplace.json'), JSON.stringify({ metadata: { version: '1.0.0' } }));
     const f = lintKit(root);
     const msgs = f.map(x => `${x.level}:${x.check}:${x.msg}`).join('\n');
     expect(msgs).toMatch(/error:count:.*14 commands/);

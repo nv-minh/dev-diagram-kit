@@ -7,6 +7,8 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); version
 ## [Unreleased]
 
 ### Fixed
+- Plugin marketplace manifest moved to `.claude-plugin/marketplace.json` (Claude Code expects this
+  path; fixes `/plugin marketplace add` failing with “Marketplace file not found”).
 - Docs trust restore after the 27→63 skill expansion: README EN/VI coverage claims, CI badge URL
   (`dev-ba-kit`), guide skill counts (14/27/35), and stale "later waves" / "more waves landing"
   wording; agents layout lists `diagram-reviewer` · `doc-reviewer` · `change-tracker`.

@@ -115,7 +115,7 @@ Không biết chọn skill nào? Chạy **`/diagram`** — mô tả muốn thể
 
 ### Phiên mô phỏng (skill tài liệu)
 
-**36 skill tài liệu** (kể cả router `/ba`) đều có **phiên mô phỏng** — transcript chat thật (lệnh bạn gõ, câu hỏi phỏng vấn, cổng L1/L2, đoạn output). Mỗi file ở `skills/<skill>/references/example-session.md`; mỗi `SKILL.md` link ở mục **Simulated session**.
+**Mọi skill tài liệu** (gồm router `/ba`) đều có **phiên mô phỏng** — transcript chat thật (lệnh bạn gõ, câu hỏi phỏng vấn, cổng L1/L2, đoạn output). Mỗi file ở `skills/<skill>/references/example-session.md`; mỗi `SKILL.md` link ở mục **Simulated session**.
 
 | Bắt đầu từ | Nội dung |
 |---|---|
@@ -335,8 +335,7 @@ Chỉ cài thứ skill bạn dùng cần (`scripts/doctor.sh` báo cái nào thi
 
 ```
 dev-ba-kit/
-├── .claude-plugin/plugin.json     Manifest plugin (/plugin install)
-├── marketplace.json               Catalog marketplace (/plugin marketplace add)
+├── .claude-plugin/                Manifest plugin + catalog marketplace (/plugin install · /plugin marketplace add)
 ├── install.sh                     Installer kiểu copy (không cần plugin)
 ├── skills/                        63 skill
 ├── agents/                        diagram-reviewer · doc-reviewer · change-tracker

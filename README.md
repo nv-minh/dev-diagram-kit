@@ -336,8 +336,7 @@ Install only what the skills you use need (`scripts/doctor.sh` reports what's mi
 
 ```
 dev-ba-kit/
-├── .claude-plugin/plugin.json     Plugin manifest (/plugin install)
-├── marketplace.json               Marketplace catalog (/plugin marketplace add)
+├── .claude-plugin/                Plugin manifest + marketplace catalog (/plugin install · /plugin marketplace add)
 ├── install.sh                     Copy-mode installer (no plugin needed)
 ├── skills/                        63 skills
 ├── agents/                        diagram-reviewer · doc-reviewer · change-tracker

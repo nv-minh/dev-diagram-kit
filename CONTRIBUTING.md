@@ -53,7 +53,7 @@ with the engine change** (and the visual result eyeballed in draw.io). CI fails 
 - **Large assets stay out of git.** `assets/plantuml/plantuml.jar`, `skills/drawio/catalog/azure.json`,
   `gcp.json` are downloaded on demand (`scripts/plantuml-ensure.sh`, `scripts/drawio-catalog-ensure.sh`).
   Don't commit them; follow the same pattern for anything else over ~1 MB.
-- **Versioning.** Bump `package.json`, `.claude-plugin/plugin.json` and `marketplace.json` together,
+- **Versioning.** Bump `package.json`, `.claude-plugin/plugin.json` and `.claude-plugin/marketplace.json` together,
   and add a `CHANGELOG.md` entry.
 
 ## Commit style

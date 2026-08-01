@@ -13,7 +13,7 @@
 //      no existing skill still marked `planned`.
 //   3. EN/VI parity — every explain-skills/*.md has a .vi.md twin (and vice versa);
 //      guides/ and huong-dan/ have the same file count; README.vi.md exists.
-//   4. Version trio — package.json == .claude-plugin/plugin.json == marketplace.json.
+//   4. Version trio — package.json == .claude-plugin/plugin.json == .claude-plugin/marketplace.json.
 //   5. Skill-count claims — every "N skills"/"N skill"/"All N commands"/"Cả N lệnh" in the
 //      READMEs *and* guides/ + huong-dan/ equals the real count of skills/*/SKILL.md.
 //   6. Stale-phrase / coverage-claim — forbidden phrases on README + guides/huong-dan;
@@ -241,9 +241,9 @@ export function lintKit(root: string): Finding[] {
   try {
     const pkg = JSON.parse(read(join(root, 'package.json')));
     const plugin = JSON.parse(read(join(root, '.claude-plugin/plugin.json')));
-    const market = JSON.parse(read(join(root, 'marketplace.json')));
+    const market = JSON.parse(read(join(root, '.claude-plugin/marketplace.json')));
     if (pkg.version !== plugin.version || plugin.version !== market.metadata?.version) {
-      err('version', `version trio drift — package.json=${pkg.version} plugin.json=${plugin.version} marketplace.json=${market.metadata?.version}`);
+      err('version', `version trio drift — package.json=${pkg.version} plugin.json=${plugin.version} .claude-plugin/marketplace.json=${market.metadata?.version}`);
     }
   } catch (e: unknown) { err('version', `cannot read version trio: ${(e as Error).message}`); }
 
