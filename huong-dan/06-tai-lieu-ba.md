@@ -110,6 +110,54 @@ Ký hiệu: `<slug>` = tên feature dạng kebab-case (vd `atlas-re`). `"..."` =
 
 ---
 
+## 9. `/usecase` — use case đầy đủ
+
+**Cú pháp:** `/usecase <feature> ["<mục tiêu>"]`
+
+**Dùng khi:** cần kịch bản actor-goal — ai muốn gì, kịch bản thành công đánh số, và mọi cách nó hỏng (extension). Hai chế độ: **discovery** (chưa có SRS — phỏng vấn, để trống cột FR; đúng flow elicitation của BA) và **downstream** (có SRS — đầy đủ traceability UC↔FR↔Error).
+
+**Output:** `docs/{slug}/usecases/uc-{slug}.md` (chỉ văn bản, zero frontmatter) + `{slug}-usecase-index.md` có bảng `## Use cases` CHÍNH LÀ ma trận traceability của feature. Hình vẽ phạm vi vẫn là `/usecase-diagram`.
+
+**Mẹo:** extension là điều kiện tại một bước (`3a`), không phải bước "rồi thì"; mỗi extension dẫn `E-` code hoặc OQ.
+
+---
+
+## 10. `/userstory` — story INVEST cho backlog
+
+**Cú pháp:** `/userstory <feature> [--from FR-...]`
+
+**Dùng khi:** đã có SRS và cần backlog item sẵn sàng cho dev. **Từ chối nếu thiếu `srs/{slug}-spec.md`** — cắt story không có FR là bịa scope.
+
+**Output:** `docs/{slug}/userstories/us-{NNN}.md` mỗi story (zero frontmatter) + `{slug}-story-index.md` — nguồn duy nhất của status, priority, jira-key. Mỗi story link ≥1 FR; index map coverage hai chiều.
+
+**Mẹo:** story đọc y hệt FR là cắt sai — story phải thêm ý định persona và lý do cắt.
+
+---
+
+## 11. `/ac` — tiêu chí chấp nhận (sửa tại chỗ)
+
+**Cú pháp:** `/ac <feature> [us-NNN]`
+
+**Dùng khi:** story đã có và cần kiểm chứng được. Thêm/chỉnh Given-When-Then TRONG từng `us-{NNN}.md` — không file mới, mọi thay đổi là L2 diff.
+
+**Luật coverage:** mỗi story — happy path + một AC cho mỗi `E-` code liên quan + một cho mỗi biên `BR-` (test tại/dưới/trên ngưỡng). Giá trị biên chưa rõ thành OQ, không bao giờ bịa số.
+
+**Mẹo:** một When mỗi AC. "Khi user đăng nhập và duyệt và…" là kịch bản — tách ra.
+
+---
+
+## 12. `/user-flow` — bản đồ điều hướng màn hình
+
+**Cú pháp:** `/user-flow <feature> ["<mô tả>"]`
+
+**Dùng khi:** trước mọi wireframe — file này CHÍNH LÀ cách chia flow (`flow-slug` + màn hình `[n]` mỗi flow) mà `ascii-wireframe/` và `html-wireframe/` (wave 3) đọc. Hỏi câu device (mobile/tablet/desktop) trước tiên.
+
+**Output:** `docs/{slug}/srs/{slug}-userflow.md` — Mermaid flowchart theo flow, màn hình đánh số `[n]` (ổn định qua các lần chạy), mọi đường lỗi phải có đích. Khi duyệt xong nó đóng dấu `stage: approved` + hash — skill wave 3 gate trên đó.
+
+**Mẹo:** điều hướng, không phải quy trình — lane/vai trò thuộc `/activity-swimlane`; đây là thứ NGƯỜI DÙNG thấy, màn hình qua màn hình.
+
+---
+
 ## Ghi chú chung
 
 - **Thứ tự chuỗi quan trọng nhưng không bắt buộc** — skill nào cũng chạy độc lập được (nhóm A tự tạo feature; thiếu tài liệu thượng nguồn = ghi chú mềm, không fail). Chuỗi là nơi các ID có nghĩa: UN → BO → CAP → FR.

@@ -110,6 +110,54 @@ Notation: `<slug>` = feature name in kebab-case (e.g. `atlas-re`). `"..."` = a b
 
 ---
 
+## 9. `/usecase` — fully-dressed use cases
+
+**Syntax:** `/usecase <feature> ["<goal>"]`
+
+**Use when:** you need the actor-goal narrative — who wants what, the numbered main success scenario, and every way it can go wrong (extensions). Two modes: **discovery** (no SRS yet — elicits and leaves FR columns empty; a normal BA elicitation flow) and **downstream** (SRS present — full UC↔FR↔Error traceability).
+
+**Output:** `docs/{slug}/usecases/uc-{slug}.md` (prose only, zero frontmatter) + the `{slug}-usecase-index.md` whose `## Use cases` table IS the per-feature traceability matrix. The visual scope picture stays `/usecase-diagram`.
+
+**Tip:** extensions are conditions at a step (`3a`), not "and then" steps; each cites its `E-` code or an OQ.
+
+---
+
+## 10. `/userstory` — INVEST backlog stories
+
+**Syntax:** `/userstory <feature> [--from FR-...]`
+
+**Use when:** the SRS exists and you need dev-ready backlog items. **Refuses without `srs/{slug}-spec.md`** — slicing without FRs would be invention.
+
+**Output:** `docs/{slug}/userstories/us-{NNN}.md` per story (zero frontmatter) + `{slug}-story-index.md` — the single source of status, priority, and jira-key. Every story links ≥1 FR; the index maps coverage both ways.
+
+**Tip:** if a story reads identically to its FR, the slice is wrong — the story adds persona intent and slice rationale.
+
+---
+
+## 11. `/ac` — acceptance criteria (in-place)
+
+**Syntax:** `/ac <feature> [us-NNN]`
+
+**Use when:** stories exist and need to be verifiable. Adds/refines Given-When-Then INSIDE each `us-{NNN}.md` — no new files, every change is an L2 diff.
+
+**Coverage rule:** per story — happy path + one AC per linked `E-` code + one per `BR-` boundary (tested at/below/above the threshold). Unknown boundary values become OQs, never invented numbers.
+
+**Tip:** one When per AC. "When the user logs in and approves and…" is a scenario — split it.
+
+---
+
+## 12. `/user-flow` — screen navigation map
+
+**Syntax:** `/user-flow <feature> ["<description>"]`
+
+**Use when:** before any wireframe — this file IS the flow division (`flow-slug` + screens `[n]` per flow) that `ascii-wireframe/` and `html-wireframe/` (wave 3) read. Asks the device question (mobile/tablet/desktop) first.
+
+**Output:** `docs/{slug}/srs/{slug}-userflow.md` — Mermaid flowchart per flow, screens numbered `[n]` (stable across re-runs), every error path landing somewhere. On approval it stamps `stage: approved` + a flow hash — wave-3 skills gate on it.
+
+**Tip:** navigation, not process — lanes/roles belong to `/activity-swimlane`; this is what the user sees, screen to screen.
+
+---
+
 ## General notes
 
 - **The chain order matters but isn't mandatory** — each skill runs standalone (group A creates the feature; missing upstream docs = soft notes, not failures). The chain is where the IDs get their meaning: UN → BO → CAP → FR.

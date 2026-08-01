@@ -85,10 +85,10 @@ flowchart LR
 
 | Business situation | Skill | Output file | Status | Reason |
 |---|---|---|---|---|
-| Actor-goal narrative with extensions (Cockburn fully-dressed) | `/usecase` | `docs/{feature}/usecases/uc-{slug}.md` + `{feature}-usecase-index.md` | planned (wave 2) | Text detail; the visual scope stays `/usecase-diagram` |
-| Dev-ready backlog items (INVEST slices of FRs) | `/userstory` | `docs/{feature}/userstories/us-{NNN}.md` + `{feature}-story-index.md` | planned (wave 2) | Mints `US-{NNN}`; needs the SRS |
-| Pass/fail conditions per story (Given-When-Then) | `/ac` | edits `us-{NNN}.md` in place | planned (wave 2) | Mints `AC-{NNN}`; pure edit skill, always L2 |
-| Screen-navigation flowchart (the SOLE source of flow division) | `/user-flow` | `docs/{feature}/srs/{feature}-userflow.md` | planned (wave 2) | Prerequisite for every wireframe skill |
+| Actor-goal narrative with extensions (Cockburn fully-dressed) | `/usecase` | `docs/{feature}/usecases/uc-{slug}.md` + `{feature}-usecase-index.md` | ✓ | Text detail; the visual scope stays `/usecase-diagram` |
+| Dev-ready backlog items (INVEST slices of FRs) | `/userstory` | `docs/{feature}/userstories/us-{NNN}.md` + `{feature}-story-index.md` | ✓ | Mints `US-{NNN}`; needs the SRS |
+| Pass/fail conditions per story (Given-When-Then) | `/ac` | edits `us-{NNN}.md` in place | ✓ | Mints `AC-{NNN}`; pure edit skill, always L2 |
+| Screen-navigation flowchart (the SOLE source of flow division) | `/user-flow` | `docs/{feature}/srs/{feature}-userflow.md` | ✓ | Prerequisite for every wireframe skill |
 
 ## Decision matrix — UI design
 

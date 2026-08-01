@@ -20,6 +20,20 @@ The full discovery chain for one feature slice, **claim approval**, cross-linked
 
 Follow one thread to see the spine: `UN-atlas-re-005` (approvals without the Head of Claims) → `BO-atlas-re-03` (remove the bottleneck) → `CAP-atlas-re-04` (tier routing) → `FR-atlas-re-006` + `BR-atlas-re-001` + `E-atlas-re-002`. Note how the one unresolved OQ (committee quorum) cascades from the brainstorm all the way into the SRS instead of being silently answered.
 
+## Documents (wave 2 — specification)
+
+The same claim-approval slice carried into the spec artifacts. Note the content/metadata split: `uc-*.md` and `us-*.md` are zero-frontmatter prose; status, FR links, and jira-keys live in the two index files.
+
+| Skill | What it shows | File |
+|---|---|---|
+| `/usecase` | Cockburn UC — MSS + extensions, each citing its `E-` code | [`usecases/uc-approve-claim.md`](./usecases/uc-approve-claim.md) |
+| `/usecase` (+`/usecase-diagram`) | The index whose table IS the traceability matrix (UC↔FR↔Screen↔Error↔OQ) + CRUD matrix | [`usecases/atlas-re-usecase-index.md`](./usecases/atlas-re-usecase-index.md) |
+| `/userstory` | INVEST slices of the FRs (`US-001…003`) + coverage map | [`userstories/atlas-re-story-index.md`](./userstories/atlas-re-story-index.md) |
+| `/ac` | Full Given-When-Then in US-001 — boundary triple at/below/above 50k + one AC per error code | [`userstories/us-001.md`](./userstories/us-001.md) |
+| `/user-flow` | Flow division (`approve-claim`, `review-history`) + numbered screens `[1]…[6]`, `stage: approved` + hash | [`srs/atlas-re-userflow.md`](./srs/atlas-re-userflow.md) |
+
+The thread continues: `FR-atlas-re-006` → `UC-approve-claim` (extensions 3a/3b) → `US-001` (AC-002/003 pin the 50k boundary) → screens `[2][3][4]`. The quorum OQ is still open — it now blocks US-001's committee-tier ACs, visibly.
+
 ## Diagrams
 
 ### Batch 1 — core

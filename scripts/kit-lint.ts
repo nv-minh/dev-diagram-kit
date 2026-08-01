@@ -181,11 +181,15 @@ export function lintKit(root: string): Finding[] {
   const naming = existsSync(join(root, 'rules/naming-conventions.md')) ? read(join(root, 'rules/naming-conventions.md')) : '';
   const validTypes = docTypesFromNaming(naming);
   for (const n of listFiles(join(root, 'templates')).filter(n => n.startsWith('doc-') && n.endsWith('.md'))) {
-    const fm = parseFrontmatter(read(join(root, 'templates', n)));
-    if (!fm?.type) { err('template', `templates/${n} has no frontmatter type:`); continue; }
-    if (!validTypes.has(fm.type)) err('template', `templates/${n} type "${fm.type}" is not in rules/naming-conventions.md's doc-type table`);
-    // {{placeholders}} must be well-formed (no stray single braces)
     const body = read(join(root, 'templates', n));
+    // Templates for zero-frontmatter content files (uc-*, us-*) declare it on line 1.
+    const isZeroFm = body.startsWith('<!-- zero-frontmatter');
+    if (!isZeroFm) {
+      const fm = parseFrontmatter(body);
+      if (!fm?.type) { err('template', `templates/${n} has no frontmatter type: (zero-frontmatter templates must start with "<!-- zero-frontmatter")`); continue; }
+      if (!validTypes.has(fm.type)) err('template', `templates/${n} type "${fm.type}" is not in rules/naming-conventions.md's doc-type table`);
+    }
+    // {{placeholders}} must be well-formed (no stray single braces)
     const opens = (body.match(/\{\{/g) || []).length;
     const closes = (body.match(/\}\}/g) || []).length;
     if (opens !== closes) err('template', `templates/${n} has unbalanced {{placeholders}} (${opens} "{{" vs ${closes} "}}")`);

@@ -34,10 +34,10 @@ Map a natural-language need → exactly ONE document skill, then delegate to it.
 | Define the WHOLE product (pitch, themes, Feature Map) | `/prd` | product singleton, `_product/` |
 | Sequence/prioritize features (RICE-lite, Now/Next/Later) | `/roadmap` | plan doc; visual milestones = `/timeline` |
 | Precise system behavior (FR/NFR/BR/error matrix) | `/srs` | system-shall altitude |
-| Actor-goal narrative with extensions (Cockburn text) | `/usecase` *(wave 2)* | visual scope = `/usecase-diagram` |
-| Dev-ready backlog items (INVEST) | `/userstory` *(wave 2)* | slices of FRs |
-| Pass/fail conditions per story (Given-When-Then) | `/ac` *(wave 2)* | edits stories in place |
-| Screen-navigation map | `/user-flow` *(wave 2)* | prerequisite for wireframes |
+| Actor-goal narrative with extensions (Cockburn text) | `/usecase` | visual scope = `/usecase-diagram` |
+| Dev-ready backlog items (INVEST) | `/userstory` | slices of FRs; needs the SRS |
+| Pass/fail conditions per story (Given-When-Then) | `/ac` | edits stories in place |
+| Screen-navigation map | `/user-flow` | prerequisite for wireframes |
 | Sketch screens (chat-reviewable / browser) | `/wireframe-ascii` / `/wireframe-html` *(wave 3)* | ASCII in chat vs HTML in browser |
 | Clickable demo | `/prototype-html` *(wave 3)* | navigation works |
 | Integrate a 3rd-party API | `/api-assess` (provider open) / `/api-doc` (provider fixed) *(wave 5)* | 7-step chain, `rules/api-integration.md` |
@@ -72,7 +72,8 @@ Map a natural-language need → exactly ONE document skill, then delegate to it.
 - `/ba "PRD"` → ask Q2 (whole product → `/prd`; one feature → `/prd-epic`).
 - `/ba "what should we build first next quarter"` → **`/roadmap`**.
 - `/ba "show how the login flow works"` → **`/diagram`** (visual need — hand off).
-- `/ba "user stories for the payment feature"` → `/userstory` is wave 2 → "lands in wave 2 — closest today: `/srs` (the FR catalog stories will slice from)".
+- `/ba "user stories for the payment feature"` → **`/userstory payment`** (needs `srs/payment-spec.md`; without it the skill routes you to `/srs` first).
+- `/ba "wireframes for checkout"` → `/wireframe-ascii` is wave 3 → "lands in wave 3 — closest today: `/user-flow checkout` (the flow division wireframes will read)".
 
 ## Gotchas
 

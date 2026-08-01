@@ -4,6 +4,23 @@ All notable changes to **dev-ba-kit** are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); versions follow [SemVer](https://semver.org).
 (`rules/changelog.md` is a different thing — it defines the activity-log convention for the BA artifacts the kit generates.)
 
+## [2.1.0] — Unreleased
+
+### Added
+- **Wave 2 — behavioral specification (4 skills):** `/usecase` (fully-dressed Cockburn text UCs,
+  two-mode: discovery elicitation without an SRS / full traceability with one — un-breaks
+  `/usecase-diagram`'s long-standing reference), `/userstory` (INVEST slices of FRs + the story
+  index as the single source of status/priority/jira-key), `/ac` (Given-When-Then added in-place,
+  always an L2 diff, coverage rule: happy + each E- code + each BR- boundary), `/user-flow`
+  (screen-navigation map, numbered screens, the SOLE source of flow division the wave-3
+  wireframe skills will read; stamps `stage: approved` + flow hash).
+- Templates: `doc-usecase.md`, `doc-userstory.md` (zero-frontmatter content templates),
+  `doc-story-index.md`, `doc-userflow.md`.
+- `explain-skills/spec-family.{md,vi.md}`; guides 06 EN/VI §9–§12.
+- atlas-re examples: `uc-approve-claim` + usecase index (traceability matrix + CRUD),
+  `us-001…003` + story index with FR coverage map, the two-flow userflow with screens `[1]…[6]`.
+- kit-lint: zero-frontmatter template convention (`<!-- zero-frontmatter` marker on line 1).
+
 ## [2.0.0] — Unreleased
 
 ### Changed (BREAKING)
