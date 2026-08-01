@@ -133,6 +133,17 @@ else yellow "draw.io desktop not found — .drawio files still open in draw.io w
 fi
 
 echo ""
+echo "== BA documents (/brainstorm /urd /brd /prd-epic /srs /prd /roadmap — doc waves) =="
+# Doc skills are pure markdown; render tools are only needed at the edges:
+if command -v pandoc >/dev/null 2>&1; then green "pandoc ($(pandoc --version | head -1)) — /export docx/pdf"
+else yellow "pandoc not found — only /export (docx/pdf, wave 6) needs it. macOS: brew install pandoc"
+fi
+if command -v bru >/dev/null 2>&1; then green "bruno CLI — /api-test collections"
+else yellow "bru (Bruno CLI) not found — only /api-test (wave 5) needs it. npm i -g @usebruno/cli"
+fi
+echo "· Jira/Confluence sync (/jira /confluence /sync-confluence) needs the Atlassian MCP — check with /mcp inside Claude Code (not verifiable from the shell)."
+
+echo ""
 echo "──────────────────────────────────────────"
 printf "Total: ✅ %d OK · ⚠️  %d warnings · ❌ %d missing\n" "$ok" "$warn" "$miss"
 [ "$miss" -eq 0 ] && echo "Ready to draw. (⚠️ warnings only affect the corresponding skill.)" || echo "Install the ❌ items using the hints above, then run doctor again."

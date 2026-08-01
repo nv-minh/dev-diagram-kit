@@ -36,6 +36,7 @@ paths:
   - ".claude/skills/inbox/**"
   - ".claude/skills/doc-review/**"
   - ".claude/skills/dashboard/**"
+  - ".claude/skills/sync-confluence/**"
   - "docs/**/*-urd.md"
   - "docs/**/*-brd.md"
   - "docs/**/*-prd.md"
@@ -65,13 +66,13 @@ paths:
 
 | Business situation | Skill | Output file | Status | Reason |
 |---|---|---|---|---|
-| Explore one raw idea — nothing structured yet, need OQs surfaced | `/brainstorm` | `docs/{feature}/brainstorms/{idea-slug}.md` | ✓ | The root of the discovery chain; OQ cascade starts here (`resolve-oqs.md`) |
-| What USERS need — personas, pains, context of use | `/urd` | `docs/{feature}/{feature}-urd.md` | ✓ | User altitude; mints `UN-{feature}-{NNN}` |
-| The BUSINESS case — objectives, scope, cost-benefit, risks | `/brd` | `docs/{feature}/{feature}-brd.md` | ✓ | Money/why altitude; mints `BO-{feature}-{NN}` |
-| What we'll build for ONE feature — capabilities P0/P1/P2 | `/prd-epic` | `docs/{feature}/{feature}-prd.md` | ✓ | Feature altitude; mints `CAP-{feature}-{NN}` |
-| Define the WHOLE product — pitch, problem, themes, Feature Map | `/prd` | `docs/_product/prd.md` (singleton) | ✓ | Product altitude, project-level |
-| Sequence/prioritize features — RICE-lite, Now/Next/Later | `/roadmap` | `docs/_product/roadmap.md` (singleton) | ✓ | Prioritized plan doc; `/timeline` is the visual milestones diagram |
-| Precise SYSTEM behavior — FR/NFR/BR/error matrix | `/srs` | `docs/{feature}/srs/{feature}-spec.md` | ✓ | System-shall altitude; mints `FR-/NFR-/BR-/E-`; offers the diagram menu after |
+| Explore one raw idea — nothing structured yet, need OQs surfaced | `/brainstorm` | `docs/{feature}/brainstorms/{idea-slug}.md` | planned (wave 1) | The root of the discovery chain; OQ cascade starts here (`resolve-oqs.md`) |
+| What USERS need — personas, pains, context of use | `/urd` | `docs/{feature}/{feature}-urd.md` | planned (wave 1) | User altitude; mints `UN-{feature}-{NNN}` |
+| The BUSINESS case — objectives, scope, cost-benefit, risks | `/brd` | `docs/{feature}/{feature}-brd.md` | planned (wave 1) | Money/why altitude; mints `BO-{feature}-{NN}` |
+| What we'll build for ONE feature — capabilities P0/P1/P2 | `/prd-epic` | `docs/{feature}/{feature}-prd.md` | planned (wave 1) | Feature altitude; mints `CAP-{feature}-{NN}` |
+| Define the WHOLE product — pitch, problem, themes, Feature Map | `/prd` | `docs/_product/prd.md` (singleton) | planned (wave 1) | Product altitude, project-level |
+| Sequence/prioritize features — RICE-lite, Now/Next/Later | `/roadmap` | `docs/_product/roadmap.md` (singleton) | planned (wave 1) | Prioritized plan doc; `/timeline` is the visual milestones diagram |
+| Precise SYSTEM behavior — FR/NFR/BR/error matrix | `/srs` | `docs/{feature}/srs/{feature}-spec.md` | planned (wave 1) | System-shall altitude; mints `FR-/NFR-/BR-/E-`; offers the diagram menu after |
 
 ```mermaid
 flowchart LR

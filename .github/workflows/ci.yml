@@ -28,6 +28,12 @@ jobs:
       - name: Unit tests
         run: npm test
 
+      - name: Kit lint (index surfaces, EN/VI parity, version trio)
+        run: bash scripts/tsrun.sh scripts/kit-lint.ts
+
+      - name: Validate example documents
+        run: bash scripts/tsrun.sh scripts/doc-validate.ts example/atlas-re
+
       # azure.json (~13.5MB) + gcp.json (~1.9MB) are gitignored, downloaded on demand — cache them.
       - name: Cache large draw.io catalogs
         uses: actions/cache@v4

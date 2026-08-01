@@ -2,7 +2,7 @@
 
 Diagram and documentation skills for developers doing BA work, packaged as a [Claude Code](https://docs.claude.com/en/docs/claude-code) plugin. Describe a system or process in plain language — or point the kit at a codebase — and it produces the right diagram (Mermaid, PlantUML, D2, or BPMN), compile-checks it, and renders it. Output is bilingual and follows the language you write in.
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE) [![CI](https://github.com/nv-minh/dev-ba-kit/actions/workflows/ci.yml/badge.svg)](https://github.com/nv-minh/dev-ba-kit/actions/workflows/ci.yml) &nbsp; 27 skills &nbsp;·&nbsp; Mermaid / PlantUML / D2 / BPMN / draw.io &nbsp;·&nbsp; EN / VI
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE) [![CI](https://github.com/nv-minh/dev-ba-kit/actions/workflows/ci.yml/badge.svg)](https://github.com/nv-minh/dev-ba-kit/actions/workflows/ci.yml) &nbsp; 28 skills &nbsp;·&nbsp; Mermaid / PlantUML / D2 / BPMN / draw.io &nbsp;·&nbsp; EN / VI
 
 **English** · [Tiếng Việt](README.vi.md)
 
@@ -10,7 +10,7 @@ Diagram and documentation skills for developers doing BA work, packaged as a [Cl
 
 ## Skills
 
-Twenty-seven skills. Twenty-two draw diagrams (including four **draw.io** cloud-architecture skills with real AWS/Azure/GCP/Databricks stencils + a **draw.io** UML sequence skill); `/scan-project` and `/code-flow` read your code; `/diagram` routes you to the right type; `/gallery` builds a one-file handoff deck; `/sync-confluence` syncs to Confluence. Every diagram passes a unified validation gate (`diagram-validate`) before it's reported done.
+Twenty-eight skills. Twenty-two draw diagrams (including four **draw.io** cloud-architecture skills with real AWS/Azure/GCP/Databricks stencils + a **draw.io** UML sequence skill); `/scan-project` and `/code-flow` read your code; two routers pick the right skill for you — `/diagram` (diagrams) and `/ba` (BA documents); `/gallery` builds a one-file handoff deck; `/sync-confluence` syncs to Confluence. Every diagram passes a unified validation gate (`diagram-validate`) before it's reported done. Document skills are landing in waves — see `rules/doc-selection.md` for the roadmap.
 
 | Skill | Output | Engine | Use for |
 |---|---|---|---|
@@ -36,6 +36,7 @@ Twenty-seven skills. Twenty-two draw diagrams (including four **draw.io** cloud-
 | `/drawio-sequence` | **UML sequence diagram** (lifelines × time-ordered messages: sync / return / async) | draw.io | Request/response + integration flows as an editable `.drawio` |
 | `/scan-project` | **Scan a codebase** → a full architecture set (C4 + module map + ERD + sequences) | D2 + Mermaid | Reverse-engineering an existing (brownfield) project |
 | `/diagram` | **Router** — describe a need, it picks + runs the right diagram skill | — | "Which of these should I use?" |
+| `/ba` | **Router (documents)** — describe the BA document you need, it picks + runs the right document skill | — | Requirements, specs, tests, delivery — "which doc skill?" |
 | `/gallery` | **One-file deck** — every diagram of a feature, tabbed, with export toolbar | HTML | Stakeholder handoff (Copy/PNG/PDF) |
 | `/sync-confluence` | **Sync code changes or a conversation** into a Confluence page (in-place, preview first) | Atlassian MCP | Keeping docs in step with the latest code |
 
@@ -203,7 +204,7 @@ The kit targets Claude Code. There are two ways to install it.
 /plugin install dev-ba-kit
 ```
 
-All 27 commands become available immediately. The BPMN engine installs its Node dependencies on first session via a hook — nothing to run by hand.
+All 28 commands become available immediately. The BPMN engine installs its Node dependencies on first session via a hook — nothing to run by hand.
 
 ### Migrating from dev-diagram-kit 1.x
 
@@ -262,7 +263,7 @@ dev-ba-kit/
 ├── .claude-plugin/plugin.json     Plugin manifest (/plugin install)
 ├── marketplace.json               Marketplace catalog (/plugin marketplace add)
 ├── install.sh                     Copy-mode installer (no plugin needed)
-├── skills/                        27 skills
+├── skills/                        28 skills
 ├── agents/                        diagram-reviewer
 ├── rules/                         Shared rules (approval-gate, diagram-selection, diagram-style, language, icon-map, …)
 ├── scripts/                       mermaid-verify.ts · diagram-validate.ts · doctor.sh · plantuml-ensure.sh · drawio-catalog-ensure.sh · icon-path.sh · tsrun.sh · render helpers
@@ -272,7 +273,7 @@ dev-ba-kit/
 ├── hooks/                         SessionStart hook (auto-installs the BPMN engine)
 ├── assets/icons/                  Bundled technology icons (Devicon MIT, Simple Icons CC0)
 ├── example/                       Worked example: the atlas-re feature
-├── explain-skills/                Per-skill deep dives, all 27 skills covered (bilingual: `*.md` English, `*.vi.md` Vietnamese)
+├── explain-skills/                Per-skill deep dives, all 28 skills covered (bilingual: `*.md` English, `*.vi.md` Vietnamese)
 ├── guides/ · huong-dan/           Getting-started guide (English / Vietnamese)
 └── CHANGELOG.md · CONTRIBUTING.md Version history · how to contribute
 ```
