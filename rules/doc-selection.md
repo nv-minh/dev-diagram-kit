@@ -117,16 +117,16 @@ Shared rule: `rules/api-integration.md`. Chain order with skip conditions lives 
 
 | Business situation | Skill | Output file | Status | Reason |
 |---|---|---|---|---|
-| Test-coverage OUTLINE from FR/BR/E/AC | `/test-checklist` | `docs/{feature}/test/checklist/{feature}-checklist-index.md` | planned (wave 4) | Mints `CHK-{NNN}` |
-| Full test cases (steps/data/expected) from the checklist | `/test-cases` | `docs/{feature}/test/testcases/{feature}-testcase-index.md` | planned (wave 4) | Mints `TC-{NNN}`; refuses without a checklist |
+| Test-coverage OUTLINE from FR/BR/E/AC | `/test-checklist` | `docs/{feature}/test/checklist/{feature}-checklist-index.md` | ✓ | Mints `CHK-{NNN}` |
+| Full test cases (steps/data/expected) from the checklist | `/test-cases` | `docs/{feature}/test/testcases/{feature}-testcase-index.md` | ✓ | Mints `TC-{NNN}`; refuses without a checklist |
 
 ## Decision matrix — Traceability & change
 
 | Business situation | Skill | Output file | Status | Reason |
 |---|---|---|---|---|
-| What's missing/orphaned ACROSS docs (coverage matrix) | `/gap` | `docs/_shared/traceability.md` | planned (wave 4) | Cross-doc; the per-feature matrix lives in `{feature}-usecase-index.md` |
-| Scope changed — record + impact + rollback + guided apply | `/cr` | `docs/cr/CR-{YYYYMMDD}-{NNN}.md` | planned (wave 4) | Self-contained CR file |
-| Reconstruct BA docs from LEGACY sources (docx/pdf/code) | `/reverse-doc` | `docs/{feature}/reverse-{feature}.md` | planned (wave 4) | Source-driven; code diagrams → `/scan-project` |
+| What's missing/orphaned ACROSS docs (coverage matrix) | `/gap` | `docs/_shared/traceability.md` | ✓ | Cross-doc; the per-feature matrix lives in `{feature}-usecase-index.md` |
+| Scope changed — record + impact + rollback + guided apply | `/cr` | `docs/cr/CR-{YYYYMMDD}-{NNN}.md` | ✓ | Self-contained CR file |
+| Reconstruct BA docs from LEGACY sources (docx/pdf/code) | `/reverse-doc` | `docs/{feature}/reverse-{feature}.md` | ✓ | Source-driven; code diagrams → `/scan-project` |
 
 ## Decision matrix — Delivery & sync
 

@@ -4,6 +4,26 @@ All notable changes to **dev-ba-kit** are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); versions follow [SemVer](https://semver.org).
 (`rules/changelog.md` is a different thing — it defines the activity-log convention for the BA artifacts the kit generates.)
 
+## [2.3.0] — Unreleased
+
+### Added
+- **Wave 4 — verification, traceability & change (5 skills):** `/test-checklist` (categorized coverage
+  outline, `CHK-`), `/test-cases` (full cases expanding each `CHK-` to `TC-`, refuses without a
+  checklist — the canonical group-B example), `/gap` (cross-doc traceability matrix + coverage report;
+  read-only except its one report, computes the spine UN→…→TC), `/cr` (record-then-apply Change
+  Request with Impact Matrix + Rollback, `@change-tracker` agent computes the dependency-ordered
+  Apply plan), `/reverse-doc` (reconstruct BA docs from legacy sources with 3-level confidence
+  ✅/🔵/🟡, never overwrites the official docs).
+- Rules: `rules/traceability.md` (the spine + 3 parse surfaces + coverage rules), `rules/test-conventions.md`
+  (CHK/TC anatomy + expansion). `naming-conventions.md` gains `CHK-`/`TC-` ID rows; `doc-validate`
+  checks their format.
+- Agent `agents/change-tracker.md` (impact propagation, apply ordering, stale-target detection).
+- Templates `doc-{test-checklist-index,testcase-index,cr,traceability,reverse-doc}.md`.
+- `explain-skills/testing-family.{md,vi.md}` + `traceability-family.{md,vi.md}`; guides 06 EN/VI §17–§21.
+- atlas-re: test checklist (9 CHK) + test cases (11 TC, boundary triples + per-E- cases) + a
+  `traceability.md` from a real `/gap` run (spine intact, 3 deliberate unsliced-FR gaps surfaced) +
+  `CR-20260801-001` (50k→60k threshold change with full impact + rollback).
+
 ## [2.2.0] — Unreleased
 
 ### Added

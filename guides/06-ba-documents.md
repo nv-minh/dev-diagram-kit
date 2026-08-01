@@ -200,6 +200,64 @@ Notation: `<slug>` = feature name in kebab-case (e.g. `atlas-re`). `"..."` = a b
 
 ---
 
+## 17. `/test-checklist` — test coverage outline
+
+**Syntax:** `/test-checklist <feature>`
+
+**Use when:** the SRS exists and you need a categorized outline of what to test — functional / boundary / error / non-functional. **Needs `srs/{slug}-spec.md`** (refuses without it).
+
+**Output:** `docs/{slug}/test/checklist/{slug}-checklist-index.md` — `CHK-{NNN}` rows, each `Covers` an AC/FR/E, classified by layer. The `TC` column starts empty (filled by `/test-cases`).
+
+**Tip:** one boundary `CHK-` per threshold (the at/below/above split happens at the case level); every `E-` code gets at least one row.
+
+---
+
+## 18. `/test-cases` — full test cases
+
+**Syntax:** `/test-cases <feature> [--chk CHK-...]`
+
+**Use when:** the checklist exists and you need executable cases. **Refuses without a checklist** — the canonical group-B refusal (route `/test-checklist`).
+
+**Output:** `docs/{slug}/test/testcases/{slug}-testcase-index.md` — `TC-{NNN}` rows (steps / test data / expected), each `Expands CHK` links back. Back-fills the checklist's `TC` column. Boundary rows expand to the at/below/above triple; error rows to one TC per `E-`.
+
+---
+
+## 19. `/gap` — cross-doc traceability matrix
+
+**Syntax:** `/gap [--feature <slug>]`
+
+**Use when:** you want proof the chain is complete — which FRs have no use case/story, which stories lack ACs, which error codes are documented but never tested, orphan docs, stale links. **Read-only** except for the one report it writes.
+
+**Output:** `docs/_shared/traceability.md` — findings by rule (UN-without-BO … AC-without-CHK/TC, E-uncited, orphans, stale, CR-apply gaps). Points each gap at its owning skill to fix it.
+
+**Tip:** the E-uncited finding is the sneaky high-value one — documented errors nobody handles.
+
+---
+
+## 20. `/cr` — change request (record + apply)
+
+**Syntax:** `/cr "<change>"` then `/cr --apply CR-{date}-{NNN}`
+
+**Use when:** scope changes mid-flight and you need to record the impact + apply it safely. **Record first** (Impact Matrix citing real IDs + Rollback plan, no doc edits), **apply second** (per-doc L2 diffs in dependency order via `@change-tracker`).
+
+**Output:** `docs/cr/CR-{YYYYMMDD}-{NNN}.md` — self-contained (Impact + Detailed Impact + Rollback live inside it). A target doc that changed since the CR was recorded → HARD STOP (re-assess).
+
+**Tip:** apply ≠ record — a logged-but-not-applied CR is a normal pending state; never auto-apply.
+
+---
+
+## 21. `/reverse-doc` — reconstruct from legacy sources
+
+**Syntax:** `/reverse-doc <source-path...> [--feature <slug>]`
+
+**Use when:** you inherited docx/pdf/images/code and need BA docs reconstructed from them. Source-driven (derives slugs from the sources), can create multiple features, **never overwrites** the official urd/brd/srs (sits alongside).
+
+**Output:** `docs/{slug}/reverse-{slug}.md` (12-section framework + Section 0 provenance) + `docs/.reverse-plan.md` (HARD STOP before generating). Every claim tagged ✅/🔵/🟡; 🟡 → OQ.
+
+**Tip:** confidence honesty is the whole skill — when unsure, drop a level; a reconstruction that looks more certain than its sources is dangerous.
+
+---
+
 ## General notes
 
 - **The chain order matters but isn't mandatory** — each skill runs standalone (group A creates the feature; missing upstream docs = soft notes, not failures). The chain is where the IDs get their meaning: UN → BO → CAP → FR.

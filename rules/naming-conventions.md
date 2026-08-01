@@ -183,12 +183,14 @@ Every ID in the `links:` frontmatter or body must follow the format below. This 
 | User Story | `US-{NNN}` | `US-001` | Per-feature folder (`docs/payment/userstories/us-001.md`) — feature implied by the path |
 | Use Case | `UC-{slug}` | `UC-checkout` | Per-feature folder, human-readable slug |
 | Acceptance Criterion | `AC-{NNN}` | `AC-001` | Per-user-story (scoped within the `us-{NNN}.md` file) |
+| Checklist row | `CHK-{NNN}` | `CHK-001` | Per-feature (`test/checklist/{feature}-checklist-index.md`) — see `test-conventions.md` |
+| Test case | `TC-{NNN}` | `TC-001` | Per-feature (`test/testcases/{feature}-testcase-index.md`) — see `test-conventions.md` |
 | Change Request | `CR-{YYYYMMDD}-{NNN}` | `CR-20260512-001` | Project-wide (`docs/cr/`) |
 
 ### Rules
 
 - **Feature prefix required** for UN/BO/CAP/FR/NFR/BR/E. Purpose: avoid collisions when `/gap` aggregates cross-feature (e.g. `FR-001` is ambiguous across 2 features).
-- **US/AC/UC scoped by path** (no feature prefix needed in the ID) since they always sit within the feature folder.
+- **US/AC/UC/CHK/TC scoped by path** (no feature prefix needed in the ID) since they always sit within the feature folder.
 - **NNN = 3-digit zero-pad** for BO/CAP/FR/NFR/BR/E (e.g. `001`, `042`). NN is also OK for BO/CAP (`01`, `02`) since there are usually fewer.
 - **CR/D/B prefixed by date** since they are time-based events, ordered by date.
 - IDs are not reused after deletion — always increment max + 1.

@@ -42,10 +42,10 @@ Map a natural-language need → exactly ONE document skill, then delegate to it.
 | Clickable demo | `/prototype-html` | navigation works; needs the wireframes |
 | Push wireframes to Figma frames | `/figma` | external-write hard gate; URLs in the index |
 | Integrate a 3rd-party API | `/api-assess` (provider open) / `/api-doc` (provider fixed) *(wave 5)* | 7-step chain, `rules/api-integration.md` |
-| Test coverage outline / full test cases | `/test-checklist` / `/test-cases` *(wave 4)* | outline vs executable steps |
-| What's missing/orphaned across docs | `/gap` *(wave 4)* | cross-doc coverage matrix |
-| Scope changed — impact + rollback | `/cr` *(wave 4)* | change request |
-| Legacy docs/code → BA documents | `/reverse-doc` *(wave 4)* | code→diagrams = `/scan-project` |
+| Test coverage outline / full test cases | `/test-checklist` / `/test-cases` | outline vs executable steps; needs the SRS |
+| What's missing/orphaned across docs | `/gap` | cross-doc coverage matrix; read-only |
+| Scope changed — impact + rollback | `/cr` | change request + guided apply |
+| Legacy docs/code → BA documents | `/reverse-doc` | source-driven; code→diagrams = `/scan-project` |
 | Push stories to Jira / publish docs to Confluence | `/jira` / `/confluence` *(wave 6)* | issues vs pages; code-diff→page = `/sync-confluence` (exists) |
 | Stakeholder package / end-user manual | `/export` / `/userguide` *(wave 6)* | snapshot vs manual |
 | Meeting minutes / quick capture | `/meeting` / `/inbox` *(wave 6)* | structured vs raw |

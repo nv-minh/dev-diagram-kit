@@ -200,6 +200,64 @@ Ký hiệu: `<slug>` = tên feature dạng kebab-case (vd `atlas-re`). `"..."` =
 
 ---
 
+## 17. `/test-checklist` — đề cương test
+
+**Cú pháp:** `/test-checklist <feature>`
+
+**Dùng khi:** đã có SRS và cần đề cương phân loại cái cần test — functional / boundary / error / non-functional. **Cần `srs/{slug}-spec.md`** (không có thì từ chối).
+
+**Output:** `docs/{slug}/test/checklist/{slug}-checklist-index.md` — cột `CHK-{NNN}`, mỗi dòng `Covers` một AC/FR/E, phân lớp. Cột `TC` để trống (`/test-cases` điền).
+
+**Mẹo:** một `CHK-` biên mỗi ngưỡng (tách tại/dưới/trên ở mức case); mỗi mã `E-` có ít nhất một dòng.
+
+---
+
+## 18. `/test-cases` — test case đầy đủ
+
+**Cú pháp:** `/test-cases <feature> [--chk CHK-...]`
+
+**Dùng khi:** đã có checklist và cần case chạy được. **Từ chối khi không có checklist** — ví dụ canonical nhóm B (chuyển `/test-checklist`).
+
+**Output:** `docs/{slug}/test/testcases/{slug}-testcase-index.md` — cột `TC-{NNN}` (steps / data / expected), mỗi `Expands CHK` ngược. Điền ngược cột `TC` của checklist. Dòng biên nở thành bộ ba tại/dưới/trên; dòng lỗi thành một TC mỗi `E-`.
+
+---
+
+## 19. `/gap` — ma trận traceability cross-doc
+
+**Cú pháp:** `/gap [--feature <slug>]`
+
+**Dùng khi:** muốn chứng minh chuỗi đầy đủ — FR nào không có use case/story, story nào thiếu AC, mã lỗi nào có tài liệu nhưng không ai test, doc mồ côi, link stale. **Chỉ đọc** trừ một báo cáo duy nhất nó ghi.
+
+**Output:** `docs/_shared/traceability.md` — findings theo luật (UN-without-BO … AC-without-CHK/TC, E-uncited, orphans, stale, CR-apply gaps). Mỗi khoảng hở trỏ tới skill sở hữu để sửa.
+
+**Mẹo:** E-uncited là finding giấu mặt nhưng giá trị cao — lỗi tài liệu hoá mà không ai xử lý.
+
+---
+
+## 20. `/cr` — change request (ghi + áp dụng)
+
+**Cú pháp:** `/cr "<thay đổi>"` rồi `/cr --apply CR-{date}-{NNN}`
+
+**Dùng khi:** scope đổi giữa chừng và cần ghi tác động + áp dụng an toàn. **Ghi trước** (Impact Matrix dẫn ID thật + Rollback, chưa sửa doc), **áp dụng sau** (L2 diff từng doc theo thứ tự phụ thuộc qua `@change-tracker`).
+
+**Output:** `docs/cr/CR-{YYYYMMDD}-{NNN}.md` — tự chứa (Impact + Detailed Impact + Rollback nằm trong). Đích doc đổi sau khi CR ghi → HARD STOP (đánh giá lại).
+
+**Mẹo:** apply ≠ record — CR đã log-chưa-apply là trạng thái chờ bình thường; không tự apply.
+
+---
+
+## 21. `/reverse-doc` — tái dựng từ nguồn cũ
+
+**Cú pháp:** `/reverse-doc <đường-dẫn-nguồn...> [--feature <slug>]`
+
+**Dùng khi:** nhận lại docx/pdf/ảnh/code và cần dựng tài liệu BA từ đó. Theo nguồn (suy slug từ nguồn), tạo được nhiều feature, **không bao giờ ghi đè** urd/brd/srs chính thức (nằm cạnh).
+
+**Output:** `docs/{slug}/reverse-{slug}.md` (12 section + Section 0 provenance) + `docs/.reverse-plan.md` (HARD STOP trước khi sinh). Mọi claim đánh ✅/🔵/🟡; 🟡 → OQ.
+
+**Mẹo:** trung thực confidence là cả skill — khi do dự, hạ một mức; bản dựng trông chắc hơn nguồn thì nguy hiểm.
+
+---
+
 ## Ghi chú chung
 
 - **Thứ tự chuỗi quan trọng nhưng không bắt buộc** — skill nào cũng chạy độc lập được (nhóm A tự tạo feature; thiếu tài liệu thượng nguồn = ghi chú mềm, không fail). Chuỗi là nơi các ID có nghĩa: UN → BO → CAP → FR.

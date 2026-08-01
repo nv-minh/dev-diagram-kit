@@ -115,6 +115,8 @@ const ID_RULES: Array<{ re: RegExp; valid: RegExp; name: string }> = [
   { re: /\bUN-[\w-]+/g, valid: /^UN-[a-z0-9-]+-\d{3}$/, name: 'UN-{feature}-{NNN}' },
   { re: /\bUS-[\w-]+/g, valid: /^US-\d{3}$/, name: 'US-{NNN}' },
   { re: /\bAC-[\w-]+/g, valid: /^AC-\d{3}$/, name: 'AC-{NNN}' },
+  { re: /\bCHK-[\w-]+/g, valid: /^CHK-\d{3}$/, name: 'CHK-{NNN}' },
+  { re: /\bTC-[\w-]+/g, valid: /^TC-\d{3}$/, name: 'TC-{NNN}' },
   { re: /\bCR-[\w-]+/g, valid: /^CR-\d{8}-\d{3}$/, name: 'CR-{YYYYMMDD}-{NNN}' },
 ];
 // E- is too collision-prone as a bare regex (E-commerce…): only check E- tokens that look like IDs.

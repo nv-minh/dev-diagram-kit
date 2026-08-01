@@ -45,6 +45,19 @@ The `approve-claim` flow drawn as ASCII wireframes with the 5-column description
 
 The thread reaches the screen: `FR-atlas-re-006` (tier routing) → screen `[3]` Decision panel, where `E-atlas-re-001` (validator conflict) and `E-atlas-re-004` (concurrency) surface as button-level errors in the description table.
 
+## Documents (wave 4 — testing, traceability & change)
+
+The verification tail of the spine: the test outline + cases, the cross-doc coverage report from a real `/gap` run, and a sample Change Request.
+
+| Skill | What it shows | File |
+|---|---|---|
+| `/test-checklist` | 9 `CHK-` rows derived from the spec's FR/E + the story ACs, layered functional/boundary/error/non-functional | [`test/checklist/atlas-re-checklist-index.md`](./test/checklist/atlas-re-checklist-index.md) |
+| `/test-cases` | 11 `TC-` expanding the checklist — boundary 50k → at/below/above triple, errors → one TC per `E-` | [`test/testcases/atlas-re-testcase-index.md`](./test/testcases/atlas-re-testcase-index.md) |
+| `/gap` | The traceability report — spine intact, 3 deliberately-unsliced FRs surfaced as a visible decision | [`_shared/traceability.md`](./_shared/traceability.md) |
+| `/cr` | A threshold change (50k→60k) with its full Impact Matrix + dependency-ordered Apply plan + Rollback | [`cr/CR-20260801-001.md`](./cr/CR-20260801-001.md) |
+
+The spine is now provably complete end to end: `UN-005 → BO-03 → CAP-04 → FR-006 → UC-approve-claim → US-001 → AC-002/003 → CHK-002 → TC-002/003/004`. The `/gap` report confirms zero uncited error codes; the CR shows how a one-number change propagates in safe dependency order.
+
 ## Diagrams
 
 ### Batch 1 — core
