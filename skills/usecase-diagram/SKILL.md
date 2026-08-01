@@ -176,6 +176,6 @@ UC5 ..> UC3 : <<extend>>
 - @../../rules/language.md
 - @../../rules/changelog.md
 - @../../rules/diagram-selection.md
-- @../../templates/usecase-index.md (image + Actors/Relationships tables embedded here, no more separate wrapper file)
+- @../../templates/doc-usecase-index.md (image + Actors/Relationships tables embedded here, no more separate wrapper file)
 - @./render.sh (compile .puml → .svg via plantuml.com)
 - @./plantuml_encode.py (PlantUML text-encoding, used by render.sh)

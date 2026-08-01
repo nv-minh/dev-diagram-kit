@@ -173,6 +173,7 @@ Every ID in the `links:` frontmatter or body must follow the format below. This 
 
 | Type | Format | Example | Scope |
 |------|--------|-------|-------|
+| User Need | `UN-{feature}-{NNN}` | `UN-payment-001` | Per-feature, in `{feature}-urd.md` User needs section |
 | Business Objective | `BO-{feature}-{NNN}` | `BO-payment-01` | Per-feature, in `{feature}-brd.md` Business Objectives & Success Measures section |
 | PRD Capability | `CAP-{feature}-{NNN}` | `CAP-payment-01` | Per-feature, in `{feature}-prd.md` Capabilities section |
 | Functional Requirement | `FR-{feature}-{NNN}` | `FR-payment-001` | Per-feature, in `srs/{feature}-spec.md` Section 2 |
@@ -186,7 +187,7 @@ Every ID in the `links:` frontmatter or body must follow the format below. This 
 
 ### Rules
 
-- **Feature prefix required** for BO/CAP/FR/NFR/BR/E. Purpose: avoid collisions when `/gap` aggregates cross-feature (e.g. `FR-001` is ambiguous across 2 features).
+- **Feature prefix required** for UN/BO/CAP/FR/NFR/BR/E. Purpose: avoid collisions when `/gap` aggregates cross-feature (e.g. `FR-001` is ambiguous across 2 features).
 - **US/AC/UC scoped by path** (no feature prefix needed in the ID) since they always sit within the feature folder.
 - **NNN = 3-digit zero-pad** for BO/CAP/FR/NFR/BR/E (e.g. `001`, `042`). NN is also OK for BO/CAP (`01`, `02`) since there are usually fewer.
 - **CR/D/B prefixed by date** since they are time-based events, ordered by date.
