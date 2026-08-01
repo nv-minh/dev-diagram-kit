@@ -1,8 +1,10 @@
-# Dev BA Kit
+<p align="center">
+  <img src="assets/readme/dev-ba-kit-banner.png" alt="Dev BA Kit — Tài liệu và sơ đồ cho developer làm BA" width="960">
+</p>
 
 Bộ skill vẽ sơ đồ và làm tài liệu cho **dev làm công việc BA**, đóng gói thành plugin [Claude Code](https://docs.claude.com/en/docs/claude-code). Mô tả hệ thống hoặc quy trình bằng lời — hoặc trỏ vào một codebase — kit sẽ vẽ đúng loại sơ đồ (Mermaid, PlantUML, D2 hoặc BPMN), tự kiểm cú pháp rồi render. Output song ngữ, tự bám theo ngôn ngữ bạn gõ.
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE) [![CI](https://github.com/nv-minh/dev-ba-kit/actions/workflows/ci.yml/badge.svg)](https://github.com/nv-minh/dev-ba-kit/actions/workflows/ci.yml) &nbsp; 63 skill &nbsp;·&nbsp; Mermaid / PlantUML / D2 / BPMN / draw.io &nbsp;·&nbsp; EN / VI
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE) [![CI](https://github.com/nv-minh/dev-diagram-kit/actions/workflows/ci.yml/badge.svg)](https://github.com/nv-minh/dev-diagram-kit/actions/workflows/ci.yml) &nbsp; 63 skill &nbsp;·&nbsp; Mermaid / PlantUML / D2 / BPMN / draw.io &nbsp;·&nbsp; EN / VI
 
 [English](README.md) · **Tiếng Việt**
 
@@ -153,11 +155,11 @@ flowchart TD
 
 **Activity có swimlane** — `/activity-swimlane` (PlantUML):
 
-<img src="assets/readme/activity-swimlane.svg" alt="Sơ đồ activity có swimlane" width="480">
+<img src="example/atlas-re/activity-swimlane/atlas-re-claim-approval-swimlane.svg" alt="Sơ đồ activity có swimlane" width="480">
 
 **BPMN 2.0** — `/bpmn` (sửa được ngay trên trình duyệt):
 
-<img src="assets/readme/bpmn.svg" alt="Sơ đồ BPMN" width="560">
+[`Mở ví dụ BPMN chỉnh sửa được`](example/atlas-re/bpmn/claim-approval.bpmn)
 
 **State** — `/state` (vòng đời Order, Mermaid):
 
@@ -227,7 +229,7 @@ Table payments {
 
 **Use case** — `/usecase-diagram` (PlantUML):
 
-<img src="assets/readme/usecase-diagram.svg" alt="Sơ đồ use case" width="480">
+<img src="example/atlas-re/usecases/atlas-re-usecase-diagram.svg" alt="Sơ đồ use case" width="480">
 
 Bản trình bày C4 (dark theme, export PNG/PDF một chạm) ghi ở `docs/{feature}/system-design/`.
 
@@ -251,14 +253,7 @@ Một nền tảng underwriting tái bảo hiểm *giả định, ẩn danh* (m�
 
 <img src="example/atlas-re/activity-swimlane/atlas-re-claim-approval-swimlane.svg" alt="Swimlane claim Atlas Re" width="520"> <img src="example/atlas-re/usecases/atlas-re-usecase-diagram.svg" alt="Use case Atlas Re" width="360">
 
-**Cloud (draw.io, stencil thật)** — `/drawio-azure` (cloud chính), cộng fabricated `/drawio-aws` · `/drawio-gcp` · `/drawio-databricks`. Click ảnh để mở file `.drawio` nguồn (sửa được bằng [draw.io](https://app.diagrams.net)):
-
-<a href="example/atlas-re/drawio/atlas-re-azure.drawio"><img src="example/atlas-re/drawio/atlas-re-azure.png" alt="Atlas Re — Azure" width="360"></a>
-<a href="example/atlas-re/drawio/atlas-re-aws.drawio"><img src="example/atlas-re/drawio/atlas-re-aws.png" alt="Atlas Re — AWS" width="360"></a>
-<a href="example/atlas-re/drawio/atlas-re-gcp.drawio"><img src="example/atlas-re/drawio/atlas-re-gcp.png" alt="Atlas Re — GCP" width="360"></a>
-<a href="example/atlas-re/drawio/atlas-re-databricks.drawio"><img src="example/atlas-re/drawio/atlas-re-databricks.png" alt="Atlas Re — Databricks lakehouse" width="360"></a>
-
-**Sequence UML (draw.io)** — `/drawio-sequence` — luồng bind dạng lifeline × message theo thời gian (các service gọi nhau; bus phát event ra nhiều consumer). <a href="example/atlas-re/drawio/atlas-re-sequence.drawio">Mở `atlas-re-sequence.drawio`</a> bằng [draw.io](https://app.diagrams.net) (xuất PNG cần app desktop).
+**Cloud + UML sequence (draw.io)** — `/drawio-azure` · `/drawio-aws` · `/drawio-gcp` · `/drawio-databricks` · `/drawio-sequence`. Các skill này sinh source `.drawio` chỉnh sửa được với cloud stencil thật; export PNG dùng app draw.io desktop.
 
 Trong example còn: `/dfd`, `/journey`, `/mindmap`, `/timeline`, `/orgchart`, `/bpmn`, `/code-flow`. Sinh lại bằng lệnh trong [`example/atlas-re/README.md`](example/atlas-re/README.md).
 

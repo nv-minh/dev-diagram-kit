@@ -1,8 +1,10 @@
-# Dev BA Kit
+<p align="center">
+  <img src="assets/readme/dev-ba-kit-banner.png" alt="Dev BA Kit — Documents and Diagrams for Developer-led BA" width="960">
+</p>
 
 Diagram and documentation skills for developers doing BA work, packaged as a [Claude Code](https://docs.claude.com/en/docs/claude-code) plugin. Describe a system or process in plain language — or point the kit at a codebase — and it produces the right diagram (Mermaid, PlantUML, D2, or BPMN), compile-checks it, and renders it. Output is bilingual and follows the language you write in.
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE) [![CI](https://github.com/nv-minh/dev-ba-kit/actions/workflows/ci.yml/badge.svg)](https://github.com/nv-minh/dev-ba-kit/actions/workflows/ci.yml) &nbsp; 63 skills &nbsp;·&nbsp; Mermaid / PlantUML / D2 / BPMN / draw.io &nbsp;·&nbsp; EN / VI
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE) [![CI](https://github.com/nv-minh/dev-diagram-kit/actions/workflows/ci.yml/badge.svg)](https://github.com/nv-minh/dev-diagram-kit/actions/workflows/ci.yml) &nbsp; 63 skills &nbsp;·&nbsp; Mermaid / PlantUML / D2 / BPMN / draw.io &nbsp;·&nbsp; EN / VI
 
 **English** · [Tiếng Việt](README.vi.md)
 
@@ -153,11 +155,11 @@ flowchart TD
 
 **Activity with swimlanes** — `/activity-swimlane` (PlantUML):
 
-<img src="assets/readme/activity-swimlane-en.svg" alt="Activity diagram with swimlanes" width="480">
+<img src="example/atlas-re/activity-swimlane/atlas-re-claim-approval-swimlane.svg" alt="Activity diagram with swimlanes" width="480">
 
 **BPMN 2.0** — `/bpmn` (editable in the browser):
 
-<img src="assets/readme/bpmn-en.svg" alt="BPMN diagram" width="560">
+[`Open the editable BPMN example`](example/atlas-re/bpmn/claim-approval.bpmn)
 
 **State** — `/state` (Order lifecycle, Mermaid):
 
@@ -227,7 +229,7 @@ Table payments {
 
 **Use case diagram** — `/usecase-diagram` (PlantUML):
 
-<img src="assets/readme/usecase-diagram-en.svg" alt="Use case diagram" width="480">
+<img src="example/atlas-re/usecases/atlas-re-usecase-diagram.svg" alt="Use case diagram" width="480">
 
 The C4 HTML deck (dark theme, one-click PNG/PDF export) is written to `docs/{feature}/system-design/`.
 
@@ -251,14 +253,7 @@ A *fictional, anonymized* reinsurance underwriting platform (modelled on a real 
 
 <img src="example/atlas-re/activity-swimlane/atlas-re-claim-approval-swimlane.svg" alt="Atlas Re claim swimlane" width="520"> <img src="example/atlas-re/usecases/atlas-re-usecase-diagram.svg" alt="Atlas Re use cases" width="360">
 
-**Cloud (draw.io, real stencils)** — `/drawio-azure` (primary), plus fabricated `/drawio-aws` · `/drawio-gcp` · `/drawio-databricks`. Click an image to open its `.drawio` source (also editable in [draw.io](https://app.diagrams.net)):
-
-<a href="example/atlas-re/drawio/atlas-re-azure.drawio"><img src="example/atlas-re/drawio/atlas-re-azure.png" alt="Atlas Re — Azure" width="360"></a>
-<a href="example/atlas-re/drawio/atlas-re-aws.drawio"><img src="example/atlas-re/drawio/atlas-re-aws.png" alt="Atlas Re — AWS" width="360"></a>
-<a href="example/atlas-re/drawio/atlas-re-gcp.drawio"><img src="example/atlas-re/drawio/atlas-re-gcp.png" alt="Atlas Re — GCP" width="360"></a>
-<a href="example/atlas-re/drawio/atlas-re-databricks.drawio"><img src="example/atlas-re/drawio/atlas-re-databricks.png" alt="Atlas Re — Databricks lakehouse" width="360"></a>
-
-**UML sequence (draw.io)** — `/drawio-sequence` — the bind flow as lifelines × time-ordered messages (services call each other; the bus fans events out to consumers). <a href="example/atlas-re/drawio/atlas-re-sequence.drawio">Open `atlas-re-sequence.drawio`</a> in [draw.io](https://app.diagrams.net) (PNG export needs the desktop app).
+**Cloud + UML sequence (draw.io)** — `/drawio-azure` · `/drawio-aws` · `/drawio-gcp` · `/drawio-databricks` · `/drawio-sequence`. These skills generate editable `.drawio` sources with real cloud stencils; PNG export uses the draw.io desktop app.
 
 Also in the example: `/dfd`, `/journey`, `/mindmap`, `/timeline`, `/orgchart`, `/bpmn`, `/code-flow`. Regenerate any with the commands in [`example/atlas-re/README.md`](example/atlas-re/README.md).
 
