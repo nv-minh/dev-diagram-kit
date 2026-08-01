@@ -41,7 +41,7 @@ Map a natural-language need → exactly ONE document skill, then delegate to it.
 | Sketch screens (chat-reviewable / browser) | `/wireframe-ascii` / `/wireframe-html` | ASCII in chat vs HTML in browser; both need the user flow |
 | Clickable demo | `/prototype-html` | navigation works; needs the wireframes |
 | Push wireframes to Figma frames | `/figma` | external-write hard gate; URLs in the index |
-| Integrate a 3rd-party API | `/api-assess` (provider open) / `/api-doc` (provider fixed) *(wave 5)* | 7-step chain, `rules/api-integration.md` |
+| Integrate a 3rd-party API (full 7-step chain) | `/api-assess` (provider open) / `/api-doc` (provider fixed) → `/api-design` → `/api-map` → `/api-checklist` → `/api-test` → `/api-readiness` | assess→doc→design→map→checklist→test→readiness |
 | Test coverage outline / full test cases | `/test-checklist` / `/test-cases` | outline vs executable steps; needs the SRS |
 | What's missing/orphaned across docs | `/gap` | cross-doc coverage matrix; read-only |
 | Scope changed — impact + rollback | `/cr` | change request + guided apply |

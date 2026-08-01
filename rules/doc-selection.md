@@ -105,13 +105,13 @@ Shared rule: `rules/api-integration.md`. Chain order with skip conditions lives 
 
 | Step | Skill | Output file | Status |
 |---|---|---|---|
-| [0] Build-vs-buy / provider selection (skip when provider fixed) | `/api-assess` | `docs/{feature}/integration/api-assess.md` | planned (wave 5) |
-| [1] Digest the 3rd-party contract | `/api-doc` | `docs/{feature}/integration/api-summary.md` | planned (wave 5) |
-| [2] Integration Blueprint (orchestration/webhook/retry/reconciliation) | `/api-design` | `docs/{feature}/integration/api-design.md` | planned (wave 5) |
-| [3] 3-layer field mapping | `/api-map` | `docs/{feature}/integration/api-map.md` | planned (wave 5) |
-| [4] Integration test outline | `/api-checklist` | `docs/{feature}/test/api/api-checklist.md` | planned (wave 5) |
-| [5] Bruno collection + test table | `/api-test` | `docs/{feature}/test/api/api-tests.md` + `bruno/` | planned (wave 5) |
-| [6] Go-live gate + go/no-go | `/api-readiness` | `docs/{feature}/integration/api-readiness.md` | planned (wave 5) |
+| [0] Build-vs-buy / provider selection (skip when provider fixed) | `/api-assess` | `docs/{feature}/integration/api-assess.md` | ✓ |
+| [1] Digest the 3rd-party contract | `/api-doc` | `docs/{feature}/integration/api-summary.md` | ✓ |
+| [2] Integration Blueprint (orchestration/webhook/retry/reconciliation) | `/api-design` | `docs/{feature}/integration/api-design.md` | ✓ |
+| [3] 3-layer field mapping | `/api-map` | `docs/{feature}/integration/api-map.md` | ✓ |
+| [4] Integration test outline | `/api-checklist` | `docs/{feature}/test/api/api-checklist.md` | ✓ |
+| [5] Bruno collection + test table | `/api-test` | `docs/{feature}/test/api/api-tests.md` + `bruno/` | ✓ |
+| [6] Go-live gate + go/no-go | `/api-readiness` | `docs/{feature}/integration/api-readiness.md` | ✓ |
 
 ## Decision matrix — Testing
 

@@ -4,6 +4,25 @@ All notable changes to **dev-ba-kit** are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); versions follow [SemVer](https://semver.org).
 (`rules/changelog.md` is a different thing — it defines the activity-log convention for the BA artifacts the kit generates.)
 
+## [2.4.0] — Unreleased
+
+### Added
+- **Wave 5 — API integration family (7 skills):** the 7-step chain `/api-assess → /api-doc →
+  /api-design → /api-map → /api-checklist → /api-test → /api-readiness`. `/api-assess` (build-vs-buy,
+  skippable when provider fixed), `/api-doc` (digest the contract, refuses to fabricate, provenance per
+  row), `/api-design` (Integration Blueprint: orchestration/state-map/source-of-truth/webhook+reconciliation/
+  retry/degraded-UX), `/api-map` (3-layer field map with owners, skippable for pure triggers),
+  `/api-checklist` (test outline with `test_layer`/`direction` columns), `/api-test` (Bruno collection +
+  test table, one collection per provider), `/api-readiness` (go-live gate, hard-refuses "go" without test
+  evidence).
+- `rules/api-integration.md` filled out (chain order, skip conditions, test_layer/direction semantics,
+  provider-suffix rule, Bruno layout, go/no-go table).
+- 7 templates `doc-api-{assess,summary,design,map,checklist,tests,readiness}.md`.
+- `explain-skills/api-family.{md,vi.md}`; `guides/07-api-and-delivery.md` + VI twin (API chain; delivery
+  placeholder for wave 6).
+- atlas-re: the CatModel provider integration — `api-summary-catmodel.md` (digest) + `api-design.md`
+  (blueprint with webhook⇄reconciliation pairing) + `api-map.md` (3-layer field map with owners).
+
 ## [2.3.0] — Unreleased
 
 ### Added

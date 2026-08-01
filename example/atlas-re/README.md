@@ -58,6 +58,18 @@ The verification tail of the spine: the test outline + cases, the cross-doc cove
 
 The spine is now provably complete end to end: `UN-005 → BO-03 → CAP-04 → FR-006 → UC-approve-claim → US-001 → AC-002/003 → CHK-002 → TC-002/003/004`. The `/gap` report confirms zero uncited error codes; the CR shows how a one-number change propagates in safe dependency order.
 
+## Documents (wave 5 — API integration)
+
+The integration chain documented ahead of the spec slice: a fictional **CatModel** catastrophe-model provider feeding the pricing engine. Shows the full digest → blueprint → map path with the disciplines that matter (provenance, webhook⇄reconciliation pairing, source-of-truth ownership).
+
+| Skill | What it shows | File |
+|---|---|---|
+| `/api-doc` | The CatModel contract summary (endpoints/auth/webhook/limits), every row provenance-tagged, gaps → OQ | [`integration/api-summary-catmodel.md`](./integration/api-summary-catmodel.md) |
+| `/api-design` | The Integration Blueprint — orchestration, state-map, source-of-truth per field, webhook with its reconciliation partner, retry, degraded-UX | [`integration/api-design.md`](./integration/api-design.md) |
+| `/api-map` | The 3-layer field map (provider ↔ model ↔ UI), every field with owner + direction + transform; flags the ERD-reconciliation OQ | [`integration/api-map.md`](./integration/api-map.md) |
+
+Note the disciplines: the `quote.completed` webhook is paired with a polling reconciliation (no silent data loss); `loss_estimate` is explicitly `theirs` (CatModel authority) while `priced_at` is `derived`; the currency transform cites the same BR-atlas-re-001 FX path the claim-approval spine uses.
+
 ## Diagrams
 
 ### Batch 1 — core

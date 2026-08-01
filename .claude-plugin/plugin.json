@@ -1,7 +1,7 @@
 {
   "name": "dev-ba-kit",
-  "version": "2.3.0",
-  "description": "48 skills for developers doing BA work: discovery documents (/brainstorm→/urd→/brd→/prd-epic→/srs + product-level /prd and /roadmap) + specification (/usecase /userstory /ac /user-flow) + UI design (/wireframe-ascii /wireframe-html /prototype-html /figma) + 22 diagram skills (Mermaid/PlantUML/D2/BPMN/draw.io: sequence/activity/state/ERD/use case/architecture/C4/DFD/mindmap/journey/timeline/org chart + draw.io cloud architecture with real AWS/Azure/GCP/Databricks stencils + draw.io UML sequence) + code-flow + scan-project + gallery + sync-confluence. Unified validate gates (diagram-validate + doc-validate). Two routers: /ba (documents) and /diagram (diagrams). Bilingual EN/VI.",
+  "version": "2.4.0",
+  "description": "55 skills for developers doing BA work: discovery documents (/brainstorm→/urd→/brd→/prd-epic→/srs + product-level /prd and /roadmap) + specification (/usecase /userstory /ac /user-flow) + UI design (/wireframe-ascii /wireframe-html /prototype-html /figma) + 22 diagram skills (Mermaid/PlantUML/D2/BPMN/draw.io: sequence/activity/state/ERD/use case/architecture/C4/DFD/mindmap/journey/timeline/org chart + draw.io cloud architecture with real AWS/Azure/GCP/Databricks stencils + draw.io UML sequence) + code-flow + scan-project + gallery + sync-confluence. Unified validate gates (diagram-validate + doc-validate). Two routers: /ba (documents) and /diagram (diagrams). Bilingual EN/VI.",
   "author": {
     "name": "Edward Ngo"
   },
