@@ -158,6 +158,48 @@ Notation: `<slug>` = feature name in kebab-case (e.g. `atlas-re`). `"..."` = a b
 
 ---
 
+## 13. `/wireframe-ascii` — ASCII wireframes (chat-reviewable)
+
+**Syntax:** `/wireframe-ascii <feature> [--flow <slug>]`
+
+**Use when:** you want to sketch screens and iterate the layout right in chat. **Needs `srs/{slug}-userflow.md` with `stage: approved`** — refuses otherwise (route `/user-flow`). Asks the device first (pre-suggested from `primary_device`).
+
+**Output:** `docs/{slug}/ascii-wireframe/{flow}.md` (zero frontmatter) — one ASCII frame per screen `[n]` + the 5-column description table (`# / Items / Control type / Data type / Description`). Updates `{slug}-wireframe-index.md` (screen metadata + per-screen purpose).
+
+**Tip:** the description table is the real deliverable; 6 layers per element, sourced from the SRS/UC (cite FR/BR/E-), never fabricated — gaps get asked one at a time.
+
+---
+
+## 14. `/wireframe-html` — B&W static HTML wireframes
+
+**Syntax:** `/wireframe-html <feature> [--flow <slug>]`
+
+**Use when:** chat ASCII isn't enough and you want device-width frames in a browser. Same gate as ASCII (needs the approved user flow); reuses ASCII content 1:1 — fidelity, not redesign.
+
+**Output:** `docs/{slug}/html-wireframe/{flow}.html` per flow (B&W, no JS/color, screens `id="s{n}"`) + the entry `{slug}-wireframe.html` (sidebar TOC + flow map + iframes) + `{slug}-wireframe-html-index.md`. Double-click the entry to navigate all flows.
+
+---
+
+## 15. `/prototype-html` — clickable prototype
+
+**Syntax:** `/prototype-html <feature>`
+
+**Use when:** you need to prove the navigation works — a click-through demo. Needs the wireframes (ASCII or HTML).
+
+**Output:** one self-contained `docs/{slug}/html-design/{slug}-prototype.html` — every `Nav →` edge becomes a working link to `#s{n}`. Broken links are BLOCKING. Sets the `HTML prototype` column in the wireframe index.
+
+---
+
+## 16. `/figma` — push wireframes to Figma
+
+**Syntax:** `/figma <feature> [--flow <slug>]`
+
+**Use when:** the team works in Figma and you want the wireframes there as frames. **External-write hard gate** — previews every frame + target, needs an explicit Y; stops if the Figma MCP isn't authenticated.
+
+**Output:** no local file — Figma frames; the URLs go into the `Figma` column of `{slug}-wireframe-index.md`. Content mirrors the wireframes (same `[n]`); never invents a URL.
+
+---
+
 ## General notes
 
 - **The chain order matters but isn't mandatory** — each skill runs standalone (group A creates the feature; missing upstream docs = soft notes, not failures). The chain is where the IDs get their meaning: UN → BO → CAP → FR.

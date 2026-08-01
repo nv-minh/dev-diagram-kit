@@ -1,0 +1,51 @@
+<!--
+  wireframe-flow.html — per-flow B&W static shell for /wireframe-html.
+  Copy → fill {{feature}}, {{flow}}, {{device}}, and one <section id="s{n}"> per screen.
+  Self-contained: inline CSS, NO JS, NO color. Device width = frame width.
+  adapted from the kit's system-design/resources HTML precedent — see NOTICE
+-->
+<!doctype html>
+<html lang="{{lang}}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{feature}} — wireframe: {{flow}}</title>
+<style>
+  :root { --w: {{device}}px; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #f4f4f5; font: 14px/1.4 -apple-system, Segoe UI, Roboto, sans-serif; color: #111; }
+  main { display: flex; flex-direction: column; align-items: center; gap: 24px; padding: 24px; }
+  .flow-head { width: var(--w); }
+  .flow-head h1 { font-size: 16px; margin: 0 0 4px; }
+  .flow-head .meta { color: #71717a; font-size: 12px; }
+  .screen { width: var(--w); border: 2px solid #111; background: #fff; }
+  .screen .bar { display: flex; justify-content: space-between; align-items: center;
+    padding: 6px 10px; border-bottom: 2px solid #111; font-size: 12px; font-weight: 600; }
+  .screen .body { padding: 14px; display: flex; flex-direction: column; gap: 10px; min-height: 200px; }
+  .row { display: flex; gap: 8px; align-items: center; }
+  .lbl { width: 110px; color: #52525b; font-size: 12px; }
+  .box { flex: 1; border: 1px solid #71717a; height: 28px; background: #fafafa; }
+  .btn { border: 1px solid #111; padding: 6px 14px; background: #fff; font-size: 12px; cursor: default; }
+  .btn.primary { background: #111; color: #fff; }
+  .chk { width: 14px; height: 14px; border: 1px solid #111; }
+</style>
+</head>
+<body>
+<main>
+  <div class="flow-head">
+    <h1>{{feature}} / {{flow}}</h1>
+    <div class="meta">B&amp;W wireframe · device {{device}}px · static (no JS)</div>
+  </div>
+
+  <!-- repeat per screen; id MUST match the userflow [n] -->
+  <section class="screen" id="s1">
+    <div class="bar"><span>[1] Screen name</span><span>desktop</span></div>
+    <div class="body">
+      <div class="row"><span class="lbl">Field</span><span class="box"></span></div>
+      <div class="row"><span class="btn primary">Primary</span><span class="btn">Secondary</span></div>
+    </div>
+  </section>
+
+</main>
+</body>
+</html>

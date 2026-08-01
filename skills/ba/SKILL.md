@@ -38,8 +38,9 @@ Map a natural-language need → exactly ONE document skill, then delegate to it.
 | Dev-ready backlog items (INVEST) | `/userstory` | slices of FRs; needs the SRS |
 | Pass/fail conditions per story (Given-When-Then) | `/ac` | edits stories in place |
 | Screen-navigation map | `/user-flow` | prerequisite for wireframes |
-| Sketch screens (chat-reviewable / browser) | `/wireframe-ascii` / `/wireframe-html` *(wave 3)* | ASCII in chat vs HTML in browser |
-| Clickable demo | `/prototype-html` *(wave 3)* | navigation works |
+| Sketch screens (chat-reviewable / browser) | `/wireframe-ascii` / `/wireframe-html` | ASCII in chat vs HTML in browser; both need the user flow |
+| Clickable demo | `/prototype-html` | navigation works; needs the wireframes |
+| Push wireframes to Figma frames | `/figma` | external-write hard gate; URLs in the index |
 | Integrate a 3rd-party API | `/api-assess` (provider open) / `/api-doc` (provider fixed) *(wave 5)* | 7-step chain, `rules/api-integration.md` |
 | Test coverage outline / full test cases | `/test-checklist` / `/test-cases` *(wave 4)* | outline vs executable steps |
 | What's missing/orphaned across docs | `/gap` *(wave 4)* | cross-doc coverage matrix |
@@ -73,7 +74,7 @@ Map a natural-language need → exactly ONE document skill, then delegate to it.
 - `/ba "what should we build first next quarter"` → **`/roadmap`**.
 - `/ba "show how the login flow works"` → **`/diagram`** (visual need — hand off).
 - `/ba "user stories for the payment feature"` → **`/userstory payment`** (needs `srs/payment-spec.md`; without it the skill routes you to `/srs` first).
-- `/ba "wireframes for checkout"` → `/wireframe-ascii` is wave 3 → "lands in wave 3 — closest today: `/user-flow checkout` (the flow division wireframes will read)".
+- `/ba "wireframes for checkout"` → **`/wireframe-ascii checkout`** (needs `srs/checkout-userflow.md` `stage: approved`; without it the skill routes you to `/user-flow` first).
 
 ## Gotchas
 

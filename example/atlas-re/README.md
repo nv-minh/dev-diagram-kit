@@ -34,6 +34,17 @@ The same claim-approval slice carried into the spec artifacts. Note the content/
 
 The thread continues: `FR-atlas-re-006` → `UC-approve-claim` (extensions 3a/3b) → `US-001` (AC-002/003 pin the 50k boundary) → screens `[2][3][4]`. The quorum OQ is still open — it now blocks US-001's committee-tier ACs, visibly.
 
+## Documents (wave 3 — UI design)
+
+The `approve-claim` flow drawn as ASCII wireframes with the 5-column description tables — every control cited back to the SRS (FR/BR/E-), device desktop 1024. The HTML/prototype shells (`skills/wireframe-html/resources/`, `skills/prototype-html/resources/`) show the next fidelities.
+
+| Skill | What it shows | File |
+|---|---|---|
+| `/wireframe-ascii` | Screens `[1]…[4]` — ASCII frames + 5-column description tables (6 layers each, sourced) | [`ascii-wireframe/approve-claim.md`](./ascii-wireframe/approve-claim.md) |
+| `/wireframe-ascii` | Screen index — metadata + per-screen purpose, 6 screens across 2 flows | [`ascii-wireframe/atlas-re-wireframe-index.md`](./ascii-wireframe/atlas-re-wireframe-index.md) |
+
+The thread reaches the screen: `FR-atlas-re-006` (tier routing) → screen `[3]` Decision panel, where `E-atlas-re-001` (validator conflict) and `E-atlas-re-004` (concurrency) surface as button-level errors in the description table.
+
 ## Diagrams
 
 ### Batch 1 — core

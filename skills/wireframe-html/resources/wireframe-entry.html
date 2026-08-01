@@ -1,0 +1,73 @@
+<!--
+  wireframe-entry.html — navigation entry for /wireframe-html (Phase G.5).
+  Sidebar TOC (flow → screen) + Overview tab (clickable flow map) + iframe per flow.
+  Self-contained; this is the ONLY file with JS. Fill {{feature}} + the flow list.
+  adapted from the kit's system-design/resources HTML precedent — see NOTICE
+-->
+<!doctype html>
+<html lang="{{lang}}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{feature}} — wireframes</title>
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; font: 14px/1.4 -apple-system, Segoe UI, Roboto, sans-serif; color: #111; display: flex; height: 100vh; }
+  aside { width: 240px; border-right: 2px solid #111; padding: 14px; overflow-y: auto; background: #fafafa; }
+  aside h1 { font-size: 14px; margin: 0 0 10px; }
+  aside .flow { font-weight: 700; margin: 12px 0 4px; }
+  aside a { display: block; color: #18181b; text-decoration: none; padding: 3px 8px; border-radius: 3px; font-size: 13px; }
+  aside a:hover, aside a.active { background: #111; color: #fff; }
+  main { flex: 1; display: flex; flex-direction: column; }
+  .tabs { display: flex; gap: 0; border-bottom: 2px solid #111; }
+  .tab { padding: 8px 16px; cursor: pointer; font-weight: 600; border-right: 1px solid #d4d4d8; background: #fafafa; }
+  .tab.active { background: #111; color: #fff; }
+  .pane { flex: 1; position: relative; overflow: hidden; }
+  iframe { width: 100%; height: 100%; border: 0; background: #f4f4f5; }
+  #overview { display: none; padding: 24px; overflow: auto; }
+  #overview .node { display: inline-block; border: 2px solid #111; padding: 8px 12px; margin: 6px; cursor: pointer; background: #fff; }
+</style>
+</head>
+<body>
+<aside>
+  <h1>{{feature}}</h1>
+  <div class="flow">approve-claim</div>
+  <a href="#" data-target="approve-claim" data-screen="s1">[1] Claim queue</a>
+  <a href="#" data-target="approve-claim" data-screen="s2">[2] Claim detail</a>
+</aside>
+<main>
+  <div class="tabs">
+    <div class="tab active" data-tab="flow">Flow</div>
+    <div class="tab" data-tab="overview">Overview map</div>
+  </div>
+  <div class="pane">
+    <iframe id="flowframe" src="approve-claim.html"></iframe>
+    <div id="overview">
+      <span class="node" data-target="approve-claim" data-screen="s1">[1] Claim queue</span>
+      → <span class="node" data-target="approve-claim" data-screen="s2">[2] Claim detail</span>
+    </div>
+  </div>
+</main>
+<script>
+  function loadFlow(file, screen) {
+    document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.tab === 'flow'));
+    document.getElementById('overview').style.display = 'none';
+    const f = document.getElementById('flowframe');
+    f.src = file + (screen ? ('#' + screen) : '');
+    f.onload = () => { try { f.contentWindow.location.hash = screen || ''; } catch(e){} };
+    document.getElementById('flowframe').style.display = '';
+  }
+  document.querySelectorAll('aside a, #overview .node').forEach(a => {
+    a.addEventListener('click', e => { e.preventDefault(); loadFlow(a.dataset.target + '.html', a.dataset.screen); });
+  });
+  document.querySelectorAll('.tab').forEach(t => {
+    t.addEventListener('click', () => {
+      const which = t.dataset.tab;
+      document.querySelectorAll('.tab').forEach(x => x.classList.toggle('active', x === t));
+      document.getElementById('overview').style.display = which === 'overview' ? '' : 'none';
+      document.getElementById('flowframe').style.display = which === 'flow' ? '' : 'none';
+    });
+  });
+</script>
+</body>
+</html>

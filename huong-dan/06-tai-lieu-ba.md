@@ -158,6 +158,48 @@ Ký hiệu: `<slug>` = tên feature dạng kebab-case (vd `atlas-re`). `"..."` =
 
 ---
 
+## 13. `/wireframe-ascii` — wireframe ASCII (xem trong chat)
+
+**Cú pháp:** `/wireframe-ascii <feature> [--flow <slug>]`
+
+**Dùng khi:** muốn phác màn hình và chỉnh layout ngay trong chat. **Cần `srs/{slug}-userflow.md` có `stage: approved`** — không có thì từ chối (chuyển `/user-flow`). Hỏi device trước (gợi ý từ `primary_device`).
+
+**Output:** `docs/{slug}/ascii-wireframe/{flow}.md` (zero frontmatter) — một khung ASCII mỗi màn hình `[n]` + bảng mô tả 5 cột. Cập nhật `{slug}-wireframe-index.md`.
+
+**Mẹo:** bảng mô tả mới là sản phẩm thật; 6 lớp mỗi phần tử, lấy từ SRS/UC (dẫn FR/BR/E-), không bịa — chỗ thiếu hỏi từng cái.
+
+---
+
+## 14. `/wireframe-html` — wireframe HTML tĩnh đen-trắng
+
+**Cú pháp:** `/wireframe-html <feature> [--flow <slug>]`
+
+**Dùng khi:** ASCII trong chat chưa đủ, cần khung đúng độ rộng device trên trình duyệt. Cùng gate với ASCII; dùng lại nội dung ASCII 1:1 — tăng trung thực, không thiết kế lại.
+
+**Output:** `docs/{slug}/html-wireframe/{flow}.html` mỗi flow (đen-trắng, không JS/màu, màn hình `id="s{n}"`) + entry `{slug}-wireframe.html` (TOC + flow map + iframe) + `{slug}-wireframe-html-index.md`. Double-click entry để duyệt mọi flow.
+
+---
+
+## 15. `/prototype-html` — prototype clickable
+
+**Cú pháp:** `/prototype-html <feature>`
+
+**Dùng khi:** cần chứng minh navigation chạy được — demo click-through. Cần wireframe (ASCII hoặc HTML).
+
+**Output:** một file tự chứa `docs/{slug}/html-design/{slug}-prototype.html` — mọi cạnh `Nav →` thành link chạy tới `#s{n}`. Link hỏng là BLOCKING. Ghi cột `HTML prototype` trong wireframe index.
+
+---
+
+## 16. `/figma` — đẩy wireframe lên Figma
+
+**Cú pháp:** `/figma <feature> [--flow <slug>]`
+
+**Dùng khi:** team dùng Figma và muốn có wireframe ở đó thành frame. **Cổng external-write cứng** — preview từng frame + đích, cần Y tường minh; dừng nếu Figma MCP chưa xác thực.
+
+**Output:** không file local — frame Figma; URL ghi vào cột `Figma` của `{slug}-wireframe-index.md`. Nội dung bám wireframe (cùng `[n]`); không bao giờ bịa URL.
+
+---
+
 ## Ghi chú chung
 
 - **Thứ tự chuỗi quan trọng nhưng không bắt buộc** — skill nào cũng chạy độc lập được (nhóm A tự tạo feature; thiếu tài liệu thượng nguồn = ghi chú mềm, không fail). Chuỗi là nơi các ID có nghĩa: UN → BO → CAP → FR.

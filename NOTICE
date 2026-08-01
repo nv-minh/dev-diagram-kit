@@ -92,3 +92,9 @@ structures — not verbatim text — from the following MIT-licensed projects:
 
 The MIT License text above (Cocoon AI block) applies identically to these
 adapted portions.
+
+The wireframe/prototype HTML shells (skills/wireframe-html/resources/*.html,
+skills/prototype-html/resources/prototype.html) are kit-native, adapted in
+structure from the system-design/resources HTML precedent (Cocoon AI, MIT —
+see the block above): the self-contained inline-CSS + minimal-JS pattern and
+the tabbed/iframe navigation approach. No third-party code is vendored.

@@ -94,10 +94,10 @@ flowchart LR
 
 | Business situation | Skill | Output file | Status | Reason |
 |---|---|---|---|---|
-| Sketch screens, review in chat (ASCII + 5-column description) | `/wireframe-ascii` | `docs/{feature}/ascii-wireframe/{flow-slug}.md` + `{feature}-wireframe-index.md` | planned (wave 3) | L3-capable (renders in chat); `ba-conventions.md` §6–8 |
-| B&W static HTML wireframes, browser review | `/wireframe-html` | `docs/{feature}/html-wireframe/{flow-slug}.html` + entry `{feature}-wireframe.html` | planned (wave 3) | Renderer on par with ascii, browser fidelity |
-| Clickable multi-screen demo | `/prototype-html` | `docs/{feature}/html-design/{feature}-prototype.html` | planned (wave 3) | Navigation actually works |
-| Push wireframes to Figma frames | `/figma` | Figma URLs in `{feature}-wireframe-index.md` (no local file) | planned (wave 3) | External-write hard gate |
+| Sketch screens, review in chat (ASCII + 5-column description) | `/wireframe-ascii` | `docs/{feature}/ascii-wireframe/{flow-slug}.md` + `{feature}-wireframe-index.md` | ✓ | L3-capable (renders in chat); `ba-conventions.md` §6–8 |
+| B&W static HTML wireframes, browser review | `/wireframe-html` | `docs/{feature}/html-wireframe/{flow-slug}.html` + entry `{feature}-wireframe.html` | ✓ | Renderer on par with ascii, browser fidelity |
+| Clickable multi-screen demo | `/prototype-html` | `docs/{feature}/html-design/{feature}-prototype.html` | ✓ | Navigation actually works |
+| Push wireframes to Figma frames | `/figma` | Figma URLs in `{feature}-wireframe-index.md` (no local file) | ✓ | External-write hard gate |
 
 ## Decision matrix — API integration (7-step chain)
 

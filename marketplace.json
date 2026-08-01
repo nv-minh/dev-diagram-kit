@@ -5,13 +5,13 @@
   },
   "metadata": {
     "description": "Marketplace for dev-ba-kit — BA toolkit for developers: documents + diagrams. 1 repo = marketplace + plugin.",
-    "version": "2.1.0"
+    "version": "2.2.0"
   },
   "plugins": [
     {
       "name": "dev-ba-kit",
       "source": "./",
-      "description": "39 skills for developers doing BA work: discovery documents (/brainstorm→/urd→/brd→/prd-epic→/srs + /prd /roadmap) + specification (/usecase /userstory /ac /user-flow) + 22 diagram skills (Mermaid/PlantUML/D2/BPMN/draw.io) + code-flow/scan-project/gallery/sync-confluence. Two routers: /ba (documents) and /diagram (diagrams). Bilingual EN/VI.",
+      "description": "43 skills for developers doing BA work: discovery documents (/brainstorm→/urd→/brd→/prd-epic→/srs + /prd /roadmap) + specification (/usecase /userstory /ac /user-flow) + UI design (/wireframe-ascii /wireframe-html /prototype-html /figma) + 22 diagram skills (Mermaid/PlantUML/D2/BPMN/draw.io) + code-flow/scan-project/gallery/sync-confluence. Two routers: /ba (documents) and /diagram (diagrams). Bilingual EN/VI.",
       "category": "productivity",
       "keywords": [
         "diagram",

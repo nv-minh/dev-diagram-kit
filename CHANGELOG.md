@@ -4,6 +4,21 @@ All notable changes to **dev-ba-kit** are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); versions follow [SemVer](https://semver.org).
 (`rules/changelog.md` is a different thing — it defines the activity-log convention for the BA artifacts the kit generates.)
 
+## [2.2.0] — Unreleased
+
+### Added
+- **Wave 3 — UI design (4 skills):** `/wireframe-ascii` (ASCII frames + 5-column description tables,
+  L3 iterate in chat; gates on the approved user flow), `/wireframe-html` (B&W static HTML per flow +
+  navigation entry, renderer on par with ASCII), `/prototype-html` (one self-contained clickable
+  prototype — every nav edge works, broken links BLOCKING), `/figma` (push wireframes to Figma via
+  MCP, external-write hard gate, URLs into the screen index). All follow `ba-conventions.md` §6–8
+  (description depth, device question first, one-screen-one-state).
+- HTML shells in `skills/{wireframe-html,prototype-html}/resources/`; templates `doc-wireframe-index.md`,
+  `doc-wireframe-html-index.md`.
+- `explain-skills/wireframe-family.{md,vi.md}`; guides 06 EN/VI §13–§16.
+- atlas-re: `ascii-wireframe/approve-claim.md` (screens `[1]…[4]` ASCII + 5-column tables citing the
+  SRS FR/BR/E-) + `atlas-re-wireframe-index.md` (6 screens across 2 flows).
+
 ## [2.1.0] — Unreleased
 
 ### Added
