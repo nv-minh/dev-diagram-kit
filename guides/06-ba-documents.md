@@ -2,7 +2,7 @@
 
 **English** · [Tiếng Việt](../huong-dan/06-tai-lieu-ba.md)
 
-> Each document skill: call syntax, what to prepare, what it asks, where the output goes, an example (compare with `example/atlas-re/`). Everything follows the **approval gate** (preview before writing) and every generated doc passes **`doc-validate`** (frontmatter, IDs, links) before the skill reports done. Diagram skills live in [03 — Per-skill guide](03-per-skill-guide.md). Later waves (spec, wireframes, API, testing, delivery) will extend this guide as they land — see the status column in `rules/doc-selection.md`.
+> Each document skill: call syntax, what to prepare, what it asks, where the output goes, an example (compare with `example/atlas-re/`). Everything follows the **approval gate** (preview before writing) and every generated doc passes **`doc-validate`** (frontmatter, IDs, links) before the skill reports done. Diagram skills live in [03 — Per-skill guide](03-per-skill-guide.md). Spec, wireframes, API, testing, and delivery skills are covered below and in [07 — API and delivery](07-api-and-delivery.md); the routing matrix is `rules/doc-selection.md`.
 
 Notation: `<slug>` = feature name in kebab-case (e.g. `atlas-re`). `"..."` = a business description in words.
 

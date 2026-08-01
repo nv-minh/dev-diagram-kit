@@ -2,7 +2,7 @@
 
 **English** · [Tiếng Việt](../huong-dan/02-chon-skill-nao.md)
 
-> 35 skills sounds like a lot, but picking the right one is quick if you ask the right question. This is the condensed version; the full versions are `explain-skills/diagram-selection.md` (diagrams) and `rules/doc-selection.md` (documents).
+> 63 skills sounds like a lot, but picking the right one is quick if you ask the right question — or just run `/ba` / `/diagram`. This is the condensed version; the full versions are `explain-skills/diagram-selection.md` (diagrams) and `rules/doc-selection.md` (documents).
 
 ---
 
@@ -21,7 +21,7 @@
 - **What we'll build for ONE feature (P0/P1/P2)** → **`/prd-epic <feature>`**
 - **Precise system behavior (FRs, rules, errors)** → **`/srs <feature>`**
 - **The WHOLE product, once** → **`/prd`** · **prioritize it** → **`/roadmap`**
-- Later waves (use cases, stories, wireframes, API, tests, Jira/Confluence) — see the status column in `rules/doc-selection.md`.
+- **Spec / UI / API / test / delivery** (use cases, stories, ACs, wireframes, API chain, tests, Jira/Confluence, export…) — run **`/ba "<what you need>"`**, or see the matrix in `rules/doc-selection.md`.
 
 ## The 30-second diagram tree
 

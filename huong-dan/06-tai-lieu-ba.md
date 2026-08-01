@@ -2,7 +2,7 @@
 
 [English](../guides/06-ba-documents.md) · **Tiếng Việt**
 
-> Mỗi skill tài liệu: cú pháp gọi, cần chuẩn bị gì, hỏi gì, output ở đâu, ví dụ (đối chiếu `example/atlas-re/`). Tất cả tuân **approval gate** (xem trước rồi mới ghi) và mọi tài liệu sinh ra đều qua **`doc-validate`** (frontmatter, ID, link) trước khi skill báo xong. Skill sơ đồ nằm ở [03 — Hướng dẫn từng skill](03-huong-dan-tung-skill.md). Các wave sau (spec, wireframe, API, testing, bàn giao) sẽ nối tiếp guide này khi lên sóng — xem cột status trong `rules/doc-selection.md`.
+> Mỗi skill tài liệu: cú pháp gọi, cần chuẩn bị gì, hỏi gì, output ở đâu, ví dụ (đối chiếu `example/atlas-re/`). Tất cả tuân **approval gate** (xem trước rồi mới ghi) và mọi tài liệu sinh ra đều qua **`doc-validate`** (frontmatter, ID, link) trước khi skill báo xong. Skill sơ đồ nằm ở [03 — Hướng dẫn từng skill](03-huong-dan-tung-skill.md). Spec, wireframe, API, testing và bàn giao được cover bên dưới và ở [07 — API và bàn giao](07-api-va-ban-giao.md); matrix chọn skill là `rules/doc-selection.md`.
 
 Ký hiệu: `<slug>` = tên feature dạng kebab-case (vd `atlas-re`). `"..."` = mô tả nghiệp vụ bằng lời.
 

@@ -15,8 +15,10 @@
 //      guides/ and huong-dan/ have the same file count; README.vi.md exists.
 //   4. Version trio — package.json == .claude-plugin/plugin.json == marketplace.json.
 //   5. Skill-count claims — every "N skills"/"N skill"/"All N commands"/"Cả N lệnh" in the
-//      READMEs equals the real count of skills/*/SKILL.md.
-//   6. Template schema — every templates/doc-*.md frontmatter `type:` exists in
+//      READMEs *and* guides/ + huong-dan/ equals the real count of skills/*/SKILL.md.
+//   6. Stale-phrase / coverage-claim — forbidden phrases on README + guides/huong-dan;
+//      fractional "M/N skill" claims with M≠N; EN/VI coverage claim parity.
+//   7. Template schema — every templates/doc-*.md frontmatter `type:` exists in
 //      rules/naming-conventions.md's doc-type table.
 //
 // Exit 0 = clean (warnings allowed), 1 = errors.
@@ -69,6 +71,89 @@ export function docTypesFromNaming(src: string): Set<string> {
     for (const t of firstCell.matchAll(/`([a-z][a-z0-9-]*)`/g)) types.add(t[1]);
   }
   return types;
+}
+
+/**
+ * Total-kit size claims — these MUST equal the real skill count.
+ * Deliberately narrow so subset phrases like "2 skills" / "4 draw.io skills" stay valid.
+ */
+export const TOTAL_COUNT_CLAIM_RES: RegExp[] = [
+  /\ball\s+(\d+)\s+(?:`\/\.\.\.`\s+)?commands\b/gi,
+  /\bcả\s+(\d+)\s+lệnh\b/gi,
+  /(\d+)\s+`\/\.\.\.`\s+commands\b/gi,
+  /(\d+)\s+lệnh\s+`\/\.\.\.`/gi,
+  /\ball\s+(\d+)\s+skills\b/gi,
+  /(\d+)\s+skills\s+sounds like/gi,
+  /(\d+)\s+skill\s+nghe nhiều/gi,
+  /\ball\s+(\d+)\s+skills\s+follow/gi,
+  /\bcả\s+(\d+)\s+skills?\s+theo/gi,
+  // README layout / badge-style "63 skills" / "63 skill" only on README surfaces (see checkReadmeCounts)
+  /skills\/\s+(\d+)\s+skills?\b/gi,
+];
+
+/** Historical totals that must not appear as skill/command counts on surface docs. */
+export const STALE_TOTAL_NUMBERS = [14, 22, 27, 28, 35];
+export const STALE_TOTAL_COUNT_RE = new RegExp(
+  `\\b(${STALE_TOTAL_NUMBERS.join('|')})\\s+(skills?|commands?|lệnh)\\b`,
+  'gi',
+);
+
+/** Phrases that mean docs have not caught up with a shipped release. */
+export const FORBIDDEN_STALE_PHRASES: RegExp[] = [
+  /more waves landing/i,
+  /\blater waves\b/i,
+  /\bwave sau\b/i,
+  /đang lên sóng/i,
+  /will extend this guide as they land/i,
+];
+
+/** Fractional coverage like "đủ 28/63 skill" — M must equal N when present. */
+export const FRACTION_COVERAGE_RE = /(?:đủ\s+)?(\d+)\s*\/\s*(\d+)\s+skills?\b/gi;
+
+export type CoverageKind = { kind: 'all'; n: number } | { kind: 'fraction'; m: number; n: number };
+
+/** Best-effort coverage claim from a README layout/blurb line. */
+export function coverageClaim(src: string): CoverageKind | null {
+  const frac = [...src.matchAll(/(?:đủ\s+)?(\d+)\s*\/\s*(\d+)\s+skills?\b/gi)];
+  if (frac.length) {
+    const m = parseInt(frac[0][1], 10);
+    const n = parseInt(frac[0][2], 10);
+    return { kind: 'fraction', m, n };
+  }
+  const all = src.match(/(?:all|covering all|phủ đủ|đủ)\s+(\d+)\s+skills?\b/i)
+    ?? src.match(/cover(?:ing|ed)?\s+all\s+(\d+)\s+skills?\b/i);
+  if (all) return { kind: 'all', n: parseInt(all[1], 10) };
+  return null;
+}
+
+function checkTotalCountClaims(label: string, src: string, actual: number, err: (c: string, m: string) => void): void {
+  for (const re of TOTAL_COUNT_CLAIM_RES) {
+    re.lastIndex = 0;
+    for (const m of src.matchAll(re)) {
+      if (parseInt(m[1], 10) !== actual) {
+        err('count', `${label} claims "${m[0]}" but the kit has ${actual} skills`);
+      }
+    }
+  }
+  STALE_TOTAL_COUNT_RE.lastIndex = 0;
+  for (const m of src.matchAll(STALE_TOTAL_COUNT_RE)) {
+    err('count', `${label} uses stale total "${m[0]}" — kit has ${actual} skills`);
+  }
+}
+
+/** README still uses the broad "N skills"/"N skill" check (badge + layout lines). */
+function checkReadmeCounts(label: string, src: string, actual: number, err: (c: string, m: string) => void): void {
+  const res = label.endsWith('.vi.md')
+    ? [/(\d+)\s+skill\b/g, /\bcả\s+(\d+)\s+lệnh\b/gi]
+    : [/(\d+)\s+skills\b/g, /\ball\s+(\d+)\s+commands\b/gi];
+  for (const re of res) {
+    re.lastIndex = 0;
+    for (const m of src.matchAll(re)) {
+      if (parseInt(m[1], 10) !== actual) {
+        err('count', `${label} claims "${m[0]}" but the kit has ${actual} skills`);
+      }
+    }
+  }
 }
 
 export function lintKit(root: string): Finding[] {
@@ -162,22 +247,50 @@ export function lintKit(root: string): Finding[] {
     }
   } catch (e: unknown) { err('version', `cannot read version trio: ${(e as Error).message}`); }
 
-  // ── 5. skill-count claims ──
+  // ── 5. skill-count claims (README broad; guides/huong-dan total-claim + stale denylist) ──
   const actual = skillDirs.length;
-  const claims: Array<[string, RegExp[]]> = [
-    ['README.md', [/(\d+)\s+skills\b/g, /All (\d+) commands\b/g]],
-    ['README.vi.md', [/(\d+)\s+skill\b/g, /Cả (\d+) lệnh\b/g]],
+  checkReadmeCounts('README.md', readmeEn, actual, err);
+  checkReadmeCounts('README.vi.md', readmeVi, actual, err);
+  const surfaceDocs: Array<[string, string]> = [];
+  for (const n of guides) surfaceDocs.push([`guides/${n}`, read(join(root, 'guides', n))]);
+  for (const n of huongDan) surfaceDocs.push([`huong-dan/${n}`, read(join(root, 'huong-dan', n))]);
+  for (const [label, src] of surfaceDocs) checkTotalCountClaims(label, src, actual, err);
+
+  // ── 6. stale phrases + coverage claim parity ──
+  const surfaces: Array<[string, string]> = [
+    ['README.md', readmeEn],
+    ['README.vi.md', readmeVi],
+    ...surfaceDocs,
   ];
-  for (const [file, res] of claims) {
-    const src = file === 'README.md' ? readmeEn : readmeVi;
-    for (const re of res) {
-      for (const m of src.matchAll(re)) {
-        if (parseInt(m[1], 10) !== actual) err('count', `${file} claims "${m[0]}" but the kit has ${actual} skills`);
+  for (const [label, src] of surfaces) {
+    if (!src) continue;
+    for (const re of FORBIDDEN_STALE_PHRASES) {
+      if (re.test(src)) err('stale', `${label} contains forbidden phrase matching ${re}`);
+    }
+    FRACTION_COVERAGE_RE.lastIndex = 0;
+    for (const m of src.matchAll(FRACTION_COVERAGE_RE)) {
+      const a = parseInt(m[1], 10);
+      const b = parseInt(m[2], 10);
+      if (a !== b) err('stale', `${label} claims partial coverage "${m[0]}" — use a full-coverage claim or drop the fraction`);
+    }
+  }
+  if (readmeEn && readmeVi) {
+    const enCov = coverageClaim(readmeEn);
+    const viCov = coverageClaim(readmeVi);
+    if (enCov && viCov) {
+      if (enCov.kind === 'all' && viCov.kind === 'fraction' && viCov.m < viCov.n) {
+        err('parity', `README.md claims full coverage of ${enCov.n} but README.vi.md claims only ${viCov.m}/${viCov.n}`);
+      }
+      if (viCov.kind === 'all' && enCov.kind === 'fraction' && enCov.m < enCov.n) {
+        err('parity', `README.vi.md claims full coverage of ${viCov.n} but README.md claims only ${enCov.m}/${enCov.n}`);
+      }
+      if (enCov.kind === 'all' && viCov.kind === 'all' && enCov.n !== viCov.n) {
+        err('parity', `README coverage count drift — EN all ${enCov.n} vs VI all ${viCov.n}`);
       }
     }
   }
 
-  // ── 6. template schema ──
+  // ── 7. template schema ──
   const naming = existsSync(join(root, 'rules/naming-conventions.md')) ? read(join(root, 'rules/naming-conventions.md')) : '';
   const validTypes = docTypesFromNaming(naming);
   for (const n of listFiles(join(root, 'templates')).filter(n => n.startsWith('doc-') && n.endsWith('.md'))) {

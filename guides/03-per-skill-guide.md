@@ -2,7 +2,7 @@
 
 **English** · [Tiếng Việt](../huong-dan/03-huong-dan-tung-skill.md)
 
-> Document skills (the `/brainstorm → /srs` chain, and later waves) live in [06 — BA documents](06-ba-documents.md).
+> Document skills (the `/brainstorm → /srs` chain, plus spec/UI/API/test/delivery skills) live in [06 — BA documents](06-ba-documents.md).
 
 > Each skill: call syntax, what to prepare, what it asks, where the output goes, a real example (compare with `example/atlas-re/`). All skills follow the **approval gate** — preview before writing.
 

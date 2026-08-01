@@ -1,6 +1,6 @@
 # 04 — Cách skill hoạt động (luồng chung)
 
-> Hiểu luồng chạy giúp bạn biết khi nào skill sẽ hỏi, khi nào chờ bạn duyệt, và tại sao nó tự sửa lỗi. Cả 27 skill theo cùng khung này (2 skill mở rộng có biến thể: `/scan-project` chạy **2 pha có HARD STOP** scan→plan→sinh; `/sync-confluence` thêm bước **preview + xác nhận** trước khi ghi lên Confluence).
+> Hiểu luồng chạy giúp bạn biết khi nào skill sẽ hỏi, khi nào chờ bạn duyệt, và tại sao nó tự sửa lỗi. Cả 63 skill theo cùng khung này (biến thể đáng chú ý: `/scan-project` chạy **2 pha có HARD STOP** scan→plan→sinh; `/sync-confluence` và các skill external-write khác thêm bước **preview + xác nhận** trước khi ghi ra ngoài vault).
 
 > **Song ngữ EN/VI:** ngôn ngữ output (nhãn diagram + câu hỏi phỏng vấn + L1 plan + báo cáo) **tự bám ngôn ngữ bạn gõ** — gõ tiếng Anh → English, tiếng Việt → VI; ép bằng `--lang en|vi` (theo `rules/language.md`). Keyword cú pháp engine + tên định danh kỹ thuật thật (table/service/endpoint) luôn giữ English.
 
@@ -63,15 +63,17 @@ Mỗi engine có cách bắt lỗi riêng, chạy **trước khi báo "xong"**:
 
 Lỗi → skill **sửa và thử lại** (thường tối đa 2-3 lần), không ghi diagram hỏng ra rồi báo hoàn tất.
 
-**Review nghiệp vụ (tùy skill):** `/sequence` và `/activity` khi diagram phức tạp sẽ spawn `@diagram-reviewer` soi coverage kỹ thuật (actor/lane thiếu, nhánh error bỏ sót) trước khi báo xong.
+**Review nghiệp vụ (tùy skill):** sơ đồ phức tạp spawn `@diagram-reviewer`; tài liệu BA lớn spawn `@doc-reviewer`. Cả hai trả findings để skill sửa trước khi báo xong.
 
 ---
 
-## Vì sao có agent `diagram-reviewer`?
+## Vì sao có các agent reviewer?
 
-- **`diagram-reviewer`** — soi diagram kỹ thuật (`/sequence`, `/activity`) khi vượt ngưỡng phức tạp: bắt actor/lane thiếu, nhánh error/alt bỏ sót, dead-end, gateway thiếu nhánh.
+- **`diagram-reviewer`** — soi diagram kỹ thuật (`/sequence`, `/activity`, …) khi vượt ngưỡng phức tạp: bắt actor/lane thiếu, nhánh error/alt bỏ sót, dead-end, gateway thiếu nhánh.
+- **`doc-reviewer`** — soi tài liệu BA (`/srs`, `/brd`, `/prd-epic`, …) khi vượt ngưỡng: ID chưa cover, fact bịa, sai altitude, meta-text template lọt ra.
+- **`change-tracker`** — hỗ trợ luồng impact thay đổi (dùng với `/cr` và các path bàn giao liên quan).
 
-Đây là agent read-only, trả findings để skill tự cải thiện — không tự ghi file. (Bộ đầy đủ còn có `flow-reviewer` cho `/user-flow`, nhưng `/user-flow` không nằm trong gói diagram này nên không kèm theo.)
+Đây là agent read-only, trả findings để skill tự cải thiện — không tự ghi file.
 
 ---
 

@@ -60,25 +60,27 @@ The spine is now provably complete end to end: `UN-005 → BO-03 → CAP-04 → 
 
 ## Documents (wave 5 — API integration)
 
-The integration chain documented ahead of the spec slice: a fictional **CatModel** catastrophe-model provider feeding the pricing engine. Shows the full digest → blueprint → map path with the disciplines that matter (provenance, webhook⇄reconciliation pairing, source-of-truth ownership).
+The integration chain documented ahead of the spec slice: a fictional **CatModel** catastrophe-model provider feeding the pricing engine.
 
-| Skill | What it shows | File |
+**In this example (artifact committed):** digest → blueprint → map — the path that shows provenance, webhook⇄reconciliation pairing, and source-of-truth ownership.
+
+| Skill | Status in example | File |
 |---|---|---|
-| `/api-doc` | The CatModel contract summary (endpoints/auth/webhook/limits), every row provenance-tagged, gaps → OQ | [`integration/api-summary-catmodel.md`](./integration/api-summary-catmodel.md) |
-| `/api-design` | The Integration Blueprint — orchestration, state-map, source-of-truth per field, webhook with its reconciliation partner, retry, degraded-UX | [`integration/api-design.md`](./integration/api-design.md) |
-| `/api-map` | The 3-layer field map (provider ↔ model ↔ UI), every field with owner + direction + transform; flags the ERD-reconciliation OQ | [`integration/api-map.md`](./integration/api-map.md) |
+| `/api-doc` | artifact | [`integration/api-summary-catmodel.md`](./integration/api-summary-catmodel.md) |
+| `/api-design` | artifact | [`integration/api-design.md`](./integration/api-design.md) |
+| `/api-map` | artifact | [`integration/api-map.md`](./integration/api-map.md) |
+| `/api-assess` · `/api-checklist` · `/api-test` · `/api-readiness` | guide-only | See `guides/07-api-and-delivery.md` — not committed here (provider scorecard / Bruno collection / go-live pack are session- or secrets-shaped) |
 
-Note the disciplines: the `quote.completed` webhook is paired with a polling reconciliation (no silent data loss); `loss_estimate` is explicitly `theirs` (CatModel authority) while `priced_at` is `derived`; the currency transform cites the same BR-atlas-re-001 FX path the claim-approval spine uses.
+Note the disciplines in the committed trio: the `quote.completed` webhook is paired with a polling reconciliation (no silent data loss); `loss_estimate` is explicitly `theirs` (CatModel authority) while `priced_at` is `derived`; the currency transform cites the same BR-atlas-re-001 FX path the claim-approval spine uses.
 
 ## Documents (wave 6 — delivery)
 
-A meeting note whose Decisions table links back into the spine — the kind of capture that, if it changes scope, routes straight to `/cr`.
-
-| Skill | What it shows | File |
+| Skill | Status in example | File |
 |---|---|---|
-| `/meeting` | A review meeting — decisions/blockers/actions as in-file tables, decisions linking `FR-atlas-re-006` | [`meetings/2026-08-01-review-authority-threshold.md`](./meetings/2026-08-01-review-authority-threshold.md) |
+| `/meeting` | artifact | [`meetings/2026-08-01-review-authority-threshold.md`](./meetings/2026-08-01-review-authority-threshold.md) |
+| `/jira` · `/confluence` · `/export` · `/userguide` · `/inbox` · `/doc-review` · `/dashboard` | guide-only | External-write or large generated output — documented in `guides/07-api-and-delivery.md`, not committed as fixtures |
 
-This meeting is the origin of `CR-20260801-001` (the 50k→60k threshold change) — follow the decision's `Affects` link to the SRS, then to the CR's Impact Matrix, to see how a discussion becomes a traced change. (The other delivery skills — `/jira`, `/confluence`, `/export`, `/userguide`, `/inbox`, `/doc-review`, `/dashboard` — have external/session side-effects or large generated output, so they're documented in the guides rather than committed as examples.)
+This meeting is the origin of `CR-20260801-001` (the 50k→60k threshold change) — follow the decision's `Affects` link to the SRS, then to the CR's Impact Matrix, to see how a discussion becomes a traced change.
 
 ## Diagrams
 

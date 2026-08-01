@@ -4,6 +4,22 @@ All notable changes to **dev-ba-kit** are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); versions follow [SemVer](https://semver.org).
 (`rules/changelog.md` is a different thing — it defines the activity-log convention for the BA artifacts the kit generates.)
 
+## [Unreleased]
+
+### Fixed
+- Docs trust restore after the 27→63 skill expansion: README EN/VI coverage claims, CI badge URL
+  (`dev-ba-kit`), guide skill counts (14/27/35), and stale "later waves" / "more waves landing"
+  wording; agents layout lists `diagram-reviewer` · `doc-reviewer` · `change-tracker`.
+- `kit-lint` now flags stale total counts and forbidden phrases in `guides/` + `huong-dan/`, plus
+  EN/VI coverage-claim drift (prevents green lint while onboarding docs lie).
+- Example policy clarified in `example/atlas-re/README.md`: API digest→blueprint→map and `/meeting`
+  are committed artifacts; remaining API/delivery skills are guide-only.
+- CI runs allowlisted `diagram-validate` with strict tools (d2, PlantUML jar, mmdc+Chrome, BPMN
+  engine deps). New `scripts/validate-example-diagrams.ts`; smoke tests for BPMN `checkIR` +
+  diagram-validate. `mermaid-verify` exits 2 when `mmdc` is missing (no more false FAIL blocks).
+- `diagram-validate` no longer crashes when reporting Mermaid failures (match helper used full-match
+  lines without a capture group).
+
 ## [2.5.0] — 2026-08-01
 
 ### Added

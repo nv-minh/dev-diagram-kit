@@ -2,7 +2,7 @@
 
 **English** · [Tiếng Việt](../huong-dan/04-cach-hoat-dong.md)
 
-> Understanding the run flow helps you know when a skill will ask questions, when it waits for your approval, and why it self-corrects. All 27 skills follow this same framework (with 2 extended skills having variants: `/scan-project` runs **2 phases with a HARD STOP** scan→plan→generate; `/sync-confluence` adds a **preview + confirmation** step before writing to Confluence).
+> Understanding the run flow helps you know when a skill will ask questions, when it waits for your approval, and why it self-corrects. All 63 skills follow this same framework (with notable variants: `/scan-project` runs **2 phases with a HARD STOP** scan→plan→generate; `/sync-confluence` and other external-write skills add a **preview + confirmation** step before writing outside the vault).
 
 > **Bilingual EN/VI:** the output language (diagram labels + interview questions + L1 plan + report) **automatically follows the language you type in** — type English → English, Vietnamese → VI; force it with `--lang en|vi` (per `rules/language.md`). Engine syntax keywords + real technical identifiers (table/service/endpoint) always stay in English.
 
@@ -65,15 +65,17 @@ Each engine has its own way of catching errors, run **before reporting "done"**:
 
 Errors → the skill **fixes and retries** (usually up to 2-3 times), never writing out a broken diagram and reporting it as complete.
 
-**Business review (skill-dependent):** `/sequence` and `/activity` spawn `@diagram-reviewer` when the diagram is complex, to check technical coverage (missing actor/lane, missed error branches) before reporting done.
+**Business review (skill-dependent):** complex diagrams spawn `@diagram-reviewer`; large BA docs spawn `@doc-reviewer`. Both return findings for the skill to fix before reporting done.
 
 ---
 
-## Why does the `diagram-reviewer` agent exist?
+## Why do the reviewer agents exist?
 
-- **`diagram-reviewer`** — reviews technical diagrams (`/sequence`, `/activity`) when they exceed a complexity threshold: catches missing actors/lanes, missed error/alt branches, dead ends, gateways missing a branch.
+- **`diagram-reviewer`** — reviews technical diagrams (`/sequence`, `/activity`, …) when they exceed a complexity threshold: catches missing actors/lanes, missed error/alt branches, dead ends, gateways missing a branch.
+- **`doc-reviewer`** — reviews BA documents (`/srs`, `/brd`, `/prd-epic`, …) over threshold: uncovered IDs, fabricated facts, wrong altitude, template meta-text leaks.
+- **`change-tracker`** — supports change-impact workflows (used with `/cr` and related delivery paths).
 
-This is a read-only agent that returns findings for the skill to improve itself — it doesn't write files. (The full package also has `flow-reviewer` for `/user-flow`, but `/user-flow` isn't part of this diagram package, so it isn't included.)
+These are read-only agents that return findings for the skill to improve itself — they don't write files.
 
 ---
 

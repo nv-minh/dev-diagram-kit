@@ -4,7 +4,7 @@
 
 Bộ skill vẽ sơ đồ và làm tài liệu cho **dev làm công việc BA**, đóng gói thành plugin [Claude Code](https://docs.claude.com/en/docs/claude-code). Mô tả hệ thống hoặc quy trình bằng lời — hoặc trỏ vào một codebase — kit sẽ vẽ đúng loại sơ đồ (Mermaid, PlantUML, D2 hoặc BPMN), tự kiểm cú pháp rồi render. Output song ngữ, tự bám theo ngôn ngữ bạn gõ.
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE) [![CI](https://github.com/nv-minh/dev-diagram-kit/actions/workflows/ci.yml/badge.svg)](https://github.com/nv-minh/dev-diagram-kit/actions/workflows/ci.yml) &nbsp; 63 skill &nbsp;·&nbsp; Mermaid / PlantUML / D2 / BPMN / draw.io &nbsp;·&nbsp; EN / VI
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE) [![CI](https://github.com/nv-minh/dev-ba-kit/actions/workflows/ci.yml/badge.svg)](https://github.com/nv-minh/dev-ba-kit/actions/workflows/ci.yml) &nbsp; 63 skill &nbsp;·&nbsp; Mermaid / PlantUML / D2 / BPMN / draw.io &nbsp;·&nbsp; EN / VI
 
 [English](README.md) · **Tiếng Việt**
 
@@ -12,7 +12,7 @@ Bộ skill vẽ sơ đồ và làm tài liệu cho **dev làm công việc BA**,
 
 ## Danh sách skill
 
-Sáu mươi ba skill. Ba mươi lăm skill viết tài liệu BA (chuỗi discovery, các wave tiếp theo đang lên sóng — xem `rules/doc-selection.md`); hai mươi hai skill vẽ sơ đồ (gồm bốn skill **draw.io** vẽ kiến trúc cloud với stencil AWS/Azure/GCP/Databricks thật + một skill **draw.io** vẽ sequence UML); `/scan-project` và `/code-flow` đọc code; hai router tự chọn skill cho bạn — `/diagram` (sơ đồ) và `/ba` (tài liệu BA); `/gallery` gom thành một file bàn giao; `/sync-confluence` sync sang Confluence. Mọi sản phẩm đều qua cổng validate thống nhất trước khi báo xong — `diagram-validate` cho sơ đồ, `doc-validate` cho tài liệu.
+Sáu mươi ba skill. Ba mươi lăm skill viết tài liệu BA (bộ đầy đủ discovery→spec→UI→API→test→bàn giao đã ship qua wave 1–6 — xem `rules/doc-selection.md`); hai mươi hai skill vẽ sơ đồ (gồm bốn skill **draw.io** vẽ kiến trúc cloud với stencil AWS/Azure/GCP/Databricks thật + một skill **draw.io** vẽ sequence UML); `/scan-project` và `/code-flow` đọc code; hai router tự chọn skill cho bạn — `/diagram` (sơ đồ) và `/ba` (tài liệu BA); `/gallery` gom thành một file bàn giao; `/sync-confluence` sync sang Confluence. Mọi sản phẩm đều qua cổng validate thống nhất trước khi báo xong — `diagram-validate` cho sơ đồ, `doc-validate` cho tài liệu.
 
 ### Tài liệu — discovery & requirements
 
@@ -235,7 +235,7 @@ Bản trình bày C4 (dark theme, export PNG/PDF một chạm) ghi ở `docs/{fe
 
 ## Ví dụ làm sẵn — Atlas Re
 
-Một nền tảng underwriting tái bảo hiểm *giả định, ẩn danh* (mô phỏng theo codebase NestJS + React thật — không tên/field/path thật). **Mỗi skill diagram có một ví dụ render sẵn**, sinh bằng pipeline thật. Xem [`example/atlas-re/README.md`](example/atlas-re/README.md) cho danh sách đầy đủ + [`DOMAIN.md`](example/atlas-re/DOMAIN.md) cho domain.
+Một nền tảng underwriting tái bảo hiểm *giả định, ẩn danh* (mô phỏng theo codebase NestJS + React thật — không tên/field/path thật). **Mỗi skill diagram có một ví dụ render sẵn**, sinh bằng pipeline thật. Skill tài liệu cover chuỗi discovery→spec→test cộng bộ ba API digest→blueprint→map; các skill API/bàn giao còn lại chỉ có trong guide (xem bảng status ở [`example/atlas-re/README.md`](example/atlas-re/README.md)). Domain: [`DOMAIN.md`](example/atlas-re/DOMAIN.md).
 
 **Kiến trúc hệ thống** — `/d2-architect` (mọi khối đều có icon tech: React, nginx, NestJS, Postgres, Redis, Kafka, Azure; gateway = hexagon, cache = `stored_data`, DB = cylinder, queue = `queue`):
 
@@ -327,7 +327,7 @@ dev-ba-kit/
 ├── marketplace.json               Catalog marketplace (/plugin marketplace add)
 ├── install.sh                     Installer kiểu copy (không cần plugin)
 ├── skills/                        63 skill
-├── agents/                        diagram-reviewer
+├── agents/                        diagram-reviewer · doc-reviewer · change-tracker
 ├── rules/                         Rule dùng chung (approval-gate, diagram-selection, diagram-style, language, icon-map, …)
 ├── scripts/                       mermaid-verify.ts · diagram-validate.ts · doctor.sh · plantuml-ensure.sh · drawio-catalog-ensure.sh · icon-path.sh · tsrun.sh · render helper
 ├── tests/                         Unit test cho engine (vitest — `npm test`)
@@ -336,7 +336,7 @@ dev-ba-kit/
 ├── hooks/                         SessionStart hook (tự cài BPMN engine)
 ├── assets/icons/                  Icon công nghệ bundle sẵn (Devicon MIT, Simple Icons CC0)
 ├── example/                       Ví dụ đầy đủ: feature atlas-re
-├── explain-skills/                Giải thích từng skill, đủ 28/63 skill (song ngữ: `*.md` tiếng Anh, `*.vi.md` tiếng Việt)
+├── explain-skills/                Deep dive từng skill + family doc, phủ đủ 63 skill (song ngữ: `*.md` tiếng Anh, `*.vi.md` tiếng Việt)
 ├── guides/ · huong-dan/           Hướng dẫn bắt đầu (tiếng Anh / tiếng Việt)
 └── CHANGELOG.md · CONTRIBUTING.md Lịch sử phiên bản · hướng dẫn đóng góp
 ```

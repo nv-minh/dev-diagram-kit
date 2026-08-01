@@ -41,7 +41,7 @@ Trong Claude Code, chỉ 2 lệnh:
 /plugin install dev-ba-kit
 ```
 
-Xong — **14 lệnh `/...` có sẵn ngay** (12 vẽ diagram + `/scan-project` + `/sync-confluence`). Engine BPMN tự `npm install` qua SessionStart hook (không phải làm tay).
+Xong — **cả 63 lệnh `/...` có sẵn ngay** (skill tài liệu + sơ đồ + router + `/scan-project` / `/code-flow` / `/gallery` / `/sync-confluence`). Engine BPMN tự `npm install` qua SessionStart hook (không phải làm tay).
 
 ### Cách B — Copy thủ công (mọi trường hợp / tool khác)
 

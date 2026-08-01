@@ -59,6 +59,19 @@ function findChrome() {
   return null;
 }
 
+function findMmdc() {
+  const which = spawnSync('bash', ['-lc', 'command -v mmdc'], { encoding: 'utf8' });
+  const p = (which.stdout || '').trim();
+  return which.status === 0 && p ? p : null;
+}
+
+const MMDC = findMmdc();
+if (!MMDC) {
+  console.error('⚠️  mmdc (@mermaid-js/mermaid-cli) not found on PATH.');
+  console.error('   Install via: npm i -g @mermaid-js/mermaid-cli');
+  process.exit(2);
+}
+
 const CHROME = findChrome();
 if (!CHROME) {
   console.error('⚠️  Chrome for Testing not found at ~/.puppeteer-cache/chrome — mmdc will fail on launch.');
@@ -100,7 +113,7 @@ blocks.forEach((b, i) => {
     ? path.join(PNG_DIR, `block-${i}.png`)
     : path.join(tmpDir, `block-${i}.svg`);
   fs.writeFileSync(mmdPath, b.code);
-  const res = spawnSync('mmdc', ['-i', mmdPath, '-o', outPath, '-s', '2'], {
+  const res = spawnSync(MMDC, ['-i', mmdPath, '-o', outPath, '-s', '2'], {
     encoding: 'utf8',
     env: { ...process.env, PUPPETEER_EXECUTABLE_PATH: CHROME },
   });

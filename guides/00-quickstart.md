@@ -43,7 +43,7 @@ In Claude Code, just 2 commands:
 /plugin install dev-ba-kit
 ```
 
-Done — **14 `/...` commands are available right away** (12 diagram-drawing + `/scan-project` + `/sync-confluence`). The BPMN engine auto-`npm install`s via the SessionStart hook (no manual step needed).
+Done — **all 63 `/...` commands are available right away** (document skills + diagram skills + routers + `/scan-project` / `/code-flow` / `/gallery` / `/sync-confluence`). The BPMN engine auto-`npm install`s via the SessionStart hook (no manual step needed).
 
 ### Way B — Manual copy (any case / other tool)
 

@@ -1,6 +1,6 @@
 # 02 — Chọn skill nào? (cây quyết định)
 
-> 35 skill nghe nhiều, nhưng chọn đúng rất nhanh nếu hỏi đúng câu. Bản này là rút gọn; bản đầy đủ ở `explain-skills/diagram-selection.vi.md` (sơ đồ) và `rules/doc-selection.md` (tài liệu).
+> 63 skill nghe nhiều, nhưng chọn đúng rất nhanh nếu hỏi đúng câu — hoặc chạy `/ba` / `/diagram`. Bản này là rút gọn; bản đầy đủ ở `explain-skills/diagram-selection.vi.md` (sơ đồ) và `rules/doc-selection.md` (tài liệu).
 
 ---
 
@@ -19,7 +19,7 @@
 - **Xây GÌ cho MỘT feature (P0/P1/P2)** → **`/prd-epic <feature>`**
 - **Hành vi hệ thống chính xác (FR, luật, lỗi)** → **`/srs <feature>`**
 - **TOÀN BỘ sản phẩm, một lần** → **`/prd`** · **ưu tiên hoá** → **`/roadmap`**
-- Wave sau (use case, story, wireframe, API, test, Jira/Confluence) — xem cột status trong `rules/doc-selection.md`.
+- **Spec / UI / API / test / bàn giao** (use case, story, AC, wireframe, chuỗi API, test, Jira/Confluence, export…) — chạy **`/ba "<bạn cần gì>"`**, hoặc xem matrix trong `rules/doc-selection.md`.
 
 ## Cây sơ đồ 30 giây
 

@@ -2,7 +2,15 @@ import { describe, it, expect, beforeAll, afterAll } from 'vitest';
 import { mkdtempSync, mkdirSync, writeFileSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { lintKit, parseFrontmatter, skillsInPaths, docTypesFromNaming } from '../../scripts/kit-lint.ts';
+import {
+  lintKit,
+  parseFrontmatter,
+  skillsInPaths,
+  docTypesFromNaming,
+  coverageClaim,
+  STALE_TOTAL_COUNT_RE,
+  FORBIDDEN_STALE_PHRASES,
+} from '../../scripts/kit-lint.ts';
 
 // ── unit: parsers ──
 describe('parseFrontmatter', () => {
@@ -32,6 +40,25 @@ describe('docTypesFromNaming', () => {
     expect(types.has('srs')).toBe(true);
     expect(types.has('brd')).toBe(true);
     expect(types.has('usecase-traceability')).toBe(false);
+  });
+});
+
+describe('coverageClaim', () => {
+  it('detects full-coverage and fractional claims', () => {
+    expect(coverageClaim('all 63 skills covered via family docs')).toEqual({ kind: 'all', n: 63 });
+    expect(coverageClaim('phủ đủ 63 skill (song ngữ)')).toEqual({ kind: 'all', n: 63 });
+    expect(coverageClaim('đủ 28/63 skill')).toEqual({ kind: 'fraction', m: 28, n: 63 });
+  });
+});
+
+describe('stale detectors', () => {
+  it('matches historical totals and forbidden phrases', () => {
+    STALE_TOTAL_COUNT_RE.lastIndex = 0;
+    expect(STALE_TOTAL_COUNT_RE.test('Done — 14 commands available')).toBe(true);
+    STALE_TOTAL_COUNT_RE.lastIndex = 0;
+    expect(STALE_TOTAL_COUNT_RE.test('all 63 commands')).toBe(false);
+    expect(FORBIDDEN_STALE_PHRASES.some(re => re.test('more waves landing soon'))).toBe(true);
+    expect(FORBIDDEN_STALE_PHRASES.some(re => re.test('and later waves) live in'))).toBe(true);
   });
 });
 
@@ -88,6 +115,22 @@ describe('lintKit on a synthetic tree', () => {
       `---\nname: good\ndescription: ${'x'.repeat(1300)}\nuser-invocable: true\n---\n`);
     f = lintKit(root);
     expect(f.some(x => x.level === 'error' && x.check === 'frontmatter' && x.msg.includes('good'))).toBe(true);
+  });
+
+  it('flags stale guide totals and forbidden phrases', () => {
+    writeFileSync(join(root, 'guides/01-a.md'), 'Done — 14 commands are available right away. more waves landing.\n');
+    writeFileSync(join(root, 'huong-dan/01-a.md'), 'x');
+    writeFileSync(join(root, 'README.md'), 'has 2 skills · `/good` and `/bad-name` · covering all 2 skills');
+    writeFileSync(join(root, 'README.vi.md'), 'có 2 skill · `/good` và `/bad-name` · đủ 1/2 skill');
+    writeFileSync(join(root, 'package.json'), JSON.stringify({ version: '1.0.0' }));
+    writeFileSync(join(root, '.claude-plugin/plugin.json'), JSON.stringify({ version: '1.0.0' }));
+    writeFileSync(join(root, 'marketplace.json'), JSON.stringify({ metadata: { version: '1.0.0' } }));
+    const f = lintKit(root);
+    const msgs = f.map(x => `${x.level}:${x.check}:${x.msg}`).join('\n');
+    expect(msgs).toMatch(/error:count:.*14 commands/);
+    expect(msgs).toMatch(/error:stale:.*more waves landing/i);
+    expect(msgs).toMatch(/error:stale:.*1\/2 skill/i);
+    expect(msgs).toMatch(/error:parity:.*full coverage.*1\/2/);
   });
 });
 

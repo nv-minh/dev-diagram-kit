@@ -13,18 +13,21 @@ Scripts run as TypeScript via `tsx` — no build step (`bash scripts/tsrun.sh <f
 
 ## Before you open a PR
 
-All three must pass (CI runs the same gates):
+These must pass (CI runs the same gates):
 
 ```bash
-npm run typecheck    # tsc --noEmit — kit-native .ts files are fully typed
-npm test             # vitest — engine unit tests
+npm run typecheck                                                           # tsc --noEmit — kit-native .ts files are fully typed
+npm test                                                                    # vitest — engine + script unit tests
+bash scripts/tsrun.sh scripts/kit-lint.ts                                   # index surfaces, EN/VI parity, counts, stale phrases
+bash scripts/tsrun.sh scripts/doc-validate.ts example/atlas-re              # example documents
+bash scripts/tsrun.sh scripts/validate-example-diagrams.ts --strict-tools   # allowlisted diagram-validate (needs d2/java/mmdc)
 bash scripts/tsrun.sh skills/drawio/engine/drawio-build.ts --dir example/atlas-re/drawio
-git diff --exit-code -- example/atlas-re/drawio    # engine drift gate
+git diff --exit-code -- example/atlas-re/drawio                             # engine drift gate
 ```
 
-The last check matters most: **any change to the draw.io engine must either produce byte-identical
-example output, or the rebuilt `.drawio` files must be committed together with the engine change**
-(and the visual result eyeballed in draw.io). CI fails on silent drift.
+The draw.io drift check matters most for engine PRs: **any change to the draw.io engine must either
+produce byte-identical example output, or the rebuilt `.drawio` files must be committed together
+with the engine change** (and the visual result eyeballed in draw.io). CI fails on silent drift.
 
 ## Repo conventions
 

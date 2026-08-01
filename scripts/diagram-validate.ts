@@ -40,7 +40,8 @@ type Level = 'error' | 'warn' | 'info';
 type Finding = { level: Level; msg: string };
 type Result = { file: string; engine: string; compile: 'ok' | 'fail' | 'skip'; findings: Finding[] };
 
-const find = (re: RegExp, s: string) => [...s.matchAll(re)].map(m => m[1]);
+/** Match lines; use capture group 1 when present, else the full match (for patterns without groups). */
+const find = (re: RegExp, s: string) => [...s.matchAll(re)].map(m => m[1] ?? m[0]).filter(Boolean);
 
 // ── engine detection ──
 function detectEngine(file: string): string {
@@ -126,12 +127,20 @@ function validateMermaid(file: string): Result {
   }
   const r = spawnSync('bash', [TSRUN, 'scripts/mermaid-verify.ts', '--file', target], { encoding: 'utf8' });
   if (tmp) rmSync(tmp, { recursive: true, force: true });
-  if (r.status === 2 && /not found|Chrome/i.test(r.stderr || '')) {
+  if (r.status === 2 && /not found|Chrome/i.test(r.stderr || r.stdout || '')) {
     compile = 'skip'; findings.push({ level: 'warn', msg: 'compile check skipped — Chrome/mmdc unavailable (syntax not verified).' });
   } else {
     const fails = find(/❌ Block.*$/gm, r.stdout || '');
-    if (fails.length) { compile = 'fail'; fails.forEach(f => findings.push({ level: 'error', msg: `mermaid block did not compile: ${f.trim()}` })); }
-    else compile = 'ok';
+    if (fails.length) {
+      compile = 'fail';
+      fails.forEach(f => findings.push({ level: 'error', msg: `mermaid block did not compile: ${String(f).trim()}` }));
+    } else if (r.status && r.status !== 0) {
+      compile = 'fail';
+      const detail = (r.stderr || r.stdout || 'mermaid-verify failed').trim().split('\n').filter(Boolean).slice(0, 3).join(' · ');
+      findings.push({ level: 'error', msg: `mermaid-verify exited ${r.status}: ${detail}` });
+    } else {
+      compile = 'ok';
+    }
   }
   try { findings.push(...textPrinciples(readFileSync(file, 'utf8'), {})); } catch {}
   return { file, engine: 'mermaid', compile, findings };
