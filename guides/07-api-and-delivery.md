@@ -88,6 +88,82 @@ Notation: `<slug>` = feature name in kebab-case. The 7-step chain order is manda
 
 ---
 
-## Delivery & sync (wave 6 — landing)
+## Delivery & sync
 
-The delivery family (`/jira` `/confluence` `/export` `/userguide` `/meeting` `/inbox` `/doc-review` `/dashboard`) ships in wave 6. This guide will gain their sections then; until then, see `rules/doc-selection.md` for their output paths and the `planned (wave 6)` status.
+### 8. `/jira` — push/sync stories to Jira
+
+**Syntax:** `/jira <feature> [--push|--pull] [--dry-run]`
+
+**Use when:** the stories are ready and you want them as Jira issues (and their status pulled back). **External-write hard HITL** — preview + Y per issue. Refuses `status: stale` stories (refresh via `/userstory` first).
+
+**Output:** no local doc — Jira issues + the story-index `jira-key`/`status` columns + `sync-state.yaml` `mappings.jira`. One issue per story; re-pushes only changed stories (hash watermark).
+
+---
+
+### 9. `/confluence` — publish docs to Confluence
+
+**Syntax:** `/confluence <feature|doc-path> [confluence:<space-url>]`
+
+**Use when:** you want the BA docs out as a Confluence page tree. **External-write hard HITL**; reuses the `/sync-confluence` mechanics (cloudId, markdown-read/html-write, drift detection). For keeping an existing page current with a code diff → `/sync-confluence`.
+
+**Output:** Confluence pages + `sync-state.yaml` `mappings.confluence`. Drift (page changed outside the kit) → warn, review before overwrite.
+
+---
+
+### 10. `/export` — stakeholder package
+
+**Syntax:** `/export [--scope all|<feature>] [--format md|html|pdf|docx]`
+
+**Use when:** a stakeholder needs a dated bundle of the docs (with a change-history section rendered from the activity log). PDF/DOCX need `pandoc` (degrades to md+html if missing).
+
+**Output:** `docs/exports/{date}-{scope}-package.{ext}` — a snapshot; the source docs remain the truth.
+
+---
+
+### 11. `/userguide` — end-user manual
+
+**Syntax:** `/userguide [--feature <slug>] [--lang en|vi]`
+
+**Use when:** end users need task-oriented guidance (how to do X, not how the system works). Phased — outline HARD STOP before generating. **Light mode only.**
+
+**Output:** `docs/userguide/{name}.html` (entry, double-click) + a same-name bundle (`index.md`/`data.js`/`pages/*.md`/`images/`). Compact structure — only `.html` visible at top level.
+
+---
+
+### 12. `/meeting` — meeting notes
+
+**Syntax:** `/meeting "<title>" [--type standup|review|kickoff]`
+
+**Use when:** you need structured minutes. Decisions/blockers/actions live as **tables within the note file** (no separate files). Action items need an owner + deadline (ownerless ones are flagged).
+
+**Output:** `docs/meetings/YYYY-MM-DD-{type}-{slug}.md`. A decision touching a doc links it (so `/gap`/`/dashboard` see it).
+
+---
+
+### 13. `/inbox` — capture + triage
+
+**Syntax:** `/inbox "<note>"` (capture) or `/inbox --triage` (route)
+
+**Use when:** you need to dump a raw note fast (capture), or sort the pile into the right skill (triage routes via the `/ba` table). Excluded from the activity log (raw capture isn't a business event).
+
+**Output:** `docs/inbox/YYYY-MM-DD-{slug}.md` (capture); triage invokes the destination skill with the note carried through and marks the note routed.
+
+---
+
+### 14. `/doc-review` — multi-agent quality review
+
+**Syntax:** `/doc-review <doc-path|feature> [--agents <list>]`
+
+**Use when:** you want a quality audit (not coverage — that's `/gap`). Spawns reviewer agents, aggregates findings (BLOCKING/WARNING/SUGGESTION), applies accepted fixes as L2 diffs, drives the status transition. **Renamed from `/review`** (collided with the user-level pre-landing PR review).
+
+**Output:** edits to the target docs + status transition. Agents return findings, never edit (the orchestrator applies).
+
+---
+
+### 15. `/dashboard` — vault status
+
+**Syntax:** `/dashboard [--open]`
+
+**Use when:** you want the internal pulse — feature statuses, staleness, activity, Open-Question debt. Read-only scan; writes only the HTML + `feature-list.md`.
+
+**Output:** `docs/_shared/dashboard.html` (one-file, self-contained) + regenerates `docs/feature-list.md`. OQ debt is the leading indicator — a feature with growing unresolved OQs is drifting from its sources.

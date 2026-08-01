@@ -73,6 +73,7 @@
 | Test checklist index | `docs/{feature}/test/checklist/{feature}-checklist-index.md` — master metadata for the entire checklist. Output of `/test-checklist`. |
 | Test cases index | `docs/{feature}/test/testcases/{feature}-testcase-index.md` — master metadata for all test cases. Output of `/test-cases`. |
 | Traceability | `docs/_shared/traceability.md` (auto from /gap) |
+| Dashboard | `docs/_shared/dashboard.html` (singleton, `_shared/` like traceability — one-file HTML status view, output of `/dashboard`) |
 | Atlassian sync-state (MERGED Jira+Confluence mapping) | `.claude/state/atlassian/sync-state.yaml` (config + mapping + watermark/hash, 1 entry/artifact, key `mappings.jira`/`mappings.confluence`) + `base/*.json` (3-way snapshot) + `locks/`. **Fully replaces** the old `docs/_shared/jira-map.md` + `confluence-map.md` (migrated + deleted). Output of `/jira` + `/confluence`. See `.claude/rules/atlassian-sync.md`. |
 | Meeting | `docs/meetings/YYYY-MM-DD-{type}-{slug}.md` (project-level). Decisions/blockers/action items live as tables WITHIN this file — NO separate file for decisions/blockers. |
 | Inbox capture | `docs/inbox/YYYY-MM-DD-{slug}.md` (project-level) |

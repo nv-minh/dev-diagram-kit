@@ -2,7 +2,7 @@
 
 Bộ skill vẽ sơ đồ và làm tài liệu cho **dev làm công việc BA**, đóng gói thành plugin [Claude Code](https://docs.claude.com/en/docs/claude-code). Mô tả hệ thống hoặc quy trình bằng lời — hoặc trỏ vào một codebase — kit sẽ vẽ đúng loại sơ đồ (Mermaid, PlantUML, D2 hoặc BPMN), tự kiểm cú pháp rồi render. Output song ngữ, tự bám theo ngôn ngữ bạn gõ.
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE) [![CI](https://github.com/nv-minh/dev-ba-kit/actions/workflows/ci.yml/badge.svg)](https://github.com/nv-minh/dev-ba-kit/actions/workflows/ci.yml) &nbsp; 55 skill &nbsp;·&nbsp; Mermaid / PlantUML / D2 / BPMN / draw.io &nbsp;·&nbsp; EN / VI
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE) [![CI](https://github.com/nv-minh/dev-ba-kit/actions/workflows/ci.yml/badge.svg)](https://github.com/nv-minh/dev-ba-kit/actions/workflows/ci.yml) &nbsp; 63 skill &nbsp;·&nbsp; Mermaid / PlantUML / D2 / BPMN / draw.io &nbsp;·&nbsp; EN / VI
 
 [English](README.md) · **Tiếng Việt**
 
@@ -10,7 +10,7 @@ Bộ skill vẽ sơ đồ và làm tài liệu cho **dev làm công việc BA**,
 
 ## Danh sách skill
 
-Năm mươi lăm skill. Hai mươi bảy skill viết tài liệu BA (chuỗi discovery, các wave tiếp theo đang lên sóng — xem `rules/doc-selection.md`); hai mươi hai skill vẽ sơ đồ (gồm bốn skill **draw.io** vẽ kiến trúc cloud với stencil AWS/Azure/GCP/Databricks thật + một skill **draw.io** vẽ sequence UML); `/scan-project` và `/code-flow` đọc code; hai router tự chọn skill cho bạn — `/diagram` (sơ đồ) và `/ba` (tài liệu BA); `/gallery` gom thành một file bàn giao; `/sync-confluence` sync sang Confluence. Mọi sản phẩm đều qua cổng validate thống nhất trước khi báo xong — `diagram-validate` cho sơ đồ, `doc-validate` cho tài liệu.
+Sáu mươi ba skill. Ba mươi lăm skill viết tài liệu BA (chuỗi discovery, các wave tiếp theo đang lên sóng — xem `rules/doc-selection.md`); hai mươi hai skill vẽ sơ đồ (gồm bốn skill **draw.io** vẽ kiến trúc cloud với stencil AWS/Azure/GCP/Databricks thật + một skill **draw.io** vẽ sequence UML); `/scan-project` và `/code-flow` đọc code; hai router tự chọn skill cho bạn — `/diagram` (sơ đồ) và `/ba` (tài liệu BA); `/gallery` gom thành một file bàn giao; `/sync-confluence` sync sang Confluence. Mọi sản phẩm đều qua cổng validate thống nhất trước khi báo xong — `diagram-validate` cho sơ đồ, `doc-validate` cho tài liệu.
 
 ### Tài liệu — discovery & requirements
 
@@ -65,6 +65,19 @@ Chuỗi: `/brainstorm → /urd → /brd → /prd-epic → /srs` theo feature, r�
 | `/api-checklist` | Đề cương test tích hợp (test_layer + direction) | [4] | Test gì trên toàn tích hợp |
 | `/api-test` | Bộ sưu tập Bruno + bảng test | [5] | Chứng minh call chạy được |
 | `/api-readiness` | Cổng go-live (cutover/flag/monitoring/rollback) | [6] | Go/no-go trước production |
+
+### Tài liệu — bàn giao & sync
+
+| Skill | Viết gì | Khi nào dùng |
+|---|---|---|
+| `/jira` | Push/sync story ↔ issue Jira (key vào story index) | External-write HITL; từ chối story stale |
+| `/confluence` | Xuất tài liệu vault thành cây trang Confluence | External-write HITL (code→trang có sẵn dùng `/sync-confluence`) |
+| `/export` | Gói stakeholder (md/html/pdf/docx) + change history | Một bản chụp theo ngày cho stakeholder |
+| `/userguide` | Hướng dẫn end-user (entry `.html` + bundle), light mode | Hướng dẫn theo tác vụ người dùng đọc |
+| `/meeting` | Biên bản họp (quyết định/cản/trạng thái dạng bảng trong file) | Phút結 cấu trúc, một file tự chứa |
+| `/inbox` | Capture nhanh + triage route qua `/ba` | Bãi đỗ cho ghi chú thô |
+| `/doc-review` | Review chất lượng đa agent + áp dụng fix được duyệt | Đổi tên từ `/review` (trùng hệ sinh thái) |
+| `/dashboard` | HTML status vault 1 file + sinh lại feature-list | Nhịp đập nội bộ (status, stale, nợ OQ) |
 
 ### Sơ đồ
 
@@ -260,7 +273,7 @@ Kit viết cho Claude Code. Có hai cách cài.
 /plugin install dev-ba-kit
 ```
 
-Cả 55 lệnh có sẵn ngay. BPMN engine tự cài dependency Node ở phiên đầu qua hook — không phải làm tay.
+Cả 63 lệnh có sẵn ngay. BPMN engine tự cài dependency Node ở phiên đầu qua hook — không phải làm tay.
 
 ### Nâng cấp từ dev-diagram-kit 1.x
 
@@ -318,7 +331,7 @@ dev-ba-kit/
 ├── .claude-plugin/plugin.json     Manifest plugin (/plugin install)
 ├── marketplace.json               Catalog marketplace (/plugin marketplace add)
 ├── install.sh                     Installer kiểu copy (không cần plugin)
-├── skills/                        55 skill
+├── skills/                        63 skill
 ├── agents/                        diagram-reviewer
 ├── rules/                         Rule dùng chung (approval-gate, diagram-selection, diagram-style, language, icon-map, …)
 ├── scripts/                       mermaid-verify.ts · diagram-validate.ts · doctor.sh · plantuml-ensure.sh · drawio-catalog-ensure.sh · icon-path.sh · tsrun.sh · render helper
@@ -328,7 +341,7 @@ dev-ba-kit/
 ├── hooks/                         SessionStart hook (tự cài BPMN engine)
 ├── assets/icons/                  Icon công nghệ bundle sẵn (Devicon MIT, Simple Icons CC0)
 ├── example/                       Ví dụ đầy đủ: feature atlas-re
-├── explain-skills/                Giải thích từng skill, đủ 28/55 skill (song ngữ: `*.md` tiếng Anh, `*.vi.md` tiếng Việt)
+├── explain-skills/                Giải thích từng skill, đủ 28/63 skill (song ngữ: `*.md` tiếng Anh, `*.vi.md` tiếng Việt)
 ├── guides/ · huong-dan/           Hướng dẫn bắt đầu (tiếng Anh / tiếng Việt)
 └── CHANGELOG.md · CONTRIBUTING.md Lịch sử phiên bản · hướng dẫn đóng góp
 ```

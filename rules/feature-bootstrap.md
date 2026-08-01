@@ -12,7 +12,7 @@ Every bash `## Context (dynamic)` block only lists **existing** features (`ls -d
 |---|---|---|
 | **A — Entry point** (can initialize a feature) | `brainstorm`, `urd`, `brd`, `prd-epic`, `usecase` (discovery mode), `user-flow`, `bpmn`, `sequence`, `activity`, `activity-swimlane`, `erd`, `state`, `d2-activity`, `d2-erd`, `d2-architect`, `reverse-doc` | **Derive slug + interview within scope + create the feature.** See the "Group A" section. (`reverse-doc` is a variant: it derives the slug from the SOURCE instead of interviewing, see the note below.) |
 | **B — Mid/end of chain** (needs an upstream artifact as source) | `usecase-diagram`, `userstory`, `ac`, `figma`, `prototype`, `jira`, `confluence`, `export`, `preview`, `sync-confluence` | **Refuse explicitly + route specifically to the upstream skill.** Do NOT create a feature. See the "Group B" section. (`sync-confluence` needs **`confluence:<url>`** + a change source (git range/conversation) + Atlassian MCP auth — refuse if the link is missing, do not guess the page.) |
-| **C — Read-only / project-level** (no feature needed) | `dashboard`, `gap`, `review`, `prd`, `roadmap`, `meet`, `discover`, `update-overview`, `delegate`, `userguide`, `scan-project` | **Friendly empty-message.** See the "Group C" section. (`scan-project` is special: it **reads source code** instead of vault docs, outputs to `docs/_shared/architecture/` — project-level, no feature needed.) |
+| **C — Read-only / project-level** (no feature needed) | `dashboard`, `gap`, `review`, `prd`, `roadmap`, `meeting`, `discover`, `update-overview`, `delegate`, `userguide`, `scan-project` | **Friendly empty-message.** See the "Group C" section. (`scan-project` is special: it **reads source code** instead of vault docs, outputs to `docs/_shared/architecture/` — project-level, no feature needed.) |
 
 > `srs` is a special case: it is an orchestrator, it can initialize `spec.md` (the entry point for the spec part) but the downstream items in its menu follow group B. Handling: `spec.md` missing → follow group A (derive slug + interview Batch 1-2 + create the `srs/` folder); downstream items still need the just-finalized spec.md.
 
@@ -66,7 +66,7 @@ No specific feature needed (scans the whole vault, or produces project-level out
 
 1. **Do NOT dead-end, do NOT crash.** Print a friendly message + guidance on the initialization step.
 2. Read-only (`dashboard`/`gap`/`review`): "Vault is empty / nothing to {analyze|review} yet. Start with `/brainstorm <idea>` or `/urd <feature>`."
-3. Project-level (`prd`/`roadmap`/`meet`/`discover`/`update-overview`): these skills run BEFORE any feature exists — the "no feature yet" state is valid (e.g. `/discover` calls it "Greenfield exploration"). No routing needed.
+3. Project-level (`prd`/`roadmap`/`meeting`/`discover`/`update-overview`): these skills run BEFORE any feature exists — the "no feature yet" state is valid (e.g. `/discover` calls it "Greenfield exploration"). No routing needed.
 4. `delegate`: does not touch the vault, not applicable.
 
 > **Reference examples:** `/dashboard` (placeholder "Vault empty" + empty-vault template), `/gap` (friendly abort).

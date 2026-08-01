@@ -70,6 +70,16 @@ The integration chain documented ahead of the spec slice: a fictional **CatModel
 
 Note the disciplines: the `quote.completed` webhook is paired with a polling reconciliation (no silent data loss); `loss_estimate` is explicitly `theirs` (CatModel authority) while `priced_at` is `derived`; the currency transform cites the same BR-atlas-re-001 FX path the claim-approval spine uses.
 
+## Documents (wave 6 — delivery)
+
+A meeting note whose Decisions table links back into the spine — the kind of capture that, if it changes scope, routes straight to `/cr`.
+
+| Skill | What it shows | File |
+|---|---|---|
+| `/meeting` | A review meeting — decisions/blockers/actions as in-file tables, decisions linking `FR-atlas-re-006` | [`meetings/2026-08-01-review-authority-threshold.md`](./meetings/2026-08-01-review-authority-threshold.md) |
+
+This meeting is the origin of `CR-20260801-001` (the 50k→60k threshold change) — follow the decision's `Affects` link to the SRS, then to the CR's Impact Matrix, to see how a discussion becomes a traced change. (The other delivery skills — `/jira`, `/confluence`, `/export`, `/userguide`, `/inbox`, `/doc-review`, `/dashboard` — have external/session side-effects or large generated output, so they're documented in the guides rather than committed as examples.)
+
 ## Diagrams
 
 ### Batch 1 — core

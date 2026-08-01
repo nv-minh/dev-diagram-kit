@@ -46,10 +46,10 @@ Map a natural-language need → exactly ONE document skill, then delegate to it.
 | What's missing/orphaned across docs | `/gap` | cross-doc coverage matrix; read-only |
 | Scope changed — impact + rollback | `/cr` | change request + guided apply |
 | Legacy docs/code → BA documents | `/reverse-doc` | source-driven; code→diagrams = `/scan-project` |
-| Push stories to Jira / publish docs to Confluence | `/jira` / `/confluence` *(wave 6)* | issues vs pages; code-diff→page = `/sync-confluence` (exists) |
-| Stakeholder package / end-user manual | `/export` / `/userguide` *(wave 6)* | snapshot vs manual |
-| Meeting minutes / quick capture | `/meeting` / `/inbox` *(wave 6)* | structured vs raw |
-| Doc quality review / vault status | `/doc-review` / `/dashboard` *(wave 6)* | findings vs overview |
+| Push stories to Jira / publish docs to Confluence | `/jira` / `/confluence` | issues vs pages; code-diff→page = `/sync-confluence` (exists) |
+| Stakeholder package / end-user manual | `/export` / `/userguide` | snapshot vs manual |
+| Meeting minutes / quick capture | `/meeting` / `/inbox` | structured vs raw |
+| Doc quality review / vault status | `/doc-review` / `/dashboard` | findings vs overview |
 | **Anything visual** | **`/diagram`** | the two routers cross-reference, never overlap |
 
 ## The 2 questions you may ask (pick only the relevant ones)
@@ -79,7 +79,7 @@ Map a natural-language need → exactly ONE document skill, then delegate to it.
 ## Gotchas
 
 - **Don't over-ask** — if the table decides in one row, run the skill with zero questions.
-- **Altitude is the most useful disambiguator** — "PRD vs BRD vs SRS?" collapses to "money/why vs feature/what vs system-shall".
+- **No `planned` rows remain** — the matrix is fully shipped; if you see a `planned` row it's a drift bug (kit-lint catches it).
 - **Never route to a planned skill** — check the status column; recommending vaporware wastes the user's time.
 - **Keep in sync** — when a document skill is added/removed, update this table AND `doc-selection.md` together (flip `planned` → `✓` in the landing PR).
 - **You are not a writer** — never draft a document yourself; always delegate.

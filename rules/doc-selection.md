@@ -132,15 +132,15 @@ Shared rule: `rules/api-integration.md`. Chain order with skip conditions lives 
 
 | Business situation | Skill | Output file | Status | Reason |
 |---|---|---|---|---|
-| Push/sync user stories to Jira issues | `/jira` | sync-state + `jira-key` column in story index | planned (wave 6) | Hard HITL gate per `atlassian-sync.md` |
-| Publish vault docs as a Confluence page tree | `/confluence` | sync-state `mappings.confluence` | planned (wave 6) | For docs→pages; code-diff→existing page = `/sync-confluence` (exists) |
+| Push/sync user stories to Jira issues | `/jira` | sync-state + `jira-key` column in story index | ✓ | Hard HITL gate per `atlassian-sync.md` |
+| Publish vault docs as a Confluence page tree | `/confluence` | sync-state `mappings.confluence` | ✓ | For docs→pages; code-diff→existing page = `/sync-confluence` (exists) |
 | Sync a code diff / conversation into an EXISTING Confluence page | `/sync-confluence` | in-place page update | ✓ | Already shipped in 1.x |
-| Stakeholder package (md/html/pdf/docx) | `/export` | `docs/exports/{date}-{scope}-package.{ext}` | planned (wave 6) | Snapshot with change history |
-| End-user manual | `/userguide` | `docs/userguide/…` | planned (wave 6) | Entry `.html` + bundle |
-| Meeting minutes (decisions/blockers/actions as tables) | `/meeting` | `docs/meetings/YYYY-MM-DD-{type}-{slug}.md` | planned (wave 6) | Structured capture |
-| Zero-friction capture + later triage | `/inbox` | `docs/inbox/YYYY-MM-DD-{slug}.md` | planned (wave 6) | Raw capture; triage routes via `/ba` |
-| Multi-agent doc quality review + apply accepted fixes | `/doc-review` | edits target docs | planned (wave 6) | Renamed from the declared `/review` slot (ecosystem collision) |
-| One-file HTML vault status | `/dashboard` | `docs/_shared/dashboard.html` | planned (wave 6) | Status view; coverage = `/gap` |
+| Stakeholder package (md/html/pdf/docx) | `/export` | `docs/exports/{date}-{scope}-package.{ext}` | ✓ | Snapshot with change history |
+| End-user manual | `/userguide` | `docs/userguide/…` | ✓ | Entry `.html` + bundle |
+| Meeting minutes (decisions/blockers/actions as tables) | `/meeting` | `docs/meetings/YYYY-MM-DD-{type}-{slug}.md` | ✓ | Structured capture |
+| Zero-friction capture + later triage | `/inbox` | `docs/inbox/YYYY-MM-DD-{slug}.md` | ✓ | Raw capture; triage routes via `/ba` |
+| Multi-agent doc quality review + apply accepted fixes | `/doc-review` | edits target docs | ✓ | Renamed from the declared `/review` slot (ecosystem collision) |
+| One-file HTML vault status | `/dashboard` | `docs/_shared/dashboard.html` | ✓ | Status view; coverage = `/gap` |
 
 ## Disambiguation
 

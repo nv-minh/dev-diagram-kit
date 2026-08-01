@@ -4,6 +4,33 @@ All notable changes to **dev-ba-kit** are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); versions follow [SemVer](https://semver.org).
 (`rules/changelog.md` is a different thing — it defines the activity-log convention for the BA artifacts the kit generates.)
 
+## [2.5.0] — Unreleased
+
+### Added
+- **Wave 6 — delivery & sync (8 skills) — completes the v2.0 document expansion (63 skills total):**
+  `/jira` (push/sync stories ↔ Jira, hard HITL, refuses stale stories, hash-watermark re-push),
+  `/confluence` (publish vault docs as a Confluence page tree, hard HITL, drift detection; disambiguated
+  from `/sync-confluence`), `/export` (stakeholder package md/html/pdf/docx with change-history from the
+  activity log), `/userguide` (end-user manual, phased HARD STOP, light mode, entry+bundle structure),
+  `/meeting` (structured minutes, decisions/blockers/actions as in-file tables), `/inbox` (zero-friction
+  capture + triage routing via `/ba`, excluded from the activity log), `/doc-review` (multi-agent quality
+  review, renamed from `/review` to avoid the user-level collision), `/dashboard` (one-file HTML vault
+  status + regenerates feature-list.md).
+- `rules/atlassian-sync.md` extended with the Jira mapping conventions (one issue per story, bidirectional
+  status map, story-hash watermark, stale-refuse gate); `feature-bootstrap.md` `meet`→`meeting` rename;
+  `naming-conventions.md` gains the `dashboard.html` path row.
+- Templates `doc-{meeting,inbox,export,userguide-index}.md` (jira/confluence/dashboard/doc-review need none).
+- `explain-skills/delivery-family.{md,vi.md}`; guides 07 delivery part filled (§8–§15) EN/VI.
+- atlas-re: a review meeting note whose Decisions table links `FR-atlas-re-006` (the origin of
+  `CR-20260801-001`).
+
+### v2.0 milestone
+With wave 6, the kit grows from 27 diagram skills (v1.x) to **63 skills**: 35 BA documents across the
+full lifecycle (discovery → spec → UI design → API integration → testing → traceability → delivery) +
+22 diagrams + 2 routers + code-flow/scan-project/gallery/sync-confluence. Every document skill gates on
+`doc-validate`; `kit-lint` enforces index-surface sync across all of them; the traceability spine
+(`UN→BO→CAP→FR→UC/US→AC→CHK→TC`) is provable end to end via `/gap`.
+
 ## [2.4.0] — Unreleased
 
 ### Added

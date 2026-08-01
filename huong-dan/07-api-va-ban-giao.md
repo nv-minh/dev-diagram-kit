@@ -88,6 +88,82 @@ Ký hiệu: `<slug>` = tên feature dạng kebab-case. Thứ tự chuỗi 7 bư�
 
 ---
 
-## Bàn giao & sync (wave 6 — đang lên sóng)
+## Bàn giao & sync
 
-Họ delivery (`/jira` `/confluence` `/export` `/userguide` `/meeting` `/inbox` `/doc-review` `/dashboard`) lên sóng ở wave 6. Guide này sẽ thêm các mục đó lúc đó; trước mắt xem `rules/doc-selection.md` cho đường dẫn output và trạng thái `planned (wave 6)`.
+### 8. `/jira` — push/sync story sang Jira
+
+**Cú pháp:** `/jira <feature> [--push|--pull] [--dry-run]`
+
+**Dùng khi:** story sẵn sàng và muốn thành issue Jira (và kéo status ngược về). **External-write HITL cứng** — preview + Y mỗi issue. Từ chối story `status: stale` (làm tươi qua `/userstory` trước).
+
+**Output:** không doc local — issue Jira + cột `jira-key`/`status` của story index + `sync-state.yaml` `mappings.jira`. Một issue mỗi story; chỉ re-push story đổi (watermark hash).
+
+---
+
+### 9. `/confluence` — xuất tài liệu lên Confluence
+
+**Cú pháp:** `/confluence <feature|đường-dẫn-doc> [confluence:<url-space>]`
+
+**Dùng khi:** muốn tài liệu BA thành cây trang Confluence. **External-write HITL cứng**; dùng lại cơ chế `/sync-confluence` (cloudId, markdown-read/html-write, drift). Giữ trang có sẵn khớp code diff → `/sync-confluence`.
+
+**Output:** trang Confluence + `sync-state.yaml` `mappings.confluence`. Drift (trang đổi ngoài kit) → cảnh báo, xem trước khi ghi đè.
+
+---
+
+### 10. `/export` — gói stakeholder
+
+**Cú pháp:** `/export [--scope all|<feature>] [--format md|html|pdf|docx]`
+
+**Dùng khi:** stakeholder cần một gói tài liệu theo ngày (kèm change-history render từ activity log). PDF/DOCX cần `pandoc` (thiếu thì giảm xuống md+html).
+
+**Output:** `docs/exports/{ngày}-{scope}-package.{ext}` — bản chụp; tài liệu nguồn vẫn là chân lý.
+
+---
+
+### 11. `/userguide` — hướng dẫn end-user
+
+**Cú pháp:** `/userguide [--feature <slug>] [--lang en|vi]`
+
+**Dùng khi:** end-user cần hướng dẫn theo tác vụ (làm X thế nào, không phải hệ thống chạy sao). Phased — HARD STOP đề cương trước khi sinh. **Light mode bắt buộc.**
+
+**Output:** `docs/userguide/{tên}.html` (entry, double-click) + bundle cùng tên (`index.md`/`data.js`/`pages/*.md`/`images/`). Cấu trúc gọn — chỉ `.html` hiện ở顶层.
+
+---
+
+### 12. `/meeting` — biên bản họp
+
+**Cú pháp:** `/meeting "<tiêu đề>" [--type standup|review|kickoff]`
+
+**Dùng khi:** cần phút kết cấu trúc. Quyết định/cản/hành động là **bảng trong file note** (không file riêng). Hành động cần chủ + hạn (không chủ bị đánh dấu).
+
+**Output:** `docs/meetings/YYYY-MM-DD-{type}-{slug}.md`. Quyết định chạm doc thì link (để `/gap`/`/dashboard` thấy).
+
+---
+
+### 13. `/inbox` — capture + triage
+
+**Cú pháp:** `/inbox "<ghi chú>"` (capture) hoặc `/inbox --triage` (route)
+
+**Dùng khi:** cần dump ghi chú thô nhanh (capture), hoặc phân loại đống note đúng skill (triage route qua bảng `/ba`). Loại khỏi activity log (capture thô không phải event kinh doanh).
+
+**Output:** `docs/inbox/YYYY-MM-DD-{slug}.md` (capture); triage gọi skill đích mang theo ghi chú rồi đánh dấu routed.
+
+---
+
+### 14. `/doc-review` — review chất lượng đa agent
+
+**Cú pháp:** `/doc-review <đường-dẫn-doc|feature> [--agents <danh-sách>]`
+
+**Dùng khi:** muốn audit chất lượng (không phải coverage — đó là `/gap`). Sinh reviewer agent, gộp findings (BLOCKING/WARNING/SUGGESTION), áp dụng fix được duyệt thành L2 diff, dẫn dắt chuyển status. **Đổi tên từ `/review`** (trùng skill review PR ở user-level).
+
+**Output:** sửa doc đích + chuyển status. Agent trả findings, không sửa (orchestrator áp dụng).
+
+---
+
+### 15. `/dashboard` — status vault
+
+**Cú pháp:** `/dashboard [--open]`
+
+**Dùng khi:** muốn nhịp đập nội bộ — status feature, stale, activity, nợ Open-Question. Quét chỉ đọc; chỉ ghi HTML + `feature-list.md`.
+
+**Output:** `docs/_shared/dashboard.html` (1 file tự chứa) + sinh lại `docs/feature-list.md`. Nợ OQ là chỉ báo dẫn đầu — feature có OQ chưa giải càng накоп càng lệch nguồn.
