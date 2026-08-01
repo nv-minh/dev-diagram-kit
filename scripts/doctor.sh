@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# doctor.sh — check the render tools for the dev-diagram-kit. Prints ✅/❌ + how to install.
+# doctor.sh — check the render tools for the dev-ba-kit. Prints ✅/❌ + how to install.
 # Run standalone: bash scripts/doctor.sh   (or .claude/scripts/doctor.sh after install)
 # There's no dependency-declaration mechanism for plugins → this script is a manual "health check".
 set -u
@@ -9,7 +9,7 @@ green() { printf "  ✅ %s\n" "$1"; ok=$((ok+1)); }
 yellow(){ printf "  ⚠️  %s\n" "$1"; warn=$((warn+1)); }
 red()   { printf "  ❌ %s\n     ↳ %s\n" "$1" "$2"; miss=$((miss+1)); }
 
-echo "🩺 dev-diagram-kit — render tools check"
+echo "🩺 dev-ba-kit — render tools check"
 echo ""
 
 # Determine the skill-set root (plugin mode or copy mode) to locate the BPMN engine.

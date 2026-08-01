@@ -1,4 +1,4 @@
-# Contributing to dev-diagram-kit
+# Contributing to dev-ba-kit
 
 Thanks for helping improve the kit. This page covers the workflow and the few hard rules.
 

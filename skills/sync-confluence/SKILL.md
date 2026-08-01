@@ -79,7 +79,7 @@ User calls /sync-confluence confluence:<url> [--from <range>] [--preview]
    ▼  (user Y)
 8. updateConfluencePage(pageId, contentFormat:html, body:<edited>, versionMessage:"sync from {code <range>|conversation} — {date}").
    ▼
-9. (optional) createConfluenceFooterComment "🔄 Synced by dev-diagram-kit from {source} at {ISO}".
+9. (optional) createConfluenceFooterComment "🔄 Synced by dev-ba-kit from {source} at {ISO}".
    Update .claude/state/atlassian/sync-state.yaml (pageId, new hash, commit watermark, updated).
    ▼
 10. Report: sections changed, new version, page link, spots needing manual review.

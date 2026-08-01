@@ -38,7 +38,7 @@ Có **2 cách**. Cách A gọn nhất cho Claude Code; cách B dùng được ch
 Trong Claude Code, chỉ 2 lệnh:
 ```
 /plugin marketplace add <đường-dẫn-hoặc-repo này>
-/plugin install dev-diagram-kit
+/plugin install dev-ba-kit
 ```
 
 Xong — **14 lệnh `/...` có sẵn ngay** (12 vẽ diagram + `/scan-project` + `/sync-confluence`). Engine BPMN tự `npm install` qua SessionStart hook (không phải làm tay).

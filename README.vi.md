@@ -1,8 +1,8 @@
-# Dev-Diagram Kit
+# Dev BA Kit
 
 Bộ skill vẽ sơ đồ và làm tài liệu cho **dev làm công việc BA**, đóng gói thành plugin [Claude Code](https://docs.claude.com/en/docs/claude-code). Mô tả hệ thống hoặc quy trình bằng lời — hoặc trỏ vào một codebase — kit sẽ vẽ đúng loại sơ đồ (Mermaid, PlantUML, D2 hoặc BPMN), tự kiểm cú pháp rồi render. Output song ngữ, tự bám theo ngôn ngữ bạn gõ.
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE) [![CI](https://github.com/nv-minh/dev-diagram-kit/actions/workflows/ci.yml/badge.svg)](https://github.com/nv-minh/dev-diagram-kit/actions/workflows/ci.yml) &nbsp; 27 skill &nbsp;·&nbsp; Mermaid / PlantUML / D2 / BPMN / draw.io &nbsp;·&nbsp; EN / VI
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE) [![CI](https://github.com/nv-minh/dev-ba-kit/actions/workflows/ci.yml/badge.svg)](https://github.com/nv-minh/dev-ba-kit/actions/workflows/ci.yml) &nbsp; 27 skill &nbsp;·&nbsp; Mermaid / PlantUML / D2 / BPMN / draw.io &nbsp;·&nbsp; EN / VI
 
 [English](README.md) · **Tiếng Việt**
 
@@ -199,11 +199,23 @@ Kit viết cho Claude Code. Có hai cách cài.
 ### Cài bằng plugin (khuyên dùng)
 
 ```
-/plugin marketplace add https://github.com/nv-minh/dev-diagram-kit
-/plugin install dev-diagram-kit
+/plugin marketplace add https://github.com/nv-minh/dev-ba-kit
+/plugin install dev-ba-kit
 ```
 
 Cả 27 lệnh có sẵn ngay. BPMN engine tự cài dependency Node ở phiên đầu qua hook — không phải làm tay.
+
+### Nâng cấp từ dev-diagram-kit 1.x
+
+Plugin đổi tên ở bản 2.0.0 (kit giờ phủ cả tài liệu BA, không chỉ diagram). Cài kiểu plugin không tự cập nhật khi đổi tên:
+
+```
+/plugin uninstall dev-diagram-kit
+/plugin marketplace add https://github.com/nv-minh/dev-ba-kit
+/plugin install dev-ba-kit
+```
+
+Cài kiểu copy chỉ cần chạy lại `./install.sh`. Mọi thứ đã sinh trong `docs/` vẫn dùng bình thường — không cần migrate.
 
 ### Cài kiểu copy (mọi trường hợp / tool khác)
 
@@ -245,7 +257,7 @@ Chỉ cài thứ skill bạn dùng cần (`scripts/doctor.sh` báo cái nào thi
 ## Cấu trúc repo
 
 ```
-dev-diagram-kit/
+dev-ba-kit/
 ├── .claude-plugin/plugin.json     Manifest plugin (/plugin install)
 ├── marketplace.json               Catalog marketplace (/plugin marketplace add)
 ├── install.sh                     Installer kiểu copy (không cần plugin)

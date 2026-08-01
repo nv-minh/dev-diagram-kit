@@ -91,7 +91,7 @@ case "$name" in
   *)      url="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/$name/$name-original.svg";;
 esac
 
-_cache="${TMPDIR:-/tmp}/dev-diagram-kit-icon-cdn.tsv"
+_cache="${TMPDIR:-/tmp}/dev-ba-kit-icon-cdn.tsv"
 # cached verdict?
 if [ -f "$_cache" ]; then
   _hit="$(grep -F "$url " "$_cache" 2>/dev/null | head -1)"

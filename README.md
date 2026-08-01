@@ -1,8 +1,8 @@
-# Dev-Diagram Kit
+# Dev BA Kit
 
 Diagram and documentation skills for developers doing BA work, packaged as a [Claude Code](https://docs.claude.com/en/docs/claude-code) plugin. Describe a system or process in plain language — or point the kit at a codebase — and it produces the right diagram (Mermaid, PlantUML, D2, or BPMN), compile-checks it, and renders it. Output is bilingual and follows the language you write in.
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE) [![CI](https://github.com/nv-minh/dev-diagram-kit/actions/workflows/ci.yml/badge.svg)](https://github.com/nv-minh/dev-diagram-kit/actions/workflows/ci.yml) &nbsp; 27 skills &nbsp;·&nbsp; Mermaid / PlantUML / D2 / BPMN / draw.io &nbsp;·&nbsp; EN / VI
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE) [![CI](https://github.com/nv-minh/dev-ba-kit/actions/workflows/ci.yml/badge.svg)](https://github.com/nv-minh/dev-ba-kit/actions/workflows/ci.yml) &nbsp; 27 skills &nbsp;·&nbsp; Mermaid / PlantUML / D2 / BPMN / draw.io &nbsp;·&nbsp; EN / VI
 
 **English** · [Tiếng Việt](README.vi.md)
 
@@ -199,11 +199,23 @@ The kit targets Claude Code. There are two ways to install it.
 ### As a plugin (recommended)
 
 ```
-/plugin marketplace add https://github.com/nv-minh/dev-diagram-kit
-/plugin install dev-diagram-kit
+/plugin marketplace add https://github.com/nv-minh/dev-ba-kit
+/plugin install dev-ba-kit
 ```
 
 All 27 commands become available immediately. The BPMN engine installs its Node dependencies on first session via a hook — nothing to run by hand.
+
+### Migrating from dev-diagram-kit 1.x
+
+The plugin was renamed in 2.0.0 (the kit now covers BA documents, not just diagrams). Plugin-mode installs do not auto-update across a rename:
+
+```
+/plugin uninstall dev-diagram-kit
+/plugin marketplace add https://github.com/nv-minh/dev-ba-kit
+/plugin install dev-ba-kit
+```
+
+Copy-mode users just re-run `./install.sh`. Everything already generated under `docs/` remains valid — no artifact migration needed.
 
 ### By copy (any setup, or other tools)
 
@@ -246,7 +258,7 @@ Install only what the skills you use need (`scripts/doctor.sh` reports what's mi
 ## Repository layout
 
 ```
-dev-diagram-kit/
+dev-ba-kit/
 ├── .claude-plugin/plugin.json     Plugin manifest (/plugin install)
 ├── marketplace.json               Marketplace catalog (/plugin marketplace add)
 ├── install.sh                     Copy-mode installer (no plugin needed)

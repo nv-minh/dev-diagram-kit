@@ -40,7 +40,7 @@ There are **2 ways**. Way A is the leanest for Claude Code; way B works for any 
 In Claude Code, just 2 commands:
 ```
 /plugin marketplace add <path-or-repo-here>
-/plugin install dev-diagram-kit
+/plugin install dev-ba-kit
 ```
 
 Done — **14 `/...` commands are available right away** (12 diagram-drawing + `/scan-project` + `/sync-confluence`). The BPMN engine auto-`npm install`s via the SessionStart hook (no manual step needed).

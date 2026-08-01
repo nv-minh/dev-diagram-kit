@@ -1,8 +1,40 @@
 # Changelog
 
-All notable changes to **dev-diagram-kit** are documented here.
+All notable changes to **dev-ba-kit** are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); versions follow [SemVer](https://semver.org).
 (`rules/changelog.md` is a different thing — it defines the activity-log convention for the BA artifacts the kit generates.)
+
+## [2.0.0] — Unreleased
+
+### Changed (BREAKING)
+- **Plugin renamed `dev-diagram-kit` → `dev-ba-kit`.** The plugin name is the install identity, so
+  existing plugin-mode installs will not auto-update. Migration:
+  `/plugin uninstall dev-diagram-kit` → `/plugin marketplace add https://github.com/nv-minh/dev-ba-kit`
+  → `/plugin install dev-ba-kit`. Copy-mode (`install.sh`) users just re-run the installer.
+  No generated-artifact changes: every doc/diagram already produced under `docs/` remains valid;
+  `.claude/state/atlassian/sync-state.yaml` is untouched.
+- Repositioned: **BA toolkit for developers — documents + diagrams.** The kit now covers the full
+  BA document lifecycle (discovery → spec → UI design → API integration → testing → traceability →
+  delivery) alongside the existing 22 diagram skills, under two routers: `/ba` (documents) and
+  `/diagram` (diagrams).
+
+### Added
+- **Wave 1 — requirements spine (7 skills):** `/brainstorm`, `/urd`, `/brd`, `/prd-epic`, `/srs`,
+  `/prd`, `/roadmap` — the discovery chain that mints the root IDs (`UN-`/`BO-`/`CAP-`/`FR-`/`NFR-`/`BR-`/`E-`)
+  of the traceability spine.
+- **`/ba` router** — the document-side twin of `/diagram`: ≤2 questions, routes to the right doc skill.
+- **`rules/doc-selection.md`** — document-skill decision matrix (source of truth for `/ba`), with a
+  document-vs-diagram fork cross-referencing `rules/diagram-selection.md`.
+- **`rules/api-integration.md`** — the 7-step API integration chain contract (full content lands with Wave 5).
+- **`scripts/kit-lint.ts`** — repo-integrity CI gate: SKILL.md frontmatter lint + description length cap,
+  index-surface sync, EN/VI parity, version trio, skill-count claims, template `type:` schema.
+- **`scripts/doc-validate.ts`** — the document twin of `diagram-validate.ts`: frontmatter schema, status,
+  ID format regexes, wikilink/`links:` targets, zero-frontmatter rules. Exit 0/2/1.
+- **`agents/doc-reviewer.md`** — document quality reviewer (mirrors `diagram-reviewer`), auto-spawned
+  past complexity thresholds by the Wave-1+ document skills.
+- **Wave-1 output templates** — `templates/doc-{brainstorm,urd,brd,prd,prd-product,roadmap,srs}.md`.
+- Ported content (MIT, see NOTICE): BMAD-METHOD elicitation/template structures, ccpm PRD question set,
+  spec-kit testable-requirement phrasing.
 
 ## [1.1.0] — 2026-07-26
 

@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
-# install.sh — install the dev-diagram-kit into a workspace using copy mode (NO /plugin needed).
+# install.sh — install the dev-ba-kit into a workspace using copy mode (NO /plugin needed).
 # Use when you want the skills to sit directly in the project's .claude/ (or your tool has no plugin support).
 #
 #   ./install.sh [workspace-path]      (default: current directory)
 #
 # If you use a Claude Code build with plugin support, the shorter way is:
 #   /plugin marketplace add <this-repo-or-path>
-#   /plugin install dev-diagram-kit
+#   /plugin install dev-ba-kit
 set -euo pipefail
 
 SRC="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -14,7 +14,7 @@ TARGET="${1:-.}"
 TARGET="$(cd "$TARGET" && pwd)"
 DEST="$TARGET/.claude"
 
-echo "📦 Installing dev-diagram-kit into: $DEST"
+echo "📦 Installing dev-ba-kit into: $DEST"
 mkdir -p "$DEST/skills" "$DEST/agents" "$DEST/rules" "$DEST/scripts" "$DEST/templates" "$DEST/assets/icons"
 
 cp -R "$SRC/skills/."    "$DEST/skills/"

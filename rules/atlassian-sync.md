@@ -44,7 +44,7 @@ mappings:
 
 ## 5. Audit (optional, does not touch the body)
 
-- Can use `createConfluenceFooterComment` to leave a mark "🔄 Synced by dev-diagram-kit from {source} at {ISO}" — an audit trail that does not mutate the page content.
+- Can use `createConfluenceFooterComment` to leave a mark "🔄 Synced by dev-ba-kit from {source} at {ISO}" — an audit trail that does not mutate the page content.
 - Do NOT use comments to hold the main content (content goes into the body via in-place update).
 
 ## 6. No-fabrication + in-scope
