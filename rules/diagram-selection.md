@@ -19,6 +19,7 @@ paths:
   - ".claude/skills/timeline/**"
   - ".claude/skills/code-flow/**"
   - ".claude/skills/diagram/**"
+  - ".claude/skills/ba/**"
   - ".claude/skills/gallery/**"
   - ".claude/skills/orgchart/**"
   - ".claude/skills/drawio-aws/**"
@@ -32,6 +33,12 @@ paths:
 # Diagram Selection — Which diagram to use when
 
 > Guide for IT-BAs: pick the right diagram type for each situation. Applies when writing `/srs`, `/brainstorm`, or when the user asks "draw a diagram for X".
+
+## Document or diagram? (level-1 fork)
+
+- Producing a **picture** (time-ordered calls, states, processes, data models, architecture) → this file (router `/diagram`).
+- Producing **prose / tables / specs / tests / sync to external tools** (BRD, PRD, SRS, use cases, user stories, test cases, CR, Jira/Confluence…) → `rules/doc-selection.md` (router `/ba`).
+- **Both** — a doc that embeds diagrams: the doc skill orchestrates and calls the diagram skills (e.g. `/srs` offers `/sequence` `/state` `/erd` after the spec).
 
 ## Decision matrix
 

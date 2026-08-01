@@ -59,7 +59,7 @@ Map a natural-language need → exactly ONE diagram skill, then delegate to it. 
 2. **Match the routing table.** If exactly one row fits → skip to step 4.
 3. **Ambiguous (2-3 candidates)?** Ask the **single most decisive** question above (at most 2 questions total, batched). Do NOT ask if the table already decides.
 4. **Announce + delegate:** print one line — `→ /<skill> <inferred args> (because <one-line reason>)` — then **RUN that skill** with the description/args carried through. With `--recommend-only`, stop after the announcement (let the user run it).
-5. **If nothing fits** (the need isn't a diagram — e.g. pure prose spec, or deployment/infra) → say so in one line + suggest the closest skill or `/srs`.
+5. **If nothing fits** (the need isn't a diagram — e.g. pure prose spec, requirements doc, test cases, Jira/Confluence sync) → hand off to **`/ba`** (the document router) with the description carried through. Deployment/infra diagrams stay out of scope by design — say so in one line.
 
 ## Examples
 
@@ -76,10 +76,11 @@ Map a natural-language need → exactly ONE diagram skill, then delegate to it. 
 
 - **Don't over-ask** — if the table decides in one row, run the skill with zero questions.
 - **Inline vs standalone is the most useful disambiguator** — many "which activity/ERD?" questions collapse to "do you want it inline in the doc, or a pretty export image?".
-- **Keep in sync** — when a diagram skill is added/removed, update this table AND `diagram-selection.md` together.
+- **Keep in sync** — when a diagram skill is added/removed, update this table AND `diagram-selection.md` together. Document skills live in the sibling matrix `doc-selection.md` + router `/ba`.
 - **You are not a renderer** — never emit a diagram yourself; always delegate.
 
 ## References
 
 - @../../rules/diagram-selection.md (source of truth — full decision matrix + "when to use" per type)
+- @../../rules/doc-selection.md (the document-side matrix — hand off non-diagram needs to `/ba`)
 - @../../rules/feature-bootstrap.md
