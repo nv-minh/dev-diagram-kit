@@ -41,7 +41,7 @@ Ghi lại đường dẫn Chrome nếu `mmdc` báo thiếu — set biến môi t
 export PUPPETEER_EXECUTABLE_PATH="/đường/dẫn/tới/Google Chrome for Testing"
 ```
 
-> Skill gọi `mermaid-verify.mjs` (trong `.claude/scripts/`) để **compile-check** mọi block Mermaid sau khi ghi — bắt lỗi cú pháp trước khi báo "xong". Script tự tìm Chrome; nếu fail, set `PUPPETEER_EXECUTABLE_PATH`.
+> Skill gọi `mermaid-verify.ts` (trong `.claude/scripts/`, chạy qua `tsrun.sh`) để **compile-check** mọi block Mermaid sau khi ghi — bắt lỗi cú pháp trước khi báo "xong". Script tự tìm Chrome; nếu fail, set `PUPPETEER_EXECUTABLE_PATH`.
 
 ---
 

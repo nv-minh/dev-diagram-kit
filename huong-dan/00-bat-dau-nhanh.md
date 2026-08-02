@@ -41,7 +41,9 @@ Trong Claude Code, chỉ 2 lệnh:
 /plugin install dev-ba-kit
 ```
 
-Xong — **cả 63 lệnh `/...` có sẵn ngay** (skill tài liệu + sơ đồ + router + `/scan-project` / `/code-flow` / `/gallery` / `/sync-confluence`). Engine BPMN tự `npm install` qua SessionStart hook (không phải làm tay).
+Xong — **cả 64 lệnh `/...` có sẵn ngay** (skill tài liệu + sơ đồ + router + `/scan-project` / `/code-flow` / `/gallery` / `/sync-confluence`). Engine BPMN tự `npm install` qua SessionStart hook (không phải làm tay).
+
+> **Lần đầu trong một repo?** Chạy `/discover` một lần — nó scan sâu code + hỏi ≤5 câu, rồi viết context brief chung (`docs/_shared/project-context.md`) mà mọi skill sau tiêu thụ, để chúng ngừng hỏi lại "hệ thống này làm gì?" và ngừng bịia tên. Kết hợp thêm `/scan-project` cho sơ đồ kiến trúc.
 
 ### Cách B — Copy thủ công (mọi trường hợp / tool khác)
 

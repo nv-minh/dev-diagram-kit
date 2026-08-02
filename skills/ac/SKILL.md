@@ -33,6 +33,7 @@ Make every story verifiable — a complete Given-When-Then set per story coverin
 ## Context (dynamic)
 
 Today: !`date +%Y-%m-%d`
+Project context: !`bash "${CLAUDE_PLUGIN_ROOT:-.claude}/scripts/context-load.sh"`
 Story indexes: !`ls docs/*/userstories/*-story-index.md 2>/dev/null | head -10`
 Stories in target: !`ls docs/*/userstories/us-*.md 2>/dev/null | head -15`
 
@@ -87,6 +88,7 @@ Worked example — user prompts, approval gates, and output excerpts: /example-s
 ## References
 
 - @../../rules/ba-conventions.md
+- @../../rules/project-context.md
 - @../../rules/approval-gate.md
 - @../../rules/naming-conventions.md
 - @../../rules/changelog.md

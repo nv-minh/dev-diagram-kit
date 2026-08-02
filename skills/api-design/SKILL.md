@@ -34,6 +34,7 @@ Design how our system orchestrates the integration — the call sequence, where 
 ## Context (dynamic)
 
 Today: !`date +%Y-%m-%d`
+Project context: !`bash "${CLAUDE_PLUGIN_ROOT:-.claude}/scripts/context-load.sh"`
 Contract summaries (required): !`ls docs/*/integration/api-summary*.md 2>/dev/null | head -10`
 Specs: !`ls docs/*/srs/*-spec.md 2>/dev/null | head -10`
 Existing designs: !`ls docs/*/integration/api-design.md 2>/dev/null | head -10`
@@ -81,6 +82,7 @@ Worked example — user prompts, approval gates, and output excerpts: /example-s
 ## References
 
 - @../../rules/ba-conventions.md
+- @../../rules/project-context.md
 - @../../rules/approval-gate.md
 - @../../rules/naming-conventions.md
 - @../../rules/changelog.md

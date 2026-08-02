@@ -38,6 +38,9 @@ To use entity descriptions from another source instead of answering directly →
 Today: !`date +%Y-%m-%d`
 Features with SRS: !`for d in docs/*/srs/*-spec.md; do [ -f "$d" ] && dirname "$d" | xargs dirname | xargs basename; done | head -20`
 Features with ERD: !`for d in docs/*/srs/*-erd.md; do [ -f "$d" ] && grep -l "erDiagram" "$d" 2>/dev/null && dirname "$d" | xargs dirname | xargs basename; done | head -10`
+Project context: !`bash "${CLAUDE_PLUGIN_ROOT:-.claude}/scripts/context-load.sh"`
+
+**IMPORTANT:** before drawing, read `docs/_shared/context/entities.md` if it exists (the `/discover` profile) — reuse the established entity set + names; do not re-ask or invent identifiers.
 
 ## Approach
 
@@ -149,6 +152,7 @@ erDiagram
 ## References
 
 - @../../rules/ba-conventions.md
+- @../../rules/project-context.md (consume the /discover profile — entities)
 - @../../rules/approval-gate.md
 - @../../rules/naming-conventions.md
 - @../../rules/changelog.md

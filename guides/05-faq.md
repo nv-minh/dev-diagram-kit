@@ -10,7 +10,7 @@
 No. Install just the engine for the skill you use. `/sequence /activity /state /erd` only need Mermaid (Node + mmdc + Chrome). See the table in `01-install-tools.md`.
 
 **Q: `mmdc` says it can't find Chrome.**
-Install Chrome for headless use: `npx puppeteer browsers install chrome`, then set `export PUPPETEER_EXECUTABLE_PATH="/path/Google Chrome for Testing"`. The `mermaid-verify.mjs` script auto-looks in `~/.puppeteer-cache`.
+Install Chrome for headless use: `npx puppeteer browsers install chrome`, then set `export PUPPETEER_EXECUTABLE_PATH="/path/Google Chrome for Testing"`. The `mermaid-verify.ts` script auto-looks in `~/.puppeteer-cache`.
 
 **Q: `d2: command not found`.**
 Install: `curl -fsSL https://d2lang.com/install.sh | sh -s --`. D2 goes into `~/.local/bin` — make sure this folder is in `PATH` (`export PATH="$HOME/.local/bin:$PATH"`).

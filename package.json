@@ -1,9 +1,9 @@
 {
   "name": "dev-ba-kit",
-  "version": "2.5.0",
+  "version": "2.7.0",
   "private": true,
   "type": "module",
-  "description": "BA toolkit for developers — documents + diagrams (Claude Code plugin). Discovery documents (/brainstorm→/urd→/brd→/prd→/srs) + the full diagram family (Mermaid/PlantUML/D2/BPMN/draw.io) with unified validate gates. Two routers: /ba (documents) and /diagram (diagrams). More document waves landing: spec, wireframes, API integration, testing, traceability, delivery. Bilingual EN/VI. Scripts run as TypeScript via tsx.",
+  "description": "64 skills for developers doing BA work: /discover (project intake → shared context brief consumed by every later skill) + discovery documents (/brainstorm→/urd→/brd→/prd-epic→/srs + product-level /prd and /roadmap) + specification (/usecase /userstory /ac /user-flow) + UI design (/wireframe-ascii /wireframe-html /prototype-html /figma) + 22 diagram skills (Mermaid/PlantUML/D2/BPMN/draw.io) + code-flow + scan-project + gallery + sync-confluence. Unified validate gates (diagram-validate + doc-validate). Two routers: /ba (documents) and /diagram (diagrams). Bilingual EN/VI. Scripts run as TypeScript via tsx.",
   "scripts": {
     "typecheck": "tsc --noEmit",
     "test": "vitest run"

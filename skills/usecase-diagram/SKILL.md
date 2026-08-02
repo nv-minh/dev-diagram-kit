@@ -57,6 +57,7 @@ Actor list auto-detected; the user confirms/edits in the L1 prompt rather than v
 ## Context (dynamic)
 
 Today: !`date +%Y-%m-%d`
+Project context: !`bash "${CLAUDE_PLUGIN_ROOT:-.claude}/scripts/context-load.sh"`
 Available features: !`ls -d docs/*/ 2>/dev/null | xargs -I{} basename {} | head -20`
 
 ## Approach
@@ -170,6 +171,7 @@ UC5 ..> UC3 : <<extend>>
 ## References
 
 - @../../rules/ba-conventions.md
+- @../../rules/project-context.md
 - @../../rules/approval-gate.md
 - @../../rules/naming-conventions.md
 - @../../rules/feature-bootstrap.md

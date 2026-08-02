@@ -37,6 +37,7 @@ Map the feature into **flows** (flow-slug + the screens each contains) and draw 
 ## Context (dynamic)
 
 Today: !`date +%Y-%m-%d`
+Project context: !`bash "${CLAUDE_PLUGIN_ROOT:-.claude}/scripts/context-load.sh"`
 Available features: !`ls -d docs/*/ 2>/dev/null | xargs -I{} basename {} | head -20`
 Existing userflows: !`ls docs/*/srs/*-userflow.md 2>/dev/null | head -10`
 UC sources: !`ls docs/*/usecases/uc-*.md 2>/dev/null | head -10`
@@ -52,6 +53,10 @@ UC sources: !`ls docs/*/usecases/uc-*.md 2>/dev/null | head -10`
 7. **Write.** **Activity log** — `CLAUDE_SKILL_NAME=/user-flow` + note + author before Write.
 8. **On approval, stamp state** — `stage: approved` + `flow_approved_at` + `flow_hash`.
 9. **Render-verify (MANDATORY)** — `bash "${CLAUDE_PLUGIN_ROOT:-.claude}/scripts/tsrun.sh" scripts/mermaid-verify.ts --file docs/{feature}/srs/{feature}-userflow.md`. Fail → fix, ≤2 attempts. Then doc-validate the file.
+9.5. **Flow_Reviewer gate (ONLY when over the complexity threshold)** — if the file has **≥3 flows**, OR **≥8 screens total**, OR **any single flow with >1 error/decision path**, spawn an agent via the Task tool, `subagent_type: flow-reviewer`, passing: the `## Flow:` section(s) just written + the step-3 fact-list (screen candidates with sources, decision/error edges + destinations). Measure by **total complexity** — screen count alone is not enough (a 4-screen straight line is simple; a 4-screen flow with 3 error branches is complex). Below every threshold, step 5's self-check (no agent) is enough — SKIP 9.5, go straight to step 10.
+   - **Task tool unavailable** (not provided by the runtime) → do NOT implicitly treat it as reviewed; the report states `reviewer skipped (Task unavailable)` so the user knows a complex flow did not pass the gate.
+   - Receive findings (format `review-format.md` + a "Coverage checklist" section). Any BLOCKING (a missing screen / a dead-end / a single-branch gateway) → add the missing screen or destination, re-run render-verify (9) + self-check (5), then continue. Loop at most 2 rounds; round 2 still BLOCKING → report the outstanding findings, let the user decide before the final report.
+   - Verdict `approve`/only WARNING/SUGGESTION → continue straight to step 10, no fix needed.
 10. **Output report** — flows + screens + next (wave 3 wireframes read this file).
 
 ## Mermaid shape reference (Claude composes it, do NOT hard-paste)
@@ -78,11 +83,13 @@ flowchart TD
 ```
 ✅ User flow written: docs/{feature}/srs/{feature}-userflow.md
    Flows: {F} ({slugs}) | Screens: [1]…[{N}] | Device: {device}
-   Mermaid compile: OK | doc-validate: OK | stage: approved ({date})
+   Mermaid compile: OK | doc-validate: OK | stage: approved ({date}){reviewed_note}
 
 Wave 3 reads this file: /wireframe-ascii {feature} --flow {slug} (per flow).
 Changed flows later → re-run /user-flow; the hash tells wireframes they're stale.
 ```
+
+`{reviewed_note}` = ` | Reviewed by Flow_Reviewer` if step 9.5 ran, else empty.
 
 ## Gotchas
 
@@ -98,6 +105,7 @@ Worked example — user prompts, approval gates, and output excerpts: /example-s
 ## References
 
 - @../../rules/ba-conventions.md
+- @../../rules/project-context.md
 - @../../rules/approval-gate.md
 - @../../rules/naming-conventions.md
 - @../../rules/changelog.md
@@ -108,3 +116,4 @@ Worked example — user prompts, approval gates, and output excerpts: /example-s
 - @../../templates/doc-userflow.md
 - @../../scripts/mermaid-verify.ts (render-verify — step 9)
 - @../../scripts/doc-validate.ts (validate after Write — step 9)
+- @../../agents/flow-reviewer.md (Flow_Reviewer — UX coverage review when over the complexity threshold, step 9.5)

@@ -56,6 +56,7 @@ Feature already has `.dbml` → the skill recognizes it and enters update mode (
 ## Context (dynamic)
 
 Today: !`date +%Y-%m-%d`
+Project context: !`bash "${CLAUDE_PLUGIN_ROOT:-.claude}/scripts/context-load.sh"`
 Available features: !`ls -d docs/*/ 2>/dev/null | xargs -I{} basename {} 2>/dev/null | grep -vE '^_' | head -20`
 Features with srs/{feature}-erd.md (good source): !`for d in docs/*/srs/*-erd.md; do [ -f "$d" ] && dirname "$d" | xargs dirname | xargs basename; done 2>/dev/null | head -10`
 dbml2sql installed: !`command -v dbml2sql >/dev/null && echo "✅ $(dbml2sql --version 2>/dev/null || echo installed)" || echo "❌ not installed — npm install -g @dbml/cli"`
@@ -192,6 +193,7 @@ Need edits?   /dbdiagram --feature {feature} (skill auto-enters update mode)
 ## References
 
 - @../../rules/ba-conventions.md
+- @../../rules/project-context.md
 - @../../rules/approval-gate.md
 - @../../rules/naming-conventions.md
 - @../../rules/changelog.md

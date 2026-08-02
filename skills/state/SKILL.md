@@ -43,6 +43,7 @@ To change the default behavior, say so in words:
 ## Context (dynamic)
 
 Today: !`date +%Y-%m-%d`
+Project context: !`bash "${CLAUDE_PLUGIN_ROOT:-.claude}/scripts/context-load.sh"`
 Available features: !`ls -d docs/*/ 2>/dev/null | xargs -I{} basename {} | head -20`
 Features with states.md: !`for d in docs/*/srs/*-states.md; do [ -f "$d" ] && echo "$d"; done | head -10`
 
@@ -150,6 +151,7 @@ stateDiagram-v2
 ## References
 
 - @../../rules/ba-conventions.md
+- @../../rules/project-context.md
 - @../../rules/approval-gate.md
 - @../../rules/naming-conventions.md
 - @../../rules/changelog.md

@@ -35,6 +35,7 @@ Produce a Mermaid `mindmap` block that decomposes a topic into a tree of scope i
 ## Context (dynamic)
 
 Today: !`date +%Y-%m-%d`
+Project context: !`bash "${CLAUDE_PLUGIN_ROOT:-.claude}/scripts/context-load.sh"`
 Available features: !`ls -d docs/*/ 2>/dev/null | xargs -I{} basename {} | head -20`
 Features with scope.md: !`for d in docs/*/srs/*-scope.md; do [ -f "$d" ] && echo "$d"; done | head -10`
 
@@ -96,6 +97,7 @@ Need changes? /mindmap "{topic}" --feature {feature} again → update mode.
 ## References
 
 - @../../rules/ba-conventions.md
+- @../../rules/project-context.md
 - @../../rules/approval-gate.md
 - @../../rules/naming-conventions.md
 - @../../rules/changelog.md

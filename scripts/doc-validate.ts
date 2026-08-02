@@ -70,6 +70,8 @@ export function inferSpec(rel: string): Spec | null {
   if (/^docs\/[^/]+\/test\/api\/api-tests\.md$/.test(p)) return { type: 'api-tests', kind: 'full' };
   if (/^docs\/cr\/CR-\d{8}-\d{3}\.md$/.test(p)) return { type: 'change-request', kind: 'full' };
   if (/^docs\/_shared\/traceability\.md$/.test(p)) return { type: 'traceability', kind: 'slim' };
+  if (/^docs\/_shared\/project-context\.md$/.test(p)) return { type: 'project-context', kind: 'slim' };
+  if (/^docs\/_shared\/context\/[^/]+\.md$/.test(p)) return { type: 'project-context-detail', kind: 'slim' };
   if (/^docs\/meetings\/\d{4}-\d{2}-\d{2}-[^/]+\.md$/.test(p)) return { type: 'meeting', kind: 'meeting' };
   if (/^docs\/inbox\/\d{4}-\d{2}-\d{2}-[^/]+\.md$/.test(p)) return { type: 'inbox', kind: 'slim' };
   if (/^docs\/userguide\/[^/]+\/pages\/[^/]+\.md$/.test(p)) return { type: 'userguide-section', kind: 'zero' };
@@ -153,6 +155,12 @@ export function validateDoc(file: string, vaultRoot: string): Result | null {
   const findings: Finding[] = [];
   const fm = parseFm(src);
   const body = fm ? src.slice(src.indexOf('---', 4) + 3) : src;
+
+  // Tier-1 project-context hard cap: 60 lines of content (excl. frontmatter).
+  if (spec.type === 'project-context') {
+    const bodyLines = body.replace(/^\n+/, '').replace(/\n+$/, '').split('\n').length;
+    if (bodyLines > 60) findings.push({ level: 'error', msg: `Tier-1 project-context is ${bodyLines} lines — hard cap is 60 (excl. frontmatter). Cut anything grep can re-derive; move depth to docs/_shared/context/*.md.` });
+  }
 
   if (spec.kind === 'zero') {
     if (fm) findings.push({ level: 'error', msg: `${spec.type} files are zero-frontmatter by design — remove the frontmatter (metadata lives in the index file)` });

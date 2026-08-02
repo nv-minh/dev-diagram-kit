@@ -65,8 +65,8 @@
 ## Pipeline (the engine handles it, the AI only runs commands)
 
 ```
-node bpmn-build.mjs            # every .ir.json → semcheck → layout → .bpmn → _viewer.html
-node bpmn-build.mjs --verify   # semcheck (structural+coverage) + validate layout of every .bpmn
+bash "${CLAUDE_PLUGIN_ROOT:-.claude}/scripts/tsrun.sh" skills/bpmn/engine/bpmn-build.ts  # every .ir.json → semcheck → layout → .bpmn → _viewer.html
+bash "${CLAUDE_PLUGIN_ROOT:-.claude}/scripts/tsrun.sh" skills/bpmn/engine/bpmn-build.ts --verify  # semcheck (structural+coverage) + validate layout of every .bpmn
 ```
 
 ## File `bpmn/{feature}-bpmn-index.md`

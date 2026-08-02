@@ -68,6 +68,8 @@ echo "python3:"; command -v python3 >/dev/null && echo "✅" || echo "❌ MISSIN
 echo "internet plantuml.com:"; curl -s -o /dev/null -w "%{http_code}" --max-time 5 https://www.plantuml.com/plantuml/ 2>/dev/null || echo "unreachable"
 ```
 
+Project context: !`bash "${CLAUDE_PLUGIN_ROOT:-.claude}/scripts/context-load.sh"`
+
 ## Flow runtime (how the skill runs)
 
 ```
@@ -248,6 +250,7 @@ Need changes? /activity-swimlane "<change>" --feature {feature} (the skill enter
 ## References
 
 - @../../rules/ba-conventions.md
+- @../../rules/project-context.md
 - @../../rules/approval-gate.md
 - @../../rules/naming-conventions.md
 - @../../rules/changelog.md

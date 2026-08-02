@@ -43,7 +43,9 @@ In Claude Code, just 2 commands:
 /plugin install dev-ba-kit
 ```
 
-Done — **all 63 `/...` commands are available right away** (document skills + diagram skills + routers + `/scan-project` / `/code-flow` / `/gallery` / `/sync-confluence`). The BPMN engine auto-`npm install`s via the SessionStart hook (no manual step needed).
+Done — **all 64 `/...` commands are available right away** (document skills + diagram skills + routers + `/scan-project` / `/code-flow` / `/gallery` / `/sync-confluence`). The BPMN engine auto-`npm install`s via the SessionStart hook (no manual step needed).
+
+> **First time in a repo?** Run `/discover` once — it deep-scans the code + asks ≤5 questions, then writes a shared context brief (`docs/_shared/project-context.md`) that every later skill consumes, so they stop re-asking "what does this system do?" and stop inventing names. Pair it with `/scan-project` for the architecture diagrams.
 
 ### Way B — Manual copy (any case / other tool)
 

@@ -37,6 +37,9 @@ Today: !`date +%Y-%m-%d`
 Available features: !`ls -d docs/*/ 2>/dev/null | xargs -I{} basename {} | head -20`
 Specs (required source): !`ls docs/*/srs/*-spec.md 2>/dev/null | head -10`
 Existing story indexes: !`ls docs/*/userstories/*-story-index.md 2>/dev/null | head -10`
+Project context: !`bash "${CLAUDE_PLUGIN_ROOT:-.claude}/scripts/context-load.sh"`
+
+**IMPORTANT:** before slicing, read `docs/_shared/context/actors.md` and `context/domain-rules.md` if they exist (the `/discover` profile) — reuse the established actors/rules; do not re-ask.
 
 ## Approach
 
@@ -104,6 +107,7 @@ Worked example — user prompts, approval gates, and output excerpts: /example-s
 ## References
 
 - @../../rules/ba-conventions.md
+- @../../rules/project-context.md (consume the /discover profile — actors/rules)
 - @../../rules/approval-gate.md
 - @../../rules/naming-conventions.md
 - @../../rules/changelog.md

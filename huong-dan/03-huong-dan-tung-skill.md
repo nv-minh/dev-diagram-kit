@@ -18,7 +18,7 @@ Ký hiệu: `<slug>` = tên feature dạng kebab-case (vd `atlas-re`). `"..."` =
 
 **Skill hỏi gì:** các actor tham gia · thứ tự message · nhánh error/alt.
 
-**Output:** `docs/{slug}/srs/{slug}-flows.md` — mỗi flow một section, mermaid `sequenceDiagram` inline. Tự compile-check qua `mermaid-verify.mjs`.
+**Output:** `docs/{slug}/srs/{slug}-flows.md` — mỗi flow một section, mermaid `sequenceDiagram` inline. Tự compile-check qua `mermaid-verify.ts`.
 
 **Ví dụ:**
 ```

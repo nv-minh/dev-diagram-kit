@@ -2,7 +2,7 @@
 
 **English** · [Tiếng Việt](../huong-dan/02-chon-skill-nao.md)
 
-> 63 skills sounds like a lot, but picking the right one is quick if you ask the right question — or just run `/ba` / `/diagram`. This is the condensed version; the full versions are `explain-skills/diagram-selection.md` (diagrams) and `rules/doc-selection.md` (documents).
+> 64 skills sounds like a lot, but picking the right one is quick if you ask the right question — or just run `/ba` / `/diagram`. This is the condensed version; the full versions are `explain-skills/diagram-selection.md` (diagrams) and `rules/doc-selection.md` (documents).
 
 ---
 

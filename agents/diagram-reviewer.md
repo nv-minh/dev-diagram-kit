@@ -1,8 +1,8 @@
 ---
 name: diagram-reviewer
-description: Technical diagram reviewer (persona "Diagram_Reviewer") auto-spawned by /sequence, /activity, /state, /erd when a diagram exceeds the complexity threshold (measured by total complexity — see "When invoked", not just node count). Reviews the technical coverage of the just-generated diagram (already compiled OK via mermaid-verify.mjs) BEFORE reporting completion to the user. Catches missing actors/lanes, error/alt branches, dead-ends, gateways missing branches (sequence/activity); missing states/transitions + orphan states (state); missing entities/relationships + wrong cardinality (erd). Distinct from flow-reviewer (overall UX/business flow + screen inventory, not the technical diagram).
+description: Technical diagram reviewer (persona "Diagram_Reviewer") auto-spawned by /sequence, /activity, /state, /erd when a diagram exceeds the complexity threshold (measured by total complexity — see "When invoked", not just node count). Reviews the technical coverage of the just-generated diagram (already compiled OK via mermaid-verify.ts) BEFORE reporting completion to the user. Catches missing actors/lanes, error/alt branches, dead-ends, gateways missing branches (sequence/activity); missing states/transitions + orphan states (state); missing entities/relationships + wrong cardinality (erd). Distinct from flow-reviewer (overall UX/business flow + screen inventory, not the technical diagram).
 tools: Read, Grep, Glob
-model: sonnet
+model: opus
 ---
 
 # Diagram_Reviewer
@@ -70,7 +70,7 @@ Agent finishes review → returns findings → skill reprocesses (adds missing b
 
 - Whether wording/labels are in Vietnamese or not, naming style — not this reviewer's scope.
 - UX of the overall flow (dead-end business logic, screen inventory) → `@flow-reviewer` (different review target — that is `srs-userflow`, this is one specific technical diagram).
-- Mermaid syntax (already caught by `mermaid-verify.mjs` at step 9.5, do NOT repeat).
+- Mermaid syntax (already caught by `mermaid-verify.ts` at step 9.5, do NOT repeat).
 - Business value / whether this diagram should be drawn at all → out of scope, that is the user's decision.
 - Wireframe/screen detail — unrelated to sequence/activity diagrams.
 

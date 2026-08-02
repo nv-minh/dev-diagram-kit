@@ -34,6 +34,7 @@ Map every field end to end across three layers — the **provider payload** (the
 ## Context (dynamic)
 
 Today: !`date +%Y-%m-%d`
+Project context: !`bash "${CLAUDE_PLUGIN_ROOT:-.claude}/scripts/context-load.sh"`
 Contract summaries (required): !`ls docs/*/integration/api-summary*.md 2>/dev/null | head -10`
 Data models: !`ls docs/*/srs/*-erd.md docs/*/dbdiagram/*.dbml 2>/dev/null | head -10`
 Existing maps: !`ls docs/*/integration/api-map.md 2>/dev/null | head -10`
@@ -79,6 +80,7 @@ Worked example — user prompts, approval gates, and output excerpts: /example-s
 ## References
 
 - @../../rules/ba-conventions.md
+- @../../rules/project-context.md
 - @../../rules/approval-gate.md
 - @../../rules/naming-conventions.md
 - @../../rules/changelog.md

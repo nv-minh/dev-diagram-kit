@@ -34,6 +34,7 @@ Turn the Feature Map into a prioritized plan — RICE-lite scores per feature (R
 ## Context (dynamic)
 
 Today: !`date +%Y-%m-%d`
+Project context: !`bash "${CLAUDE_PLUGIN_ROOT:-.claude}/scripts/context-load.sh"`
 Product PRD (Feature Map source): !`ls docs/_product/prd.md 2>/dev/null || echo "missing — /prd first, or provide a feature list"`
 Roadmap exists: !`ls docs/_product/roadmap.md 2>/dev/null || echo "no — will create"`
 Features with a PRD: !`ls docs/*/*-prd.md 2>/dev/null | head -20`
@@ -82,6 +83,7 @@ Worked example — user prompts, approval gates, and output excerpts: /example-s
 ## References
 
 - @../../rules/ba-conventions.md
+- @../../rules/project-context.md
 - @../../rules/approval-gate.md
 - @../../rules/naming-conventions.md
 - @../../rules/changelog.md

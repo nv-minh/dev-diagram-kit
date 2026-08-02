@@ -78,6 +78,7 @@ UC/SRS/flows ──(AI reads + infers)──► {slug}.ir.json   (lanes / nodes 
 ## Context (dynamic)
 
 Today: !`date +%Y-%m-%d`
+Project context: !`bash "${CLAUDE_PLUGIN_ROOT:-.claude}/scripts/context-load.sh"`
 Available features: !`ls -d docs/*/ 2>/dev/null | xargs -I{} basename {} 2>/dev/null | grep -vE '_shared|meetings|decisions|blockers|inbox|changes|impacts|exports|redoc|userguide|images' | head -20`
 Features with bpmn/: !`for d in docs/*/bpmn/*-bpmn-index.md; do [ -f "$d" ] && dirname $(dirname "$d") | xargs basename; done 2>/dev/null | head -10`
 
@@ -173,6 +174,7 @@ src.json: `{ "actors": [...], "branches": [...], "errors": [...] }` — facts ex
 ## References
 
 - @../../rules/ba-conventions.md
+- @../../rules/project-context.md
 - @../../rules/approval-gate.md
 - @../../rules/naming-conventions.md
 - @../../rules/changelog.md

@@ -56,6 +56,7 @@ A DFD is orthogonal: it can sit **alongside** `/system-design` (C4 = structure, 
 ## Context (dynamic)
 
 Today: !`date +%Y-%m-%d`
+Project context: !`bash "${CLAUDE_PLUGIN_ROOT:-.claude}/scripts/context-load.sh"`
 Available features: !`ls -d docs/*/ 2>/dev/null | xargs -I{} basename {} | head -20`
 Features with ERD (good source for data stores): !`for d in docs/*/srs/*-erd.md docs/*/d2-erd/*.d2; do [ -f "$d" ] && dirname "$d" | xargs dirname | xargs basename; done 2>/dev/null | sort -u | head -10`
 d2 installed: !`test -x "$HOME/.local/bin/d2" && echo "✅ $($HOME/.local/bin/d2 --version)" || echo "❌ not installed — curl -fsSL https://d2lang.com/install.sh | sh -s --"`
@@ -167,6 +168,7 @@ Need changes? /dfd --feature {feature} (the skill enters update mode automatical
 ## References
 
 - @../../rules/ba-conventions.md
+- @../../rules/project-context.md
 - @../../rules/approval-gate.md
 - @../../rules/naming-conventions.md
 - @../../rules/changelog.md

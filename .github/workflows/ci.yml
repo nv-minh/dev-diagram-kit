@@ -36,7 +36,7 @@ jobs:
         run: bash scripts/tsrun.sh scripts/kit-lint.ts
 
       - name: Validate example documents
-        run: bash scripts/tsrun.sh scripts/doc-validate.ts example/atlas-re
+        run: bash scripts/tsrun.sh scripts/doc-validate.ts example --vault example
 
       - name: Install D2
         run: |

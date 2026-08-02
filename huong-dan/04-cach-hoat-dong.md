@@ -1,6 +1,6 @@
 # 04 — Cách skill hoạt động (luồng chung)
 
-> Hiểu luồng chạy giúp bạn biết khi nào skill sẽ hỏi, khi nào chờ bạn duyệt, và tại sao nó tự sửa lỗi. Cả 63 skill theo cùng khung này (biến thể đáng chú ý: `/scan-project` chạy **2 pha có HARD STOP** scan→plan→sinh; `/sync-confluence` và các skill external-write khác thêm bước **preview + xác nhận** trước khi ghi ra ngoài vault).
+> Hiểu luồng chạy giúp bạn biết khi nào skill sẽ hỏi, khi nào chờ bạn duyệt, và tại sao nó tự sửa lỗi. Cả 64 skill theo cùng khung này (biến thể đáng chú ý: `/scan-project` chạy **2 pha có HARD STOP** scan→plan→sinh; `/sync-confluence` và các skill external-write khác thêm bước **preview + xác nhận** trước khi ghi ra ngoài vault).
 
 > **Song ngữ EN/VI:** ngôn ngữ output (nhãn diagram + câu hỏi phỏng vấn + L1 plan + báo cáo) **tự bám ngôn ngữ bạn gõ** — gõ tiếng Anh → English, tiếng Việt → VI; ép bằng `--lang en|vi` (theo `rules/language.md`). Keyword cú pháp engine + tên định danh kỹ thuật thật (table/service/endpoint) luôn giữ English.
 
@@ -55,10 +55,10 @@ Mỗi engine có cách bắt lỗi riêng, chạy **trước khi báo "xong"**:
 
 | Engine | Cách kiểm | Bắt được gì |
 |---|---|---|
-| Mermaid | `mermaid-verify.mjs` compile mọi block qua `mmdc` | Lỗi cú pháp (ký tự cấm trong label, thiếu token) |
+| Mermaid | `mermaid-verify.ts` compile mọi block qua `mmdc` | Lỗi cú pháp (ký tự cấm trong label, thiếu token) |
 | D2 | `render.sh` compile `.d2` → `.svg` | Lỗi cú pháp D2 |
 | DBML | `dbml2sql {feature}.dbml --postgres` | DBML sai cú pháp |
-| BPMN | `bpmn-semcheck.mjs` | Thiếu actor/branch/error so với facts, gateway thiếu nhánh, dead-end |
+| BPMN | `bpmn-semcheck.ts` | Thiếu actor/branch/error so với facts, gateway thiếu nhánh, dead-end |
 | PlantUML | server trả HTTP != 200 | Encode/network/server fail |
 
 Lỗi → skill **sửa và thử lại** (thường tối đa 2-3 lần), không ghi diagram hỏng ra rồi báo hoàn tất.

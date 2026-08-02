@@ -56,6 +56,7 @@ Root: !`echo "${CLAUDE_PROJECT_DIR:-$(pwd)}"`
 Has git: !`git rev-parse --is-inside-work-tree 2>/dev/null && echo "✅" || echo "(not a git repo)"`
 Detected manifest: !`ls package.json go.mod pom.xml build.gradle requirements.txt pyproject.toml Cargo.toml composer.json Gemfile 2>/dev/null | head`
 mmdc installed?: !`command -v mmdc >/dev/null && echo "✅ $(mmdc --version 2>/dev/null || echo '?')" || echo "❌ npm i -g @mermaid-js/mermaid-cli"`
+Project context: !`bash "${CLAUDE_PLUGIN_ROOT:-.claude}/scripts/context-load.sh"`
 
 ## Flow runtime
 
@@ -145,6 +146,7 @@ Need changes? /code-flow {target} again → update mode; or /code-flow {target} 
 ## References
 
 - @../../rules/ba-conventions.md
+- @../../rules/project-context.md
 - @../../rules/approval-gate.md
 - @../../rules/naming-conventions.md
 - @../../rules/changelog.md

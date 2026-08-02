@@ -10,7 +10,7 @@ argument-hint: "<doc-path|feature> [--agents <list>]"
 
 ## Goal
 
-Run a multi-agent quality review over a document (or a feature's doc set): spawn reviewer agents (`@doc-reviewer`, plus `@senior-ba`/`@qa-reviewer` when wired), aggregate findings per `review-format.md`, present them, apply the accepted fixes as L2 diffs, and drive the doc's status transition (`in-review → revisions` or `→ approved`).
+Run a multi-agent quality review over a document (or a feature's doc set): spawn reviewer agents (`@doc-reviewer` always, plus `@senior-ba` and/or `@qa-reviewer` when requested via `--agents`), aggregate findings per `review-format.md`, present them, apply the accepted fixes as L2 diffs, and drive the doc's status transition (`in-review → revisions` or `→ approved`).
 
 ## Constraints
 
@@ -19,7 +19,7 @@ Run a multi-agent quality review over a document (or a feature's doc set): spawn
 - **Renamed from `/review`** — the declared slot collided with the user-level `review` (gstack pre-landing PR review) skill; this is the BA-document quality audit.
 - **Aggregate + dedupe** (`review-format.md`) — the same finding from N agents counts once (keep the most detailed).
 - **Status transitions** — `approve` (0 BLOCKING + 0 unacked WARNING) → status `approved`; `revise` (≥1 WARNING) → `revisions`; `block` (≥1 BLOCKING) → `revisions` + must fix.
-- **Criteria sourced from the agents** — `@doc-reviewer` (coverage/fabrication/altitude/cleanliness); `@senior-ba` (business soundness, when wired); `@qa-reviewer` (testability of FRs/ACs, when wired). Port BMAD `po-master-checklist` style criteria into the agent prompts.
+- **Criteria sourced from the agents** — `@doc-reviewer` (coverage/fabrication/altitude/cleanliness, always-on); `@senior-ba` (business soundness — objectives measurable, ROI sourced, scope discipline); `@qa-reviewer` (testability of FRs/ACs/NFRs). `@senior-ba`/`@qa-reviewer` are opt-in via `--agents`; spawn each named reviewer via the Task tool (`subagent_type: senior-ba` / `qa-reviewer`).
 - **No fabrication in fixes** — an accepted fix uses the doc's sources; a fix that invents content is rejected.
 - **Bilingual (mirror input — @../../rules/language.md)**.
 - **Template** — none (findings per `review-format.md`; the review output is structured prose, not a templated doc).
@@ -40,7 +40,7 @@ Features: !`ls -d docs/*/ 2>/dev/null | xargs -I{} basename {} | grep -v "^_" | 
 ## Approach
 
 1. **Resolve the target** — one doc or a feature set. Empty → friendly abort.
-2. **Spawn reviewers** — `@doc-reviewer` (always) + the optional agents; each gets the doc(s) + the fact-list/sources. Agents return findings (BLOCKING/WARNING/SUGGESTION + location + suggested fix).
+2. **Spawn reviewers** — `@doc-reviewer` always (via the Task tool, `subagent_type: doc-reviewer`), plus any reviewers named in `--agents` (`senior-ba`, `qa-reviewer`); each gets the doc(s) + the fact-list/sources. Agents return findings (BLOCKING/WARNING/SUGGESTION + location + suggested fix) and never edit — this skill applies the accepted fixes.
 3. **Aggregate + dedupe** — merge findings per `review-format.md`; compute the verdict.
 4. **Present findings** — grouped by severity, each with location + suggested fix; the user accepts/rejects each (or accepts-all-WARNING, holds-BLOCKING).
 5. **Apply accepted fixes** — per accepted finding, an L2 diff to the target doc; set the activity log env before each Edit.
@@ -86,3 +86,5 @@ Worked example — user prompts, approval gates, and output excerpts: /example-s
 - @../../rules/status-lifecycle.md
 - @../../rules/language.md
 - @../../agents/doc-reviewer.md (the always-on reviewer)
+- @../../agents/senior-ba.md (opt-in — business soundness, via --agents senior-ba)
+- @../../agents/qa-reviewer.md (opt-in — testability of FRs/ACs, via --agents qa-reviewer)

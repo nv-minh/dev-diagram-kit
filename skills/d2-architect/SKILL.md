@@ -54,6 +54,7 @@ Slug already exists → the skill recognizes it and enters update mode (L2 diff)
 ## Context (dynamic)
 
 Today: !`date +%Y-%m-%d`
+Project context: !`bash "${CLAUDE_PLUGIN_ROOT:-.claude}/scripts/context-load.sh"`
 Available features: !`ls -d docs/*/ 2>/dev/null | xargs -I{} basename {} | head -20`
 system-overview present (good source): !`test -f docs/_shared/system-overview.md && echo "✅ docs/_shared/system-overview.md" || echo "(not present — /update-overview system)"`
 d2 installed: !`test -x "$HOME/.local/bin/d2" && echo "✅ $($HOME/.local/bin/d2 --version)" || echo "❌ not installed — curl -fsSL https://d2lang.com/install.sh | sh -s --"`
@@ -190,6 +191,7 @@ Need changes? /d2-architect --feature {feature} (the skill enters update mode au
 ## References
 
 - @../../rules/ba-conventions.md
+- @../../rules/project-context.md
 - @../../rules/approval-gate.md
 - @../../rules/naming-conventions.md
 - @../../rules/changelog.md

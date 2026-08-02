@@ -7,8 +7,8 @@
  * user opened an IDE/Obsidian/GitHub. This script catches errors IMMEDIATELY, before the skill reports "done".
  *
  * Usage:
- *   node .claude/scripts/mermaid-verify.ts --file docs/{feature}/srs/flows.md
- *   node .claude/scripts/mermaid-verify.ts --file docs/x/srs/x-erd.md --png /tmp/erd-review
+ *   bash "${CLAUDE_PLUGIN_ROOT:-.claude}/scripts/tsrun.sh" scripts/mermaid-verify.ts --file docs/{feature}/srs/flows.md
+ *   bash "${CLAUDE_PLUGIN_ROOT:-.claude}/scripts/tsrun.sh" scripts/mermaid-verify.ts --file docs/x/srs/x-erd.md --png /tmp/erd-review
  *
  * Output: each block's PASS/FAIL with the nearest heading (## ...) so you know where the error is in the file.
  * Exit code = number of FAIL blocks (0 if all pass).

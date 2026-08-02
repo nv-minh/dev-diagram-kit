@@ -35,6 +35,7 @@ Draw one ASCII frame per screen in a flow + the **5-column screen-description ta
 ## Context (dynamic)
 
 Today: !`date +%Y-%m-%d`
+Project context: !`bash "${CLAUDE_PLUGIN_ROOT:-.claude}/scripts/context-load.sh"`
 Userflows (gate source): !`ls docs/*/srs/*-userflow.md 2>/dev/null | head -10`
 Screen indexes: !`ls docs/*/ascii-wireframe/*-wireframe-index.md 2>/dev/null | head -10`
 Existing ASCII flows: !`ls docs/*/ascii-wireframe/*.md 2>/dev/null | grep -v index | head -10`
@@ -103,6 +104,7 @@ Worked example — user prompts, approval gates, and output excerpts: /example-s
 ## References
 
 - @../../rules/ba-conventions.md
+- @../../rules/project-context.md
 - @../../rules/approval-gate.md
 - @../../rules/naming-conventions.md
 - @../../rules/changelog.md

@@ -43,7 +43,7 @@ Note the Chrome path if `mmdc` reports it's missing — set the environment vari
 export PUPPETEER_EXECUTABLE_PATH="/path/to/Google Chrome for Testing"
 ```
 
-> The skill calls `mermaid-verify.mjs` (in `.claude/scripts/`) to **compile-check** every Mermaid block after writing — catching syntax errors before reporting "done". The script auto-finds Chrome; if it fails, set `PUPPETEER_EXECUTABLE_PATH`.
+> The skill calls `mermaid-verify.ts` (in `.claude/scripts/`, run via `tsrun.sh`) to **compile-check** every Mermaid block after writing — catching syntax errors before reporting "done". The script auto-finds Chrome; if it fails, set `PUPPETEER_EXECUTABLE_PATH`.
 
 ---
 

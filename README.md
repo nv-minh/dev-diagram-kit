@@ -4,15 +4,36 @@
 
 Diagram and documentation skills for developers doing BA work, packaged as a [Claude Code](https://docs.claude.com/en/docs/claude-code) plugin. Describe a system or process in plain language — or point the kit at a codebase — and it produces the right diagram (Mermaid, PlantUML, D2, or BPMN), compile-checks it, and renders it. Output is bilingual and follows the language you write in.
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE) [![CI](https://github.com/nv-minh/dev-ba-kit/actions/workflows/ci.yml/badge.svg)](https://github.com/nv-minh/dev-ba-kit/actions/workflows/ci.yml) &nbsp; 63 skills &nbsp;·&nbsp; Mermaid / PlantUML / D2 / BPMN / draw.io &nbsp;·&nbsp; EN / VI
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE) [![CI](https://github.com/nv-minh/dev-ba-kit/actions/workflows/ci.yml/badge.svg)](https://github.com/nv-minh/dev-ba-kit/actions/workflows/ci.yml) &nbsp; 64 skills &nbsp;·&nbsp; Mermaid / PlantUML / D2 / BPMN / draw.io &nbsp;·&nbsp; EN / VI
 
 **English** · [Tiếng Việt](README.vi.md)
 
 ---
 
+## Not just another pile of prompts
+
+Most Claude Code skill collections are **disconnected one-shot prompts**: each starts from scratch, produces unverified text, and the next skill re-asks the same domain questions. **dev-ba-kit is an opinionated, validated BA pipeline** with a shared-context layer that learns your repo once.
+
+| A typical skill pack | dev-ba-kit |
+|---|---|
+| Disconnected prompts; you memorize which does what | A traceable pipeline **discovery → spec → UI → API → test → delivery** (`UN → BO → CAP → FR → UC/US → AC → CHK/TC`) with two routers (`/ba`, `/diagram`) that pick the right skill for you |
+| Every skill re-derives the domain from scratch — and invents names when unsure | **`/discover`** scans the repo once + a 5-question interview → a small, always-loaded **context brief** (`docs/_shared/project-context.md`, ≤60 lines) that every later skill consumes, so they stop re-asking and stop hallucinating entity/actor names |
+| Output is unverified prose & diagrams | Every artifact passes a **unified validation gate** — `doc-validate` (frontmatter, IDs, links) + `diagram-validate` (compile, coverage, stencil audits) — before it is reported "done" |
+| A bloated `CLAUDE.md`, or nothing at all | A **provenance-tagged Tier-1 index** (✅ read · 🔵 inferred · 🟡 guessed + `file:path`); when it drifts, a **loud banner fires at load time**, not buried in a dashboard |
+| Silent writes — trust the AI | **Human-in-the-loop**: every change is previewed at an L1/L2 gate before writing, plus a reviewer-agent bench (doc · diagram · flow · senior-ba · qa) |
+| English-only, generic boxes | **Bilingual EN/VI**, real cloud stencils (AWS / Azure / GCP / Databricks), five render engines (Mermaid / D2 / PlantUML / BPMN / draw.io) |
+
+> The standout no ordinary skill pack has is the **`/discover` context layer** — and it is *research-grounded*: a 60-line high-signal index beats a 600-line generic overview (which the AGENTS.md literature found adds cost and rots fast). See [`rules/project-context.md`](rules/project-context.md) and the worked [`example/_shared/`](example/_shared/) context set.
+
 ## Skills
 
-Sixty-three skills. Thirty-five write BA documents (the full discovery→spec→UI→API→test→delivery suite shipped in waves 1–6 — see `rules/doc-selection.md`); twenty-two draw diagrams (including four **draw.io** cloud-architecture skills with real AWS/Azure/GCP/Databricks stencils + a **draw.io** UML sequence skill); `/scan-project` and `/code-flow` read your code; two routers pick the right skill for you — `/diagram` (diagrams) and `/ba` (BA documents); `/gallery` builds a one-file handoff deck; `/sync-confluence` syncs to Confluence. Every artifact passes a unified validation gate before it's reported done — `diagram-validate` for diagrams, `doc-validate` for documents.
+Sixty-four skills. `/discover` runs first in a repo (deep scan + 5-question interview → a shared context brief every later skill consumes); thirty-five write BA documents (the full discovery→spec→UI→API→test→delivery suite shipped in waves 1–6 — see `rules/doc-selection.md`); twenty-two draw diagrams (including four **draw.io** cloud-architecture skills with real AWS/Azure/GCP/Databricks stencils + a **draw.io** UML sequence skill); `/scan-project` and `/code-flow` read your code; two routers pick the right skill for you — `/diagram` (diagrams) and `/ba` (BA documents); `/gallery` builds a one-file handoff deck; `/sync-confluence` syncs to Confluence. Every artifact passes a unified validation gate before it's reported done — `diagram-validate` for diagrams, `doc-validate` for documents.
+
+### Project-level / setup
+
+| Skill | Output | Use for |
+|---|---|---|
+| `/discover` | Shared context set — `docs/_shared/project-context.md` (≤60-line always-loaded index) + `context/*.md` | Run FIRST in a repo: deep scan + bounded 5-question interview → the context brief every later skill consumes (stops re-asking, stops inventing names). Differs from `/scan-project` (architecture diagrams from code) |
 
 ### Documents — discovery & requirements
 
@@ -115,7 +136,7 @@ Not sure which to use? Run **`/diagram`** — describe what you want to show and
 
 ### Simulated sessions (document skills)
 
-All **36 document skills** (including the `/ba` router) ship a **simulated session** — a realistic chat transcript (commands you type, interview questions, L1/L2 approval gates, output excerpts). Each file lives at `skills/<skill>/references/example-session.md`; every `SKILL.md` links it under **Simulated session**.
+All **thirty-five document skills plus the `/ba` router (36 total)** have a **simulated session** at `skills/<skill>/references/example-session.md` — a realistic chat transcript (commands you type, interview questions, L1/L2 approval gates, output excerpts), linked from each `SKILL.md`. Twenty-five are standalone transcripts; the other ~11 are short pointers into a family session (the API chain and the delivery group each share one full transcript, and the rest link to it).
 
 | Where to start | What you get |
 |---|---|
@@ -280,7 +301,7 @@ The kit targets Claude Code. There are two ways to install it.
 /plugin install dev-ba-kit
 ```
 
-All 63 commands become available immediately. The BPMN engine installs its Node dependencies on first session via a hook — nothing to run by hand.
+All 64 commands become available immediately. The BPMN engine installs its Node dependencies on first session via a hook — nothing to run by hand.
 
 ### Migrating from dev-diagram-kit 1.x
 
@@ -323,6 +344,7 @@ Install only what the skills you use need (`scripts/doctor.sh` reports what's mi
 
 ## How it works
 
+- **Learns your repo once.** Run `/discover` first — it writes a small, always-loaded context brief (`docs/_shared/project-context.md`, ≤60 lines) that every later skill consumes: the non-derivable domain facts (purpose, glossary collisions, rules, gotchas) tagged with confidence + provenance, with staleness enforced at load time. No more re-asking "what does this system do?" in every skill.
 - **No syntax to memorize.** You describe the domain; the skill writes the Mermaid/PlantUML/D2/BPMN/draw.io source.
 - **Bilingual output.** Labels, questions, and reports follow the language of your input; force it with `--lang en|vi` (see `rules/language.md`). Syntax keywords and real identifiers stay in English.
 - **Automatic technology icons.** Architecture diagrams and `/scan-project` add logos (Redis, Postgres, Kafka, AWS, nginx, React, …) when a node maps to a known technology — Devicon bundled offline with a CDN fallback (`rules/icon-map.md`). Disable with `--no-icons`.
@@ -338,17 +360,17 @@ Install only what the skills you use need (`scripts/doctor.sh` reports what's mi
 dev-ba-kit/
 ├── .claude-plugin/                Plugin manifest + marketplace catalog (/plugin install · /plugin marketplace add)
 ├── install.sh                     Copy-mode installer (no plugin needed)
-├── skills/                        63 skills
-├── agents/                        diagram-reviewer · doc-reviewer · change-tracker
+├── skills/                        64 skills
+├── agents/                        diagram-reviewer · doc-reviewer · flow-reviewer · senior-ba · qa-reviewer · change-tracker
 ├── rules/                         Shared rules (approval-gate, diagram-selection, diagram-style, language, icon-map, …)
 ├── scripts/                       mermaid-verify.ts · diagram-validate.ts · doctor.sh · plantuml-ensure.sh · drawio-catalog-ensure.sh · icon-path.sh · tsrun.sh · render helpers
 ├── tests/                         Engine unit tests (vitest — `npm test`)
 ├── .github/workflows/             CI: typecheck · tests · example drift gate
-├── templates/                     Diagram file templates
+├── templates/                     Document + diagram templates (30 doc, 8 diagram)
 ├── hooks/                         SessionStart hook (auto-installs the BPMN engine)
 ├── assets/icons/                  Bundled technology icons (Devicon MIT, Simple Icons CC0)
 ├── example/                       Worked example: the atlas-re feature
-├── explain-skills/                Per-skill + family deep dives covering all 63 skills (bilingual: `*.md` English, `*.vi.md` Vietnamese)
+├── explain-skills/                Per-skill + family deep dives covering all 64 skills (bilingual: `*.md` English, `*.vi.md` Vietnamese)
 ├── guides/ · huong-dan/           Getting-started guide (English / Vietnamese)
 └── CHANGELOG.md · CONTRIBUTING.md Version history · how to contribute
 ```

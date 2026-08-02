@@ -144,6 +144,31 @@ fi
 echo "· Jira/Confluence sync (/jira /confluence /sync-confluence) needs the Atlassian MCP — check with /mcp inside Claude Code (not verifiable from the shell)."
 
 echo ""
+echo "== BA profile (/discover — project context) =="
+PROJ_DIR="${CLAUDE_PROJECT_DIR:-$(pwd)}"
+PROFILE="$PROJ_DIR/docs/_shared/project-context.md"
+if [ -f "$PROFILE" ]; then
+  VER="$(awk -F': ' '/^version:/{print $2; exit}' "$PROFILE")"
+  UPD="$(awk '/^---$/{f++} f==1 && /^updated:/{print $2; exit}' "$PROFILE")"
+  WATERMARK="$(awk '/^---$/{f++} f==1 && /^source_watermark:/{sub(/^source_watermark:[ \t]*/,""); print; exit}' "$PROFILE")"
+  if [ -n "$WATERMARK" ] && git -C "$PROJ_DIR" rev-parse --is-inside-work-tree >/dev/null 2>&1 \
+     && git -C "$PROJ_DIR" cat-file -e "${WATERMARK}^{commit}" 2>/dev/null; then
+    DRIFT="$(git -C "$PROJ_DIR" rev-list --count "${WATERMARK}..HEAD" 2>/dev/null || echo 0)"
+    BUDGET="$(awk '/^---$/{f++} f==1 && /^staleness_budget_commits:/{sub(/^staleness_budget_commits:[ \t]*/,""); print; exit}' "$PROFILE")"
+    [ -n "$BUDGET" ] || BUDGET=200
+    if [ "$DRIFT" -gt "$BUDGET" ] 2>/dev/null; then
+      yellow "project-context.md v${VER:-?} (${UPD:-?}) — STALE: ${DRIFT} commits since scan (budget ${BUDGET}). Re-run: /discover --update"
+    else
+      green "project-context.md v${VER:-?} (${UPD:-?}) — fresh (${DRIFT} commits since scan)"
+    fi
+  else
+    green "project-context.md v${VER:-?} (${UPD:-?}) — present (no git drift signal)"
+  fi
+else
+  yellow "No project context yet — run /discover once so later skills stop re-asking domain facts"
+fi
+
+echo ""
 echo "──────────────────────────────────────────"
 printf "Total: ✅ %d OK · ⚠️  %d warnings · ❌ %d missing\n" "$ok" "$warn" "$miss"
 [ "$miss" -eq 0 ] && echo "Ready to draw. (⚠️ warnings only affect the corresponding skill.)" || echo "Install the ❌ items using the hints above, then run doctor again."

@@ -36,6 +36,7 @@ Define WHAT we'll build for one feature — capabilities prioritized P0/P1/P2 th
 ## Context (dynamic)
 
 Today: !`date +%Y-%m-%d`
+Project context: !`bash "${CLAUDE_PLUGIN_ROOT:-.claude}/scripts/context-load.sh"`
 Available features: !`ls -d docs/*/ 2>/dev/null | xargs -I{} basename {} | head -20`
 Features with a PRD: !`ls docs/*/*-prd.md 2>/dev/null | head -10`
 
@@ -84,6 +85,7 @@ Worked example — user prompts, approval gates, and output excerpts: /example-s
 ## References
 
 - @../../rules/ba-conventions.md
+- @../../rules/project-context.md (the /discover profile — reuse established capabilities/users)
 - @../../rules/approval-gate.md
 - @../../rules/naming-conventions.md
 - @../../rules/changelog.md

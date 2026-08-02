@@ -10,6 +10,7 @@ Mỗi skill có **phiên mô phỏng** (`skills/<skill>/references/example-sessi
 
 | Skill | Phiên mô phỏng | Ví dụ commit (nếu có) |
 |---|---|---|
+| `/discover` | [`skills/discover/references/example-session.md`](../skills/discover/references/example-session.md) | [`example/_shared/`](example/_shared/) (bộ context) |
 | `/ba` | [`skills/ba/references/example-session.md`](../skills/ba/references/example-session.md) | chỉ router |
 | `/brainstorm` | [`skills/brainstorm/references/example-session.md`](../skills/brainstorm/references/example-session.md) | [`claim-approval-idea.md`](example/atlas-re/brainstorms/claim-approval-idea.md) |
 | `/urd` | [`skills/urd/references/example-session.md`](../skills/urd/references/example-session.md) | [`atlas-re-urd.md`](example/atlas-re/atlas-re-urd.md) |
@@ -33,6 +34,24 @@ Mỗi skill có **phiên mô phỏng** (`skills/<skill>/references/example-sessi
 | `/reverse-doc` | [`skills/reverse-doc/references/example-session.md`](../skills/reverse-doc/references/example-session.md) | tái dựng brownfield |
 
 Tích hợp API + bàn giao (15 skill): [07 — API và bàn giao](07-api-va-ban-giao.md).
+
+---
+
+## `/discover` — học project một lần (chạy đầu tiên)
+
+**Cú pháp:** `/discover [--update] [--tier1-only]`
+
+**Dùng khi:** bạn vừa mở một repo (hoặc context chung đã stale). Nó scan sâu code + tài liệu, hỏi tối đa 5 câu kinh doanh mà code không trả lời được, rồi viết một **context brief** nhỏ, luôn nạp mà mọi skill sau tiêu thụ — nên ngừng hỏi lại "hệ thống này làm gì?" và ngừng bịa tên.
+
+**Chuẩn bị:** không. Hợp lệ cả với vault trống/greenfield (dẫn dắt bằng phỏng vấn).
+
+**Hỏi gì (≤5, từng câu một):** mục đích kinh doanh & ai trả tiền · glossary collision (từ nghiệp vụ ≠ mã code) · business rule không hiện trong code · thẩm quyền actor · gotcha duy nhất.
+
+**Output:** `docs/_shared/project-context.md` (Tier 1, ≤60 dòng) + `docs/_shared/context/*.md` (Tier 2 chiều sâu). Mỗi nhận định tag ✅/🔵/🟡 + `file:path`. `--update` làm mới mà không hỏi lại câu đã trả lời, và không bao giờ đè lên mục bạn tự chỉnh.
+
+**Phiên mô phỏng:** [`example-session.md`](../skills/discover/references/example-session.md) · **Ví dụ:** [`example/_shared/`](example/_shared/) (chưng cất từ `example/atlas-re/DOMAIN.md`).
+
+**Khác `/scan-project`:** `/scan-project` tái dựng **sơ đồ kiến trúc** từ code; `/discover` tạo **context brief** cho skill khác đọc.
 
 ---
 

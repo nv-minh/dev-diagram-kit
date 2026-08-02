@@ -57,6 +57,7 @@ Has git: !`git rev-parse --is-inside-work-tree 2>/dev/null && echo "✅" || echo
 Detected manifest: !`ls package.json go.mod pom.xml build.gradle requirements.txt pyproject.toml Cargo.toml composer.json Gemfile 2>/dev/null | head`
 Has docs: !`ls README* docs 2>/dev/null | head`
 d2 installed?: !`(test -x "$HOME/.local/bin/d2" || command -v d2 >/dev/null) && echo "✅" || echo "❌ not installed — curl -fsSL https://d2lang.com/install.sh | sh -s --"`
+Project context: !`bash "${CLAUDE_PLUGIN_ROOT:-.claude}/scripts/context-load.sh"`
 
 ## Flow runtime
 
@@ -65,6 +66,10 @@ User calls /scan-project [path] [--focus/--module]
    │  d2 not installed? → stop, guide install.
    ▼
 ═══ PHASE 1 — SCAN + PLAN (ends with a HARD STOP) ═══
+0. Profile check — is there a `/discover` context brief (`docs/_shared/project-context.md`)?
+   • Present + fresh → read it as the PRIMARY source for stack / actors / glossary / entities; delta-scan only the 🟡 (guessed) items and anything missing. Generate diagrams from it the way the atlas-re diagrams draw from `DOMAIN.md`.
+   • Present but STALE (the loader banner is already in your Context block above) → treat profile claims as HINTS; re-verify against code before drawing.
+   • Absent → scan from code as below; suggest `/discover` in the output report so later skills get the shared brief.
 1. Identify the stack: read the manifest (package.json/go.mod/pom.xml/pyproject...) → language, framework, entry points.
    Unfamiliar/unclear framework → ask the user to confirm the stack (do NOT guess wildly).
 2. Spawn 1-N subagents (Task) to scan by aspect (code-explorer/codebase-mapper pattern), each subagent RETURNS findings:
@@ -166,6 +171,7 @@ Open {proj}-architecture-index.md to see everything. Re-run /scan-project --modu
 ## References
 
 - @../../rules/ba-conventions.md
+- @../../rules/project-context.md (consume the /discover profile when present)
 - @../../rules/approval-gate.md
 - @../../rules/naming-conventions.md
 - @../../rules/changelog.md

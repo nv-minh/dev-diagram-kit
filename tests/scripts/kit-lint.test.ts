@@ -134,6 +134,55 @@ describe('lintKit on a synthetic tree', () => {
   });
 });
 
+// ── manifest descriptions + phantom-agent refs ──
+describe('lintKit manifest + agent-ref checks', () => {
+  let root: string;
+  beforeAll(() => {
+    root = mkdtempSync(join(tmpdir(), 'kit-lint-ma-'));
+    const w = (p: string, c: string) => { mkdirSync(join(root, p, '..'), { recursive: true }); writeFileSync(join(root, p), c); };
+    mkdirSync(join(root, 'skills/seq'), { recursive: true });
+    mkdirSync(join(root, 'skills/uf'), { recursive: true });
+    mkdirSync(join(root, 'agents'), { recursive: true });
+    mkdirSync(join(root, 'rules'), { recursive: true });
+    mkdirSync(join(root, 'explain-skills'), { recursive: true });
+    mkdirSync(join(root, 'guides'), { recursive: true });
+    mkdirSync(join(root, 'huong-dan'), { recursive: true });
+    mkdirSync(join(root, 'templates'), { recursive: true });
+    mkdirSync(join(root, '.claude-plugin'), { recursive: true });
+    // one real agent (resolves) + one referenced-but-missing (phantom)
+    w('agents/diagram-reviewer.md', '---\nname: diagram-reviewer\ndescription: x.\n---\n');
+    w('skills/seq/SKILL.md', '---\nname: seq\ndescription: Uses @diagram-reviewer and @flow-reviewer and @mermaid-js/cli.\nuser-invocable: true\n---\n');
+    w('skills/uf/SKILL.md', '---\nname: uf\ndescription: Uses @file tag.\nuser-invocable: true\n---\n');
+    w('README.md', '2 skills `/seq` `/uf`');
+    w('README.vi.md', '2 skill `/seq` `/uf`');
+    w('rules/diagram-selection.md', '---\npaths:\n  - ".claude/skills/seq/**"\n---\n');
+    w('rules/doc-selection.md', '---\npaths:\n  - ".claude/skills/uf/**"\n---\n');
+    w('rules/naming-conventions.md', '## Doc type values\n| Type | Use |\n|---|---|\n| `brd` | x |\n');
+    w('explain-skills/seq.md', 'seq'); w('explain-skills/seq.vi.md', 'seq');
+    w('explain-skills/uf.md', 'uf'); w('explain-skills/uf.vi.md', 'uf');
+    w('guides/01-a.md', 'x'); w('huong-dan/01-a.md', 'x');
+    w('package.json', JSON.stringify({ version: '1.0.0', description: 'more waves landing soon' }));
+    w('.claude-plugin/plugin.json', JSON.stringify({ version: '1.0.0', description: 'clean description' }));
+    w('.claude-plugin/marketplace.json', JSON.stringify({ metadata: { version: '1.0.0', description: 'm' }, plugins: [{ name: 'x', source: './', description: 'clean' }] }));
+  });
+  afterAll(() => rmSync(root, { recursive: true, force: true }));
+
+  it('flags a stale manifest description but not the clean ones', () => {
+    const msgs = lintKit(root).map(x => `${x.level}:${x.check}:${x.msg}`).join('\n');
+    expect(msgs).toMatch(/error:manifest:.*package\.json description.*more waves landing/i);
+    expect(msgs).not.toMatch(/manifest:.*plugin\.json/);
+    expect(msgs).not.toMatch(/manifest:.*marketplace\.json/);
+  });
+
+  it('flags a phantom agent ref but ignores npm scopes and single-word tokens', () => {
+    const msgs = lintKit(root).map(x => `${x.level}:${x.check}:${x.msg}`).join('\n');
+    expect(msgs).toMatch(/error:agent-ref:.*flow-reviewer.*does not exist/);
+    expect(msgs).not.toMatch(/agent-ref.*diagram-reviewer/); // exists → not flagged
+    expect(msgs).not.toMatch(/agent-ref.*mermaid-js/);       // @scope/pkg → ignored
+    expect(msgs).not.toMatch(/agent-ref.*\bfile\b/);         // single word → ignored
+  });
+});
+
 // ── the real repo must be lint-clean ──
 describe('lintKit on this repo', () => {
   it('reports zero errors', () => {

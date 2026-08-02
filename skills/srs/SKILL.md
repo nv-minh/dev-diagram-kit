@@ -40,6 +40,9 @@ Specify EXACTLY what the system must do — Section 2 Functional Requirements (`
 Today: !`date +%Y-%m-%d`
 Available features: !`ls -d docs/*/ 2>/dev/null | xargs -I{} basename {} | head -20`
 Features with a spec: !`ls docs/*/srs/*-spec.md 2>/dev/null | head -10`
+Project context: !`bash "${CLAUDE_PLUGIN_ROOT:-.claude}/scripts/context-load.sh"`
+
+**IMPORTANT:** before drafting, read `docs/_shared/context/glossary.md`, `context/domain-rules.md`, and `context/actors.md` if they exist (the `/discover` profile) — reuse the established terms/actors/rules; do not re-ask what the profile already answers.
 
 ## Approach
 
@@ -92,6 +95,7 @@ Worked example — user prompts, approval gates, and output excerpts: /example-s
 ## References
 
 - @../../rules/ba-conventions.md
+- @../../rules/project-context.md (consume the /discover profile — glossary/rules/actors)
 - @../../rules/approval-gate.md
 - @../../rules/naming-conventions.md
 - @../../rules/changelog.md

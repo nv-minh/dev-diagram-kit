@@ -5,6 +5,8 @@
 > new node-shape catalog (`rules/node-shapes.md`): gateways are hexagons, caches `stored_data`, DBs
 > cylinders, queues `queue`, CDNs `cloud`, pipelines `parallelogram`. Every artifact below is generated
 > by the skill's real render pipeline and passes `diagram-validate`.
+>
+> The domain is also distilled into a `/discover` context brief: [`../_shared/project-context.md`](../_shared/project-context.md) (Tier 1, ≤60 lines, always loaded) + [`../_shared/context/`](../_shared/context/) (Tier 2 depth — glossary, rules, actors, entities, architecture).
 
 ## Documents (wave 1 — the requirements chain)
 

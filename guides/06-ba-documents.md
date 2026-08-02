@@ -10,6 +10,7 @@ Each skill below links a **simulated session** — a realistic chat transcript (
 
 | Skill | Simulated session | Committed example (if any) |
 |---|---|---|
+| `/discover` | [`skills/discover/references/example-session.md`](../skills/discover/references/example-session.md) | [`example/_shared/`](example/_shared/) (context set) |
 | `/ba` | [`skills/ba/references/example-session.md`](../skills/ba/references/example-session.md) | router only |
 | `/brainstorm` | [`skills/brainstorm/references/example-session.md`](../skills/brainstorm/references/example-session.md) | [`claim-approval-idea.md`](example/atlas-re/brainstorms/claim-approval-idea.md) |
 | `/urd` | [`skills/urd/references/example-session.md`](../skills/urd/references/example-session.md) | [`atlas-re-urd.md`](example/atlas-re/atlas-re-urd.md) |
@@ -33,6 +34,24 @@ Each skill below links a **simulated session** — a realistic chat transcript (
 | `/reverse-doc` | [`skills/reverse-doc/references/example-session.md`](../skills/reverse-doc/references/example-session.md) | brownfield reconstruction |
 
 API integration + delivery skills (15): [07 — API and delivery](07-api-and-delivery.md).
+
+---
+
+## `/discover` — learn the project once (run first)
+
+**Syntax:** `/discover [--update] [--tier1-only]`
+
+**Use when:** you've just opened a repo (or the shared context has gone stale). It deep-scans the code + docs, asks at most 5 business questions code can't answer, and writes a small, always-loaded **context brief** every later skill consumes — so they stop re-asking "what does this system do?" and stop inventing names.
+
+**Prep:** none. Valid on an empty/greenfield vault too (interview-led).
+
+**What it asks (≤5, one at a time):** business purpose & who pays · glossary collisions (business word ≠ code identifier) · business rules not visible in code · actor authority · the one gotcha.
+
+**Output:** `docs/_shared/project-context.md` (Tier 1, ≤60 lines) + `docs/_shared/context/*.md` (Tier 2 depth). Every claim tagged ✅/🔵/🟡 + `file:path`. `--update` refreshes without re-asking answered questions and never overwrites your hand-edited sections.
+
+**Simulated session:** [`example-session.md`](../skills/discover/references/example-session.md) · **Worked example:** [`example/_shared/`](example/_shared/) (distilled from `example/atlas-re/DOMAIN.md`).
+
+**Differs from `/scan-project`:** `/scan-project` reverse-engineers **architecture diagrams** from code; `/discover` produces the **context brief** other skills read.
 
 ---
 

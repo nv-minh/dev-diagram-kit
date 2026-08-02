@@ -35,6 +35,7 @@ Expand each `CHK-` row into one or more `TC-{NNN}` test cases — numbered steps
 ## Context (dynamic)
 
 Today: !`date +%Y-%m-%d`
+Project context: !`bash "${CLAUDE_PLUGIN_ROOT:-.claude}/scripts/context-load.sh"`
 Checklists (required source): !`ls docs/*/test/checklist/*-checklist-index.md 2>/dev/null | head -10`
 Existing test cases: !`ls docs/*/test/testcases/*-testcase-index.md 2>/dev/null | head -10`
 
@@ -82,6 +83,7 @@ Worked example — user prompts, approval gates, and output excerpts: /example-s
 ## References
 
 - @../../rules/ba-conventions.md
+- @../../rules/project-context.md
 - @../../rules/approval-gate.md
 - @../../rules/naming-conventions.md
 - @../../rules/changelog.md

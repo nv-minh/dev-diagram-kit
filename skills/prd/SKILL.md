@@ -35,6 +35,7 @@ Define the WHOLE product once — pitch, problem, users, value, goals, themes, t
 ## Context (dynamic)
 
 Today: !`date +%Y-%m-%d`
+Project context: !`bash "${CLAUDE_PLUGIN_ROOT:-.claude}/scripts/context-load.sh"`
 Product PRD exists: !`ls docs/_product/prd.md 2>/dev/null || echo "no — will create"`
 Existing features (candidates for the Feature Map): !`ls -d docs/*/ 2>/dev/null | xargs -I{} basename {} | grep -v "^_" | head -20`
 
@@ -83,6 +84,7 @@ Worked example — user prompts, approval gates, and output excerpts: /example-s
 ## References
 
 - @../../rules/ba-conventions.md
+- @../../rules/project-context.md
 - @../../rules/approval-gate.md
 - @../../rules/naming-conventions.md
 - @../../rules/changelog.md

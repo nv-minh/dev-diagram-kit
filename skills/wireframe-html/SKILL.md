@@ -35,6 +35,7 @@ Render each flow as a standalone B&W static HTML file (`docs/{feature}/html-wire
 ## Context (dynamic)
 
 Today: !`date +%Y-%m-%d`
+Project context: !`bash "${CLAUDE_PLUGIN_ROOT:-.claude}/scripts/context-load.sh"`
 Userflows (gate): !`ls docs/*/srs/*-userflow.md 2>/dev/null | head -10`
 ASCII sources (preferred content): !`ls docs/*/ascii-wireframe/*.md 2>/dev/null | grep -v index | head -10`
 Existing HTML wireframes: !`ls docs/*/html-wireframe/*.html 2>/dev/null | head -10`
@@ -81,6 +82,7 @@ Worked example — user prompts, approval gates, and output excerpts: /example-s
 ## References
 
 - @../../rules/ba-conventions.md
+- @../../rules/project-context.md
 - @../../rules/approval-gate.md
 - @../../rules/naming-conventions.md
 - @../../rules/changelog.md

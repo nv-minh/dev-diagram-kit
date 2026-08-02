@@ -74,6 +74,8 @@
 | Test cases index | `docs/{feature}/test/testcases/{feature}-testcase-index.md` — master metadata for all test cases. Output of `/test-cases`. |
 | Traceability | `docs/_shared/traceability.md` (auto from /gap) |
 | Dashboard | `docs/_shared/dashboard.html` (singleton, `_shared/` like traceability — one-file HTML status view, output of `/dashboard`) |
+| Project context (Tier 1, always loaded) | `docs/_shared/project-context.md` — singleton under `_shared/` (like traceability/dashboard). ALWAYS loaded by consuming skills; **hard cap 60 lines of content** (excl. frontmatter, enforced by `doc-validate`). Output of `/discover`. |
+| Project context detail (Tier 2, on-demand) | `docs/_shared/context/*.md` — one file per aspect (glossary / domain-rules / actors / entities / architecture). Read on demand by the skill that needs that depth. Output of `/discover`. |
 | Atlassian sync-state (MERGED Jira+Confluence mapping) | `.claude/state/atlassian/sync-state.yaml` (config + mapping + watermark/hash, 1 entry/artifact, key `mappings.jira`/`mappings.confluence`) + `base/*.json` (3-way snapshot) + `locks/`. **Fully replaces** the old `docs/_shared/jira-map.md` + `confluence-map.md` (migrated + deleted). Output of `/jira` + `/confluence`. See `.claude/rules/atlassian-sync.md`. |
 | Meeting | `docs/meetings/YYYY-MM-DD-{type}-{slug}.md` (project-level). Decisions/blockers/action items live as tables WITHIN this file — NO separate file for decisions/blockers. |
 | Inbox capture | `docs/inbox/YYYY-MM-DD-{slug}.md` (project-level) |
@@ -152,6 +154,8 @@ Recommended optional fields:
 | `change-request` | `docs/cr/CR-*.md` |
 | `impact-report` | *(deprecated as standalone)* — impact assessment is now a section within `docs/cr/CR-*.md`. Type value kept to classify old content if legacy files remain. |
 | `traceability` | `docs/_shared/traceability.md` |
+| `project-context` | `docs/_shared/project-context.md` (Tier 1 always-loaded singleton, hard cap 60 lines of content). Slim frontmatter + `profile_hash`/`source_watermark`/`staleness_budget_commits`/`human_edited`. Output of `/discover`. See `rules/project-context.md`. |
+| `project-context-detail` | `docs/_shared/context/*.md` (Tier 2 on-demand: glossary/domain-rules/actors/entities/architecture). Slim frontmatter. Output of `/discover`. |
 | ~~`jira-map`~~ / ~~`confluence-map`~~ | **Removed** — mapping MERGED into `.claude/state/atlassian/sync-state.yaml` (YAML, no frontmatter). No more 2 separate `.md` files in `docs/_shared/`. |
 | `export-package` | `docs/exports/*.md` |
 | `userguide-index` | `docs/userguide/{userguide|{feature}-userguide}/index.md` (user guide master metadata + Sections table). Frontmatter `type/scope/audience/lang/status/updated/links`. Output of `/userguide`. |

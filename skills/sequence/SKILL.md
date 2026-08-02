@@ -38,6 +38,7 @@ To use another source instead of typing the description directly → tag `@file`
 Today: !`date +%Y-%m-%d`
 Features with flows.md: !`for d in docs/*/srs/*-flows.md; do [ -f "$d" ] && echo "$d"; done | head -10`
 In-progress features: !`for d in docs/*/srs/*-spec.md; do grep -l "status: draft\|status: in-review" "$d" 2>/dev/null; done | head -5`
+Project context: !`bash "${CLAUDE_PLUGIN_ROOT:-.claude}/scripts/context-load.sh"`
 
 ## Approach
 
@@ -98,7 +99,7 @@ In-progress features: !`for d in docs/*/srs/*-spec.md; do grep -l "status: draft
 9.7. **Diagram_Reviewer gate (ONLY when over the complexity threshold)** — if the fact-list from step 2.5 has **≥3 Alternative/Error Flows**, OR the diagram has **≥4 participants**, OR **alt/opt nesting ≥2 levels**, OR it has a **callback/timeout/webhook**, spawn an agent via the Task tool, `subagent_type: diagram-reviewer`, passing: the mermaid section just written + the step 2.5 fact-list. Measure by **total complexity** — actor count alone is not enough (a straight 3-actor flow is simple, a 2-actor 18-message 3-nested-branch flow is complex). Below every threshold above, step 9.6's self-reconciliation (no agent) is enough — SKIP 9.7, go straight to step 10 to avoid overhead for simple cases.
    - **Task tool unavailable** (not provided by the runtime) → do NOT implicitly treat it as reviewed; the report states `reviewer skipped (Task unavailable)` so the user knows a complex diagram did not pass the gate.
    - Receive findings (format `review-format.md` + a "Coverage checklist" section). Any BLOCKING → add the missing actor/branch to the section, re-verify 9.5+9.6, then continue to step 10.
-   - Loop at most 2 rounds (like the `flow-reviewer` pattern of `/user-flow`) — round 2 still BLOCKING → report the outstanding findings to the user, let the user decide before the final report.
+   - Loop at most 2 rounds (the same 2-round cap `/user-flow` uses with `@flow-reviewer` at step 9.5) — round 2 still BLOCKING → report the outstanding findings to the user, let the user decide before the final report.
    - Verdict `approve`/only WARNING/SUGGESTION → continue straight to step 10, no fix needed.
 10. **Output report:**
     ```
@@ -156,6 +157,7 @@ sequenceDiagram
 ## References
 
 - @../../rules/ba-conventions.md
+- @../../rules/project-context.md (Tier-1 context via the loader)
 - @../../rules/approval-gate.md
 - @../../rules/naming-conventions.md
 - @../../rules/changelog.md

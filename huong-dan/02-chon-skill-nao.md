@@ -1,6 +1,6 @@
 # 02 — Chọn skill nào? (cây quyết định)
 
-> 63 skill nghe nhiều, nhưng chọn đúng rất nhanh nếu hỏi đúng câu — hoặc chạy `/ba` / `/diagram`. Bản này là rút gọn; bản đầy đủ ở `explain-skills/diagram-selection.vi.md` (sơ đồ) và `rules/doc-selection.md` (tài liệu).
+> 64 skill nghe nhiều, nhưng chọn đúng rất nhanh nếu hỏi đúng câu — hoặc chạy `/ba` / `/diagram`. Bản này là rút gọn; bản đầy đủ ở `explain-skills/diagram-selection.vi.md` (sơ đồ) và `rules/doc-selection.md` (tài liệu).
 
 ---
 

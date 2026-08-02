@@ -34,6 +34,7 @@ Derive the test-coverage outline from `srs/{feature}-spec.md` (FR/BR/E), the sto
 ## Context (dynamic)
 
 Today: !`date +%Y-%m-%d`
+Project context: !`bash "${CLAUDE_PLUGIN_ROOT:-.claude}/scripts/context-load.sh"`
 Specs (required source): !`ls docs/*/srs/*-spec.md 2>/dev/null | head -10`
 Existing checklists: !`ls docs/*/test/checklist/*-checklist-index.md 2>/dev/null | head -10`
 Acceptance criteria: !`ls docs/*/userstories/us-*.md 2>/dev/null | head -10`
@@ -81,6 +82,7 @@ Worked example — user prompts, approval gates, and output excerpts: /example-s
 ## References
 
 - @../../rules/ba-conventions.md
+- @../../rules/project-context.md
 - @../../rules/approval-gate.md
 - @../../rules/naming-conventions.md
 - @../../rules/changelog.md

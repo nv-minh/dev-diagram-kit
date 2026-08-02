@@ -66,7 +66,7 @@ No specific feature needed (scans the whole vault, or produces project-level out
 
 1. **Do NOT dead-end, do NOT crash.** Print a friendly message + guidance on the initialization step.
 2. Read-only (`dashboard`/`gap`/`review`): "Vault is empty / nothing to {analyze|review} yet. Start with `/brainstorm <idea>` or `/urd <feature>`."
-3. Project-level (`prd`/`roadmap`/`meeting`/`discover`/`update-overview`): these skills run BEFORE any feature exists — the "no feature yet" state is valid (e.g. `/discover` calls it "Greenfield exploration"). No routing needed.
+3. Project-level (`prd`/`roadmap`/`meeting`/`discover`/`update-overview`): these skills run BEFORE any feature exists — the "no feature yet" state is valid (e.g. `/discover` calls it "Greenfield exploration" — deep scan + bounded 5-question interview → `docs/_shared/project-context.md` (+ `context/`), the always-loaded context index every later skill consumes). No routing needed.
 4. `delegate`: does not touch the vault, not applicable.
 
 > **Reference examples:** `/dashboard` (placeholder "Vault empty" + empty-vault template), `/gap` (friendly abort).

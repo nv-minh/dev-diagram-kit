@@ -4,15 +4,36 @@
 
 Bộ skill vẽ sơ đồ và làm tài liệu cho **dev làm công việc BA**, đóng gói thành plugin [Claude Code](https://docs.claude.com/en/docs/claude-code). Mô tả hệ thống hoặc quy trình bằng lời — hoặc trỏ vào một codebase — kit sẽ vẽ đúng loại sơ đồ (Mermaid, PlantUML, D2 hoặc BPMN), tự kiểm cú pháp rồi render. Output song ngữ, tự bám theo ngôn ngữ bạn gõ.
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE) [![CI](https://github.com/nv-minh/dev-ba-kit/actions/workflows/ci.yml/badge.svg)](https://github.com/nv-minh/dev-ba-kit/actions/workflows/ci.yml) &nbsp; 63 skill &nbsp;·&nbsp; Mermaid / PlantUML / D2 / BPMN / draw.io &nbsp;·&nbsp; EN / VI
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE) [![CI](https://github.com/nv-minh/dev-ba-kit/actions/workflows/ci.yml/badge.svg)](https://github.com/nv-minh/dev-ba-kit/actions/workflows/ci.yml) &nbsp; 64 skill &nbsp;·&nbsp; Mermaid / PlantUML / D2 / BPMN / draw.io &nbsp;·&nbsp; EN / VI
 
 [English](README.md) · **Tiếng Việt**
 
 ---
 
+## Không chỉ là một đống prompt rời rạc
+
+Đa số bộ skill Claude Code là **các prompt một lần rời rạc**: mỗi cái bắt đầu từ con số 0, sinh text chưa kiểm chứng, và skill kế tiếp lại hỏi lại đúng những câu domain cũ. **dev-ba-kit là một pipeline BA có chủ đích, đã validate**, kèm một lớp context chung học repo của bạn đúng một lần.
+
+| Bộ skill thông thường | dev-ba-kit |
+|---|---|
+| Prompt rời rạc; bạn phải nhớ cái nào làm gì | Một pipeline truy vết được **discovery → spec → UI → API → test → bàn giao** (`UN → BO → CAP → FR → UC/US → AC → CHK/TC`) với hai router (`/ba`, `/diagram`) tự chọn đúng skill |
+| Mọi skill đều suy luận lại domain từ đầu — và bịa tên khi chưa rõ | **`/discover`** scan repo một lần + phỏng vấn 5 câu → một **context brief** nhỏ, luôn nạp (`docs/_shared/project-context.md`, ≤60 dòng) mà mọi skill sau tiêu thụ, nên ngừng hỏi lại và ngừng bịa tên entity/actor |
+| Output là prose & sơ đồ chưa kiểm chứng | Mọi sản phẩm qua **cổng validate thống nhất** — `doc-validate` (frontmatter, ID, link) + `diagram-validate` (compile, coverage, audit stencil) — trước khi báo "xong" |
+| Một `CLAUDE.md` phình to, hoặc chẳng có gì | Một **index Tier-1 có provenance** (✅ đọc · 🔵 suy luận · 🟡 đoán + `file:path`); khi lệch, một **banner cảnh báo bật ngay lúc nạp**, không chôn trong dashboard |
+| Ghi im lặng — tin AI | **Human-in-the-loop**: mọi thay đổi đều preview ở cổng L1/L2 trước khi ghi, kèm đội agent reviewer (doc · diagram · flow · senior-ba · qa) |
+| Chỉ tiếng Anh, hộp chung chung | **Song ngữ EN/VI**, stencil cloud thật (AWS / Azure / GCP / Databricks), năm engine render (Mermaid / D2 / PlantUML / BPMN / draw.io) |
+
+> Điểm nổi bật không skill pack nào có là **lớp context `/discover`** — và nó *dựa trên nghiên cứu*: một index 60 dòng high-signal thắng một tổng quan 600 dòng generic (tài liệu AGENTS.md cho thấy cái sau tăng cost và mau stale). Xem [`rules/project-context.md`](rules/project-context.md) và bộ context mẫu [`example/_shared/`](example/_shared/).
+
 ## Danh sách skill
 
-Sáu mươi ba skill. Ba mươi lăm skill viết tài liệu BA (bộ đầy đủ discovery→spec→UI→API→test→bàn giao đã ship qua wave 1–6 — xem `rules/doc-selection.md`); hai mươi hai skill vẽ sơ đồ (gồm bốn skill **draw.io** vẽ kiến trúc cloud với stencil AWS/Azure/GCP/Databricks thật + một skill **draw.io** vẽ sequence UML); `/scan-project` và `/code-flow` đọc code; hai router tự chọn skill cho bạn — `/diagram` (sơ đồ) và `/ba` (tài liệu BA); `/gallery` gom thành một file bàn giao; `/sync-confluence` sync sang Confluence. Mọi sản phẩm đều qua cổng validate thống nhất trước khi báo xong — `diagram-validate` cho sơ đồ, `doc-validate` cho tài liệu.
+Sáu mươi tư skill. `/discover` chạy đầu tiên trong repo (scan sâu + phỏng vấn 5 câu → context brief chung mà mọi skill sau tiêu thụ); ba mươi lăm skill viết tài liệu BA (bộ đầy đủ discovery→spec→UI→API→test→bàn giao đã ship qua wave 1–6 — xem `rules/doc-selection.md`); hai mươi hai skill vẽ sơ đồ (gồm bốn skill **draw.io** vẽ kiến trúc cloud với stencil AWS/Azure/GCP/Databricks thật + một skill **draw.io** vẽ sequence UML); `/scan-project` và `/code-flow` đọc code; hai router tự chọn skill cho bạn — `/diagram` (sơ đồ) và `/ba` (tài liệu BA); `/gallery` gom thành một file bàn giao; `/sync-confluence` sync sang Confluence. Mọi sản phẩm đều qua cổng validate thống nhất trước khi báo xong — `diagram-validate` cho sơ đồ, `doc-validate` cho tài liệu.
+
+### Cấp dự án / thiết lập
+
+| Skill | Viết gì | Khi nào dùng |
+|---|---|---|
+| `/discover` | Bộ context chung — `docs/_shared/project-context.md` (index ≤60 dòng, luôn nạp) + `context/*.md` | Chạy ĐẦU TIÊN trong repo: scan sâu + phỏng vấn 5 câu → context brief mà mọi skill sau tiêu thụ (ngừng hỏi lại, ngừng bịa tên). Khác `/scan-project` (sơ đồ kiến trúc từ code) |
 
 ### Tài liệu — discovery & requirements
 
@@ -115,7 +136,7 @@ Không biết chọn skill nào? Chạy **`/diagram`** — mô tả muốn thể
 
 ### Phiên mô phỏng (skill tài liệu)
 
-**Mọi skill tài liệu** (gồm router `/ba`) đều có **phiên mô phỏng** — transcript chat thật (lệnh bạn gõ, câu hỏi phỏng vấn, cổng L1/L2, đoạn output). Mỗi file ở `skills/<skill>/references/example-session.md`; mỗi `SKILL.md` link ở mục **Simulated session**.
+**Cả ba mươi lăm skill tài liệu lẫn router `/ba` (tổng 36)** đều có **phiên mô phỏng** ở `skills/<skill>/references/example-session.md` — transcript chat thật (lệnh bạn gõ, câu hỏi phỏng vấn, cổng L1/L2, đoạn output), link từ mỗi `SKILL.md`. Hai mươi lăm file là transcript độc lập; ~11 file còn lại là con trỏ ngắn vào phiên của family (chuỗi API và nhóm bàn giao mỗi nhóm chia sẻ một transcript đầy đủ, các skill còn lại link tới nó).
 
 | Bắt đầu từ | Nội dung |
 |---|---|
@@ -280,7 +301,7 @@ Kit viết cho Claude Code. Có hai cách cài.
 /plugin install dev-ba-kit
 ```
 
-Cả 63 lệnh có sẵn ngay. BPMN engine tự cài dependency Node ở phiên đầu qua hook — không phải làm tay.
+Cả 64 lệnh có sẵn ngay. BPMN engine tự cài dependency Node ở phiên đầu qua hook — không phải làm tay.
 
 ### Nâng cấp từ dev-diagram-kit 1.x
 
@@ -322,6 +343,7 @@ Chỉ cài thứ skill bạn dùng cần (`scripts/doctor.sh` báo cái nào thi
 
 ## Cách hoạt động
 
+- **Học repo của bạn một lần.** Chạy `/discover` trước — nó viết một context brief nhỏ, luôn nạp (`docs/_shared/project-context.md`, ≤60 dòng) mà mọi skill sau tiêu thụ: các факт domain không suy luận được (mục đích, glossary collision, luật, gotcha) kèm confidence + provenance, staleness ép buộc lúc nạp. Không còn hỏi lại "hệ thống này làm gì?" trong mỗi skill.
 - **Không cần nhớ cú pháp.** Bạn mô tả nghiệp vụ; skill lo cú pháp Mermaid/PlantUML/D2/BPMN.
 - **Output song ngữ.** Nhãn, câu hỏi, báo cáo bám theo ngôn ngữ input; ép bằng `--lang en|vi` (xem `rules/language.md`). Keyword cú pháp và tên định danh thật giữ nguyên tiếng Anh.
 - **Icon công nghệ tự động.** Sơ đồ kiến trúc và `/scan-project` tự chèn logo (Redis, Postgres, Kafka, AWS, nginx, React, …) khi node khớp một công nghệ — Devicon bundle offline + fallback CDN (`rules/icon-map.md`). Tắt bằng `--no-icons`.
@@ -337,17 +359,17 @@ Chỉ cài thứ skill bạn dùng cần (`scripts/doctor.sh` báo cái nào thi
 dev-ba-kit/
 ├── .claude-plugin/                Manifest plugin + catalog marketplace (/plugin install · /plugin marketplace add)
 ├── install.sh                     Installer kiểu copy (không cần plugin)
-├── skills/                        63 skill
-├── agents/                        diagram-reviewer · doc-reviewer · change-tracker
+├── skills/                        64 skill
+├── agents/                        diagram-reviewer · doc-reviewer · flow-reviewer · senior-ba · qa-reviewer · change-tracker
 ├── rules/                         Rule dùng chung (approval-gate, diagram-selection, diagram-style, language, icon-map, …)
 ├── scripts/                       mermaid-verify.ts · diagram-validate.ts · doctor.sh · plantuml-ensure.sh · drawio-catalog-ensure.sh · icon-path.sh · tsrun.sh · render helper
 ├── tests/                         Unit test cho engine (vitest — `npm test`)
 ├── .github/workflows/             CI: typecheck · test · gate chống drift example
-├── templates/                     Khung file diagram
+├── templates/                     Khung tài liệu + sơ đồ (30 doc, 8 diagram)
 ├── hooks/                         SessionStart hook (tự cài BPMN engine)
 ├── assets/icons/                  Icon công nghệ bundle sẵn (Devicon MIT, Simple Icons CC0)
 ├── example/                       Ví dụ đầy đủ: feature atlas-re
-├── explain-skills/                Deep dive từng skill + family doc, phủ đủ 63 skill (song ngữ: `*.md` tiếng Anh, `*.vi.md` tiếng Việt)
+├── explain-skills/                Deep dive từng skill + family doc, phủ đủ 64 skill (song ngữ: `*.md` tiếng Anh, `*.vi.md` tiếng Việt)
 ├── guides/ · huong-dan/           Hướng dẫn bắt đầu (tiếng Anh / tiếng Việt)
 └── CHANGELOG.md · CONTRIBUTING.md Lịch sử phiên bản · hướng dẫn đóng góp
 ```

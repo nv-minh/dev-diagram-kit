@@ -35,6 +35,7 @@ Write actor-goal narratives the Cockburn way — Scope · Level · Primary Actor
 ## Context (dynamic)
 
 Today: !`date +%Y-%m-%d`
+Project context: !`bash "${CLAUDE_PLUGIN_ROOT:-.claude}/scripts/context-load.sh"`
 Available features: !`ls -d docs/*/ 2>/dev/null | xargs -I{} basename {} | head -20`
 Existing UCs: !`ls docs/*/usecases/uc-*.md 2>/dev/null | head -10`
 Specs (mode selector): !`ls docs/*/srs/*-spec.md 2>/dev/null | head -10`
@@ -111,6 +112,7 @@ Worked example — user prompts, approval gates, and output excerpts: /example-s
 ## References
 
 - @../../rules/ba-conventions.md
+- @../../rules/project-context.md
 - @../../rules/approval-gate.md
 - @../../rules/naming-conventions.md
 - @../../rules/changelog.md

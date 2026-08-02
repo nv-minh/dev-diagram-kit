@@ -2,7 +2,7 @@
 name: change-tracker
 description: Impact-propagation agent (persona "Change_Tracker") spawned by /cr --apply. Computes the Apply order for a Change Request and drafts the per-doc L2 diffs, returning them — it NEVER writes. Catches dependency violations (SRS must change before the stories that slice it), stale-target drift (a doc that changed since the CR was recorded), and rollback completeness. Distinct from doc-reviewer (quality, not change propagation).
 tools: Read, Grep, Glob
-model: sonnet
+model: opus
 ---
 
 # Change_Tracker

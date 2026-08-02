@@ -8,7 +8,7 @@
 Không. Cài đúng engine của skill bạn dùng. `/sequence /activity /state /erd` chỉ cần Mermaid (Node + mmdc + Chrome). Xem bảng ở `01-cai-dat-cong-cu.md`.
 
 **H: `mmdc` báo không tìm thấy Chrome.**
-Cài Chrome cho headless: `npx puppeteer browsers install chrome`, rồi set `export PUPPETEER_EXECUTABLE_PATH="/đường/dẫn/Google Chrome for Testing"`. Script `mermaid-verify.mjs` tự tìm ở `~/.puppeteer-cache`.
+Cài Chrome cho headless: `npx puppeteer browsers install chrome`, rồi set `export PUPPETEER_EXECUTABLE_PATH="/đường/dẫn/Google Chrome for Testing"`. Script `mermaid-verify.ts` tự tìm ở `~/.puppeteer-cache`.
 
 **H: `d2: command not found`.**
 Cài: `curl -fsSL https://d2lang.com/install.sh | sh -s --`. D2 vào `~/.local/bin` — đảm bảo thư mục này trong `PATH` (`export PATH="$HOME/.local/bin:$PATH"`).

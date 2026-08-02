@@ -35,6 +35,7 @@ paths:
   - ".claude/skills/meeting/**"
   - ".claude/skills/inbox/**"
   - ".claude/skills/doc-review/**"
+  - ".claude/skills/discover/**"
   - ".claude/skills/dashboard/**"
   - ".claude/skills/sync-confluence/**"
   - "docs/**/*-urd.md"
@@ -66,6 +67,7 @@ paths:
 
 | Business situation | Skill | Output file | Status | Reason |
 |---|---|---|---|---|
+| Learn the project once — shared context every later skill consumes | `/discover` | `docs/_shared/project-context.md` (+ `context/`) | ✓ | Project-level; deep scan + bounded 5-question interview → always-loaded ≤60-line context index (purpose/stack/actors/glossary-collisions/gotchas). Differs from `/scan-project` (architecture DIAGRAMS from code). Run first. |
 | Explore one raw idea — nothing structured yet, need OQs surfaced | `/brainstorm` | `docs/{feature}/brainstorms/{idea-slug}.md` | ✓ | The root of the discovery chain; OQ cascade starts here (`resolve-oqs.md`) |
 | What USERS need — personas, pains, context of use | `/urd` | `docs/{feature}/{feature}-urd.md` | ✓ | User altitude; mints `UN-{feature}-{NNN}` |
 | The BUSINESS case — objectives, scope, cost-benefit, risks | `/brd` | `docs/{feature}/{feature}-brd.md` | ✓ | Money/why altitude; mints `BO-{feature}-{NN}` |
@@ -155,6 +157,9 @@ Shared rule: `rules/api-integration.md`. Chain order with skip conditions lives 
 
 ### `/gap` vs the per-feature use-case matrix
 The `## Use cases` table in `{feature}-usecase-index.md` is the quick per-feature UC↔FR↔Screen↔Error↔OQ read. `/gap` aggregates ACROSS features and docs into `docs/_shared/traceability.md` (orphans, uncovered IDs, stale chains).
+
+### `/discover` vs `/scan-project` vs `/prd` vs `/reverse-doc`
+All project-level; three read existing material — easy to confuse. `/discover` reads the repo (code + docs) for a **portable context brief** (`docs/_shared/project-context.md` + `context/`) that OTHER skills consume to stop re-asking and inventing names. `/scan-project` reads CODE for the **architecture diagram set** (`docs/_shared/architecture/`). `/prd` defines the **product** (pitch/themes/Feature Map). `/reverse-doc` reconstructs **business docs** from legacy sources. Run `/discover` once, first.
 
 ### `/reverse-doc` vs `/scan-project`
 Both are brownfield. `/reverse-doc` reconstructs BUSINESS documents (12-section framework, confidence levels) from any legacy source (docx/pdf/images/code). `/scan-project` generates the architecture DIAGRAM set from source code only.

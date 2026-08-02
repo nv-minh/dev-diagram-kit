@@ -36,14 +36,15 @@ Scan the vault and render one self-contained HTML status page — features and t
 Today: !`date +%Y-%m-%d`
 Features: !`ls -d docs/*/ 2>/dev/null | xargs -I{} basename {} | grep -v "^_" | head -20`
 Activity log: !`ls docs/_shared/activity.log 2>/dev/null || echo "none"`
+Project context: !`bash "${CLAUDE_PLUGIN_ROOT:-.claude}/scripts/context-load.sh"`
 
 ## Approach
 
-1. **Scan the vault** — per feature: its docs + statuses + `updated:` dates; count OQs; recent activity from `activity.log`; staleness from `staleness.log` if present.
+1. **Scan the vault** — per feature: its docs + statuses + `updated:` dates; count OQs; recent activity from `activity.log`; staleness from `staleness.log` if present. Also read `docs/_shared/project-context.md` frontmatter (`source_watermark` + `staleness_budget_commits`) → compute commit drift (commits since the watermark vs the budget) for a project-context fresh/stale flag.
 2. **Aggregate** — feature statuses (how many approved/in-review/draft), OQ debt per feature, stale docs, last-activity per feature.
-3. **Render `dashboard.html`** — self-contained: a feature table (status pills, OQ count, last-updated, stale flag) + an activity feed (recent N events) + an OQ-debt callout. Light, no CDN.
+3. **Render `dashboard.html`** — self-contained: a top-of-page **Project context: fresh / stale (N commits since scan)** callout (when a `/discover` profile exists) + a feature table (status pills, OQ count, last-updated, stale flag) + an activity feed (recent N events) + an OQ-debt callout. Light, no CDN.
 4. **Regenerate `docs/feature-list.md`** — one row per feature: slug + status + doc count + OQ count + updated.
-5. **L1 plan preview** — feature count + status mix + OQ debt + stale count.
+5. **L1 plan preview** — feature count + status mix + OQ debt + stale count + project-context fresh/stale flag.
 6. **Write** both files. **Activity log** — `CLAUDE_SKILL_NAME=/dashboard` + note + author.
 7. **Output report** — the dashboard path + the status mix + the riskiest feature (most OQs/stale) + next.
 
@@ -76,6 +77,7 @@ Worked example — user prompts, approval gates, and output excerpts: /example-s
 ## References
 
 - @../../rules/ba-conventions.md
+- @../../rules/project-context.md (surface /discover profile staleness)
 - @../../rules/approval-gate.md
 - @../../rules/naming-conventions.md
 - @../../rules/changelog.md

@@ -13,13 +13,17 @@
 //      no existing skill still marked `planned`.
 //   3. EN/VI parity — every explain-skills/*.md has a .vi.md twin (and vice versa);
 //      guides/ and huong-dan/ have the same file count; README.vi.md exists.
-//   4. Version trio — package.json == .claude-plugin/plugin.json == .claude-plugin/marketplace.json.
+//   4. Version trio + manifest descriptions — package.json == .claude-plugin/plugin.json ==
+//      .claude-plugin/marketplace.json versions agree, AND none of their `description` fields
+//      carry a forbidden stale phrase (the READMEs get updated on release, the manifests often don't).
 //   5. Skill-count claims — every "N skills"/"N skill"/"All N commands"/"Cả N lệnh" in the
 //      READMEs *and* guides/ + huong-dan/ equals the real count of skills/*/SKILL.md.
 //   6. Stale-phrase / coverage-claim — forbidden phrases on README + guides/huong-dan;
 //      fractional "M/N skill" claims with M≠N; EN/VI coverage claim parity.
 //   7. Template schema — every templates/doc-*.md frontmatter `type:` exists in
 //      rules/naming-conventions.md's doc-type table.
+//   8. Agent-ref existence — every `@persona-name` in skills/*/SKILL.md + agents/*.md resolves
+//      to agents/<name>.md (catches phantom agents: a referenced-but-never-created reviewer).
 //
 // Exit 0 = clean (warnings allowed), 1 = errors.
 
@@ -237,13 +241,26 @@ export function lintKit(root: string): Finding[] {
   if (guides.length !== huongDan.length) err('parity', `guides/ has ${guides.length} files but huong-dan/ has ${huongDan.length} — every EN guide needs a VI twin`);
   if (readmeEn && !readmeVi) err('parity', 'README.md exists but README.vi.md is missing');
 
-  // ── 4. version trio ──
+  // ── 4. version trio + manifest descriptions ──
   try {
     const pkg = JSON.parse(read(join(root, 'package.json')));
     const plugin = JSON.parse(read(join(root, '.claude-plugin/plugin.json')));
     const market = JSON.parse(read(join(root, '.claude-plugin/marketplace.json')));
     if (pkg.version !== plugin.version || plugin.version !== market.metadata?.version) {
       err('version', `version trio drift — package.json=${pkg.version} plugin.json=${plugin.version} .claude-plugin/marketplace.json=${market.metadata?.version}`);
+    }
+    // The description fields drift out of sync on release — the READMEs get updated but the
+    // manifests often keep stale "waves landing" wording (the original 2.5.0 bug).
+    const manifestDescs: Array<[string, string]> = [
+      ['package.json description', pkg.description ?? ''],
+      ['.claude-plugin/plugin.json description', plugin.description ?? ''],
+      ['.claude-plugin/marketplace.json metadata.description', market.metadata?.description ?? ''],
+      ['.claude-plugin/marketplace.json plugins[0].description', market.plugins?.[0]?.description ?? ''],
+    ];
+    for (const [label, d] of manifestDescs) {
+      for (const re of FORBIDDEN_STALE_PHRASES) {
+        if (re.test(d)) err('manifest', `${label} contains forbidden phrase matching ${re}`);
+      }
     }
   } catch (e: unknown) { err('version', `cannot read version trio: ${(e as Error).message}`); }
 
@@ -306,6 +323,27 @@ export function lintKit(root: string): Finding[] {
     const opens = (body.match(/\{\{/g) || []).length;
     const closes = (body.match(/\}\}/g) || []).length;
     if (opens !== closes) err('template', `templates/${n} has unbalanced {{placeholders}} (${opens} "{{" vs ${closes} "}}")`);
+  }
+
+  // ── 8. agent-ref existence (no phantom agents) ──
+  // An `@persona-name` reference in a SKILL.md or agent prompt must resolve to agents/<name>.md.
+  // Heuristic: only hyphenated tokens are agent candidates (every kit agent is a compound name);
+  // npm scopes (@mermaid-js/, @dbml/) and @../path refs are skipped via the trailing-slash check,
+  // and single-word directives (@file, @startuml, @author) lack a hyphen so they never match.
+  const agentFiles = listFiles(join(root, 'agents')).filter(n => n.endsWith('.md'));
+  const agentNames = new Set(agentFiles.map(n => n.replace(/\.md$/, '')));
+  const agentRefRe = /@([a-z][a-z0-9]*-[a-z0-9-]+)/g;
+  const agentScan: Array<[string, string]> = [];
+  for (const name of skillDirs) agentScan.push([`skills/${name}/SKILL.md`, read(join(root, 'skills', name, 'SKILL.md'))]);
+  for (const a of agentFiles) agentScan.push([`agents/${a}`, read(join(root, 'agents', a))]);
+  for (const [label, src] of agentScan) {
+    agentRefRe.lastIndex = 0;
+    for (const m of src.matchAll(agentRefRe)) {
+      const idx = m.index;
+      if (idx === undefined) continue;
+      if (src.charCodeAt(idx + m[0].length) === 0x2f) continue; // @scope/pkg or @../path — not a persona ref
+      if (!agentNames.has(m[1])) err('agent-ref', `${label} references @${m[1]} but agents/${m[1]}.md does not exist`);
+    }
   }
 
   return f;

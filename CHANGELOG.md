@@ -6,7 +6,76 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); version
 
 ## [Unreleased]
 
+_Nothing yet._
+
+## [2.7.0] — 2026-08-02
+
+### Added
+- **`/discover`** — a one-time project intake skill (Group C, ghost slot now filled): deep-scans the
+  repo + a bounded 5-question interview, then writes a small, always-loaded **context brief**
+  (`docs/_shared/project-context.md`, ≤60 lines) + on-demand detail files (`docs/_shared/context/*.md`)
+  that every later BA skill consumes — so they stop re-asking "what does this system do?" and stop
+  inventing entity/actor names. Formalizes the hand-written `example/atlas-re/DOMAIN.md` practice.
+  - **Tiered artifact** (research-revised against the AGENTS.md literature): Tier 1 carries only the
+    non-derivable slice (purpose · stack · actors · glossary-collisions · gotchas · pointers) — generic
+    "repository overview" content is demoted; a `grep`-in-2-seconds content test + a **60-line hard cap**
+    (enforced by `doc-validate`) keep it small. Tier 2 = on-demand depth
+    (glossary/domain-rules/actors/entities/architecture).
+  - **Staleness enforced at the loader** (`scripts/context-load.sh`): a loud banner inside the context
+    window when git drift exceeds `staleness_budget_commits` — not buried in `/dashboard`.
+  - **Confidence + provenance** (✅ read · 🔵 inferred · 🟡 guessed + `file:path`) on every claim.
+  - Wave-1 wiring into the 6 pilot skills (`/srs` `/userstory` `/erd` `/sequence` `/ba` `/scan-project`)
+    + Wave-2 wiring across the discovery/spec/diagram families; `/scan-project` now consumes the profile
+    when present (fresh → primary source, stale → hint). `/dashboard` surfaces project-context staleness.
+  - Registration: `project-context` + `project-context-detail` doc types; `rules/project-context.md`;
+    `templates/doc-project-context{,-detail}.md`; `explain-skills/discover.{md,vi.md}`; a worked
+    `/discover` session at `skills/discover/references/example-session.md`.
+  - Efficacy: a reasoned A/B (5 prompts, 4 axes) is recorded in `plans/discover-efficacy.md` — **PASS**;
+    a rigorous independent run (fresh sessions + independent judge) is the documented follow-up.
+
+### Changed
+- Skill count **63 → 64**; version trio → 2.7.0.
+- CI `doc-validate` target `example/atlas-re` → `example --vault example` so the project-level `_shared/`
+  context set is validated (incl. the 60-line cap).
+
+## [2.6.0] — 2026-08-02
+
+### Added
+- **Three reviewer agents** that were referenced in skill prompts but never created (phantom agents),
+  now real and wired:
+  - `agents/flow-reviewer.md` — UX-flow coverage reviewer, auto-spawned by `/user-flow` past a
+    complexity threshold (≥3 flows / ≥8 screens / any flow with >1 error path): catches missing
+    screens, dead-end business logic, error paths with no destination, orphan screens, and
+    single-branch gateways. Distinct from `diagram-reviewer` (technical mermaid coverage).
+  - `agents/senior-ba.md` — business-soundness reviewer (objective measurability, ROI/figure
+    sourcing, scope discipline, goal coherence), opt-in via `/doc-review --agents senior-ba`.
+  - `agents/qa-reviewer.md` — testability reviewer (FR testability, AC Given-When-Then completeness,
+    NFR measurable thresholds, error-matrix triggers), opt-in via `/doc-review --agents qa-reviewer`.
+  - `/doc-review` now actually spawns `@senior-ba`/`@qa-reviewer` named in `--agents` (previously
+    marked "when wired" — they never were).
+- All review/plan agents — `doc-reviewer`, `diagram-reviewer`, `change-tracker`, and the three new
+  ones — now run on **Opus** (`model: opus`).
+
 ### Fixed
+- **Docs drift after the 27→63 expansion** (targeted audit pass):
+  - Stale `.mjs` extensions swept from docs/agents/templates — the repo has zero `.mjs` files (all
+    TypeScript run via `tsrun.sh`); `mermaid-verify`/`bpmn-semcheck`/`bpmn-build` are now referenced
+    as `.ts`, and `templates/diagram-bpmn.md` shows the correct `bash tsrun.sh … bpmn-build.ts` form.
+  - `package.json` `description` no longer says "More document waves landing: …" (all waves shipped)
+    and the discovery chain reads `/prd-epic` (not `/prd`); aligned with the clean
+    `plugin.json`/`marketplace.json` descriptions.
+  - `scripts/mermaid-verify.ts` header usage example corrected (`bash tsrun.sh …`, not
+    `node .claude/…`).
+  - README EN/VI: `templates/` layout label ("Document + diagram templates"), the simulated-sessions
+    claim (25 standalone transcripts + ~11 family pointers, not 36 standalone), and the `agents/`
+    layout list now names all six agents.
+- **`kit-lint` hardened** so these drift classes can't recur:
+  - Check #4 now also scans the `description` fields of `package.json` / `plugin.json` /
+    `marketplace.json` for forbidden stale phrases (the root cause — the READMEs were updated on
+    release, the manifests weren't, and lint never looked at them).
+  - New check #8 verifies every `@persona-name` reference in `skills/*/SKILL.md` + `agents/*.md`
+    resolves to `agents/<name>.md` — catches phantom agents at lint time, not runtime.
+  - Two new `kit-lint.test.ts` cases cover both.
 - Plugin marketplace manifest moved to `.claude-plugin/marketplace.json` (Claude Code expects this
   path; fixes `/plugin marketplace add` failing with “Marketplace file not found”).
 - Docs trust restore after the 27→63 skill expansion: README EN/VI coverage claims, CI badge URL

@@ -36,6 +36,7 @@ Produce a Mermaid `journey` block — the user's experience split into sections 
 ## Context (dynamic)
 
 Today: !`date +%Y-%m-%d`
+Project context: !`bash "${CLAUDE_PLUGIN_ROOT:-.claude}/scripts/context-load.sh"`
 Available features: !`ls -d docs/*/ 2>/dev/null | xargs -I{} basename {} | head -20`
 Features with journey.md: !`for d in docs/*/srs/*-journey.md; do [ -f "$d" ] && echo "$d"; done | head -10`
 
@@ -99,6 +100,7 @@ Need changes? /journey "{name}" --feature {feature} again → update mode.
 ## References
 
 - @../../rules/ba-conventions.md
+- @../../rules/project-context.md
 - @../../rules/approval-gate.md
 - @../../rules/naming-conventions.md
 - @../../rules/changelog.md

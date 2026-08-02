@@ -35,6 +35,7 @@ Read legacy sources (docx/pdf/images/code/emails) and reconstruct the business l
 ## Context (dynamic)
 
 Today: !`date +%Y-%m-%d`
+Project context: !`bash "${CLAUDE_PLUGIN_ROOT:-.claude}/scripts/context-load.sh"`
 Existing reverse docs: !`ls docs/*/reverse-*.md 2>/dev/null | head -10`
 Existing reverse plan: !`ls docs/.reverse-plan.md 2>/dev/null || echo "none"`
 
@@ -80,6 +81,7 @@ Worked example — user prompts, approval gates, and output excerpts: /example-s
 ## References
 
 - @../../rules/ba-conventions.md
+- @../../rules/project-context.md
 - @../../rules/approval-gate.md
 - @../../rules/naming-conventions.md
 - @../../rules/changelog.md

@@ -10,6 +10,11 @@ argument-hint: "\"<what you need>\" [--recommend-only]"
 
 > You describe a need → this skill asks **at most 2** disambiguating questions → picks the right document skill → **runs it** with the inferred args. The document-side twin of `/diagram`. The decision matrix that backs this lives in `@../../rules/doc-selection.md` (source of truth — keep them in sync when a skill is added/removed).
 
+## Context (dynamic)
+
+Today: !`date +%Y-%m-%d`
+Project context: !`bash "${CLAUDE_PLUGIN_ROOT:-.claude}/scripts/context-load.sh"`
+
 ## Goal
 
 Map a natural-language need → exactly ONE document skill, then delegate to it. Do NOT write any document yourself — you decide + hand off.
@@ -27,6 +32,7 @@ Map a natural-language need → exactly ONE document skill, then delegate to it.
 
 | The user wants… | Skill | Key disambiguator |
 |---|---|---|
+| Learn the project / set up shared context (first time in this repo) | `/discover` | project-level; produces the context brief every row below consumes |
 | Explore a raw idea | `/brainstorm` | nothing structured yet |
 | What users need (personas, pains, context of use) | `/urd` | user altitude |
 | The business case (objectives, ROI, scope, risks) | `/brd` | money/why altitude |
@@ -83,6 +89,7 @@ Map a natural-language need → exactly ONE document skill, then delegate to it.
 - **Never route to a planned skill** — check the status column; recommending vaporware wastes the user's time.
 - **Keep in sync** — when a document skill is added/removed, update this table AND `doc-selection.md` together (flip `planned` → `✓` in the landing PR).
 - **You are not a writer** — never draft a document yourself; always delegate.
+- **No project context yet?** The Context block above shows whether a `/discover` profile exists. If absent, suggest `/discover` first — it gives every later skill the shared domain brief (actors, glossary, rules) so they stop re-asking.
 
 ## Simulated session
 
@@ -91,5 +98,6 @@ Worked example — user prompts, approval gates, and output excerpts: /example-s
 ## References
 
 - @../../rules/doc-selection.md (source of truth — full decision matrix + status column + disambiguation)
+- @../../rules/project-context.md (the /discover artifact + loader — nudge /discover when no profile)
 - @../../rules/diagram-selection.md (the diagram-side matrix — hand visual needs to `/diagram`)
 - @../../rules/feature-bootstrap.md

@@ -13,6 +13,8 @@ describe('inferSpec', () => {
     expect(inferSpec('docs/payment/userstories/us-001.md')?.kind).toBe('zero');
     expect(inferSpec('docs/cr/CR-20260801-001.md')?.type).toBe('change-request');
     expect(inferSpec('docs/payment/brainstorms/wallet-idea.md')?.type).toBe('brainstorm');
+    expect(inferSpec('docs/_shared/project-context.md')).toEqual({ type: 'project-context', kind: 'slim' });
+    expect(inferSpec('docs/_shared/context/glossary.md')).toEqual({ type: 'project-context-detail', kind: 'slim' });
   });
   it('rejects mismatched feature prefixes and unknown paths', () => {
     expect(inferSpec('docs/payment/other-brd.md')).toBeNull();      // prefix must equal feature dir
@@ -97,5 +99,16 @@ describe('validateDoc end-to-end', () => {
   it('returns null for files outside the naming table', () => {
     const x = w('docs/payment/srs/payment-flows.md', '```mermaid\nflowchart TD\n```');
     expect(validateDoc(x, vault)).toBeNull();
+  });
+
+  it('enforces the Tier-1 project-context 60-line cap', () => {
+    const fm = ['---', 'type: project-context', 'status: approved', 'updated: 2026-08-02',
+      'profile_hash: abc', 'source_watermark: deadbeef', 'staleness_budget_commits: 200',
+      'human_edited: []', 'links: []', '---'];
+    const p = 'docs/_shared/project-context.md';
+    const ok = w(p, fm.concat(Array(60).fill('- bullet')).join('\n'));
+    expect(validateDoc(ok, vault)!.findings.some(f => f.msg.includes('hard cap is 60'))).toBe(false);
+    const over = w(p, fm.concat(Array(61).fill('- bullet')).join('\n'));
+    expect(validateDoc(over, vault)!.findings.some(f => f.msg.includes('hard cap is 60'))).toBe(true);
   });
 });

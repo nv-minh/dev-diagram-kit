@@ -2,7 +2,7 @@
 
 **English** · [Tiếng Việt](../huong-dan/04-cach-hoat-dong.md)
 
-> Understanding the run flow helps you know when a skill will ask questions, when it waits for your approval, and why it self-corrects. All 63 skills follow this same framework (with notable variants: `/scan-project` runs **2 phases with a HARD STOP** scan→plan→generate; `/sync-confluence` and other external-write skills add a **preview + confirmation** step before writing outside the vault).
+> Understanding the run flow helps you know when a skill will ask questions, when it waits for your approval, and why it self-corrects. All 64 skills follow this same framework (with notable variants: `/scan-project` runs **2 phases with a HARD STOP** scan→plan→generate; `/sync-confluence` and other external-write skills add a **preview + confirmation** step before writing outside the vault).
 
 > **Bilingual EN/VI:** the output language (diagram labels + interview questions + L1 plan + report) **automatically follows the language you type in** — type English → English, Vietnamese → VI; force it with `--lang en|vi` (per `rules/language.md`). Engine syntax keywords + real technical identifiers (table/service/endpoint) always stay in English.
 
@@ -57,10 +57,10 @@ Each engine has its own way of catching errors, run **before reporting "done"**:
 
 | Engine | How it checks | What it catches |
 |---|---|---|
-| Mermaid | `mermaid-verify.mjs` compiles every block via `mmdc` | Syntax errors (forbidden characters in labels, missing tokens) |
+| Mermaid | `mermaid-verify.ts` compiles every block via `mmdc` | Syntax errors (forbidden characters in labels, missing tokens) |
 | D2 | `render.sh` compiles `.d2` → `.svg` | D2 syntax errors |
 | DBML | `dbml2sql {feature}.dbml --postgres` | Invalid DBML syntax |
-| BPMN | `bpmn-semcheck.mjs` | Missing actor/branch/error vs. the facts, gateways missing a branch, dead ends |
+| BPMN | `bpmn-semcheck.ts` | Missing actor/branch/error vs. the facts, gateways missing a branch, dead ends |
 | PlantUML | server returns HTTP != 200 | Encode/network/server failure |
 
 Errors → the skill **fixes and retries** (usually up to 2-3 times), never writing out a broken diagram and reporting it as complete.
